@@ -185,12 +185,16 @@ def project2img_mtx(params_cam):
     """
 
     
-    """
-    로직 1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
     
-    fc_x = 
-    fc_y = 
-    """
+    #로직 1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
+    
+    camera_width=params_cam['WIDTH']
+    camera_height=params_cam['HEIGHT']
+    camera_fov=params_cam['FOV']
+    
+    fc_x = camera_width/2*math.tan(math.radians(camera_fov/2))
+    fc_y = camera_height/2*math.tan(math.radians(camera_fov/2))
+    
 
     """
     로직 2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
