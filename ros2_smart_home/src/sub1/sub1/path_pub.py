@@ -48,7 +48,7 @@ class pathPub(Node):
         # FULL_PATH="C:/2. ParticalPJT/ros2_smart_home/src/sub1/path/test.txt"
         # PATH=os.getcwd()
         # file_name = "test.txt"      # 수정 or 새로 작성하고자 하는 path 파일 
-        full_path = os.path.join(os.getcwd(), '../path/test.txt')
+        full_path = os.path.join(os.getcwd(), 'src/sub1/path/test.txt')
         
         self.f=open(full_path, 'r', encoding='UTF-8')
         
