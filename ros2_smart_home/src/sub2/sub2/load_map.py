@@ -55,43 +55,40 @@ class loadMap(Node):
         self.map_meta_data = m
         self.map_msg.info=self.map_meta_data
         
-        '''
-        로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
-
-        full_path=
-        self.f=
         
-        line=
-        line_data=
-        
-        for num,data in enumerate(line_data) :
-            self.map_data[num]=
-   
-        map_to_grid=
-        grid=
-        '''
+        # 로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
 
+        full_path = "C:\\Users\\SSAFY\\Desktop\\project\\S10P22C109\\ros2_smart_home\\src\\sub2\\map\\map.txt"  # Provide the full path to your map file
+        self.f = open(full_path, 'r')
+
+        line = self.f.readline()
+        line_data = line.split()
+
+        for num, data in enumerate(line_data):
+            self.map_data[num] = int(data)
+
+        map_to_grid = np.array(self.map_data)
+        grid = np.reshape(map_to_grid, (350, 350))
+        
+        radius = 5
 
         for y in range(350):
             for x in range(350):
-                if grid[x][y]==100 :
+                if grid[x][y] == 100:
+                    for i in range(-radius, radius + 1):
+                        for j in range(-radius, radius + 1):
+                            if 0 <= x + i < 350 and 0 <= y + j < 350:
+                                # Add your filtering logic here, e.g., setting nearby cells to a specific value
+                                grid[x + i][y + j] = 50  # Adjust this value based on your filtering requirements
 
-                    '''
-                    로직 3. 점유영역 근처 필터처리
+        # Reshape the grid back to 1D array
+        np_map_data = grid.reshape(1, 350 * 350)
+        list_map_data = np_map_data.tolist()
 
-                    채워 넣기
-
-                    '''
-
-        
-        np_map_data=grid.reshape(1,350*350) 
-        list_map_data=np_map_data.tolist()
-   
-   
-        ## 로직2를 완성하고 주석을 해제 시켜주세요.
-        ## self.f.close()
+        # 로직2를 완성하고 주석을 해제 시켜주세요.
+        self.f.close()
         print('read_complete')
-        self.map_msg.data=list_map_data[0]
+        self.map_msg.data = list_map_data[0]
 
 
     def timer_callback(self):
