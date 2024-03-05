@@ -1,56 +1,67 @@
-import tensorflow as tf
+import rclpy
+from sensor_msgs.msg import CompressedImage
+from ssafy_msgs.msg import BBox
 import cv2
+import time
 import numpy as np
-from object_detection.utils import label_map_util
-from object_detection.utils import visualization_utils as vis_util
+import pytesseract
+from PIL import Image
 
-# 모델 로드
-model_path = '../../../../../ssd_inception_v2_coco'
-detection_graph = tf.Graph()
-with detection_graph.as_default():
-    od_graph_def = tf.GraphDef()
-    with tf.gfile.GFile(model_path + '/frozen_inference_graph.pb', 'rb') as fid:
-        serialized_graph = fid.read()
-        od_graph_def.ParseFromString(serialized_graph)
-        tf.import_graph_def(od_graph_def, name='')
+params_cam = {
+    "WIDTH": 320,  # image width
+    "HEIGHT": 240,  # image height
+}
 
-# 라벨 로드
-label_map = label_map_util.load_labelmap(model_path + '/label_map.pbtxt')
-categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=90, use_display_name=True)
-category_index = label_map_util.create_category_index(categories)
+class TextExtractionNode:
 
-# 이미지 읽기
-image = cv2.imread('../../../../../dog.jfif')
+    def __init__(self):
+        self.node = rclpy.create_node('text_extraction_node')
+        self.subscription = self.node.create_subscription(CompressedImage, '/image_jpeg/compressed', self.image_callback, 10)
+        self.text_publisher = self.node.create_publisher(BBox, '/text_bbox', 10)
+        self.img_bgr = None
 
-# 모델 실행
-with detection_graph.as_default():
-    with tf.Session(graph=detection_graph) as sess:
-        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-        detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-        detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
-        detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-        num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+    def image_callback(self, msg):
+        np_arr = np.frombuffer(msg.data, np.uint8)
+        self.img_bgr = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+        self.extract_text()
 
-        # 이미지 전처리
-        image_expanded = np.expand_dims(image, axis=0)
+    def extract_text(self):
+        if self.img_bgr is not None:
+            # Example: Set ROI as the center of the image
+            roi_x, roi_y, roi_w, roi_h = 100, 100, 200, 200
+            roi_image = self.img_bgr[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w]
 
-        # 모델 실행
-        (boxes, scores, classes, num) = sess.run(
-            [detection_boxes, detection_scores, detection_classes, num_detections],
-            feed_dict={image_tensor: image_expanded})
+            # Convert ROI to grayscale
+            gray_roi = cv2.cvtColor(roi_image, cv2.COLOR_BGR2GRAY)
 
-        # 결과 시각화
-        vis_util.visualize_boxes_and_labels_on_image_array(
-            image,
-            np.squeeze(boxes),
-            np.squeeze(classes).astype(np.int32),
-            np.squeeze(scores),
-            category_index,
-            use_normalized_coordinates=True,
-            line_thickness=8)
+            # Apply thresholding to prepare for OCR
+            _, binary_roi = cv2.threshold(gray_roi, 128, 255, cv2.THRESH_BINARY)
 
-        # 시각화된 이미지 저장 또는 표시
-        cv2.imwrite('path/to/output_image.jpg', image)
-        cv2.imshow('Object Detection', image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+            # Use Tesseract OCR to extract text
+            text = pytesseract.image_to_string(Image.fromarray(binary_roi))
+
+            # Publish BBox with text information
+            bbox_msg = BBox()
+            bbox_msg.x = roi_x
+            bbox_msg.y = roi_y
+            bbox_msg.width = roi_w
+            bbox_msg.height = roi_h
+            bbox_msg.class_name = text
+            self.text_publisher.publish(bbox_msg)
+
+            # Visualize the result (optional)
+            cv2.putText(self.img_bgr, text, (roi_x, roi_y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2,
+                        cv2.LINE_AA)
+            cv2.rectangle(self.img_bgr, (roi_x, roi_y), (roi_x + roi_w, roi_y + roi_h), (0, 255, 0), 2)
+
+            # Display the image (optional)
+            cv2.imshow('Text Extraction', self.img_bgr)
+            cv2.waitKey(1)
+
+    def run(self):
+        rclpy.spin(self.node)
+
+if __name__ == '__main__':
+    rclpy.init()
+    text_extraction_node = TextExtractionNode()
+    text_extraction_node.run()
