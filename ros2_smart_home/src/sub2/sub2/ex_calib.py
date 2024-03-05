@@ -170,7 +170,6 @@ def project2img_mtx(params_cam):
     3. Projection 행렬을 계산 
 
     """
-
     
     
     #로직 1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
@@ -183,18 +182,16 @@ def project2img_mtx(params_cam):
     fc_y = camera_height/2*math.tan(math.radians(camera_fov/2))
     
 
-    """
-    로직 2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
-    cx = 
-    cy = 
-    """
+    
+    #로직 2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
+    cx = camera_width/2
+    cy = camera_height/2
+    
 
-    """
+    
+    #로직 3. Projection 행렬을 계산.
+    R_f=np.array([[fc_x,0,cx],[0,fc_y,cy]],dtype=float)
 
-    로직 3. Projection 행렬을 계산.
-    R_f =
-
-    """
 
     """
     테스트
@@ -218,7 +215,7 @@ def project2img_mtx(params_cam):
     [  0.         207.84609691 120.        ]]
     """
 
-    return np.zeros((2,3))
+    return R_f
 
 
 def draw_pts_img(img, xi, yi):
