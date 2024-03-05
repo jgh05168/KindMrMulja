@@ -331,7 +331,7 @@ class SensorCalib(Node):
         self.img = None
 
     def img_callback(self, msg):
-        
+        print(msg.data)
         """
    
         로직 3. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장.
