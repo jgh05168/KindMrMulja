@@ -120,8 +120,8 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     Rmtx = np.matmul(Tmtx, rotationMtx(math.radians(-90), math.radians(0), math.radians(-90)))
 
     # 로직 4. 위의 두 행렬을 가지고 최종 라이다-카메라 변환 행렬을 정의
-    RT = np.linalg.inv(Rmtx)
-    # print(RT)
+    R_T = np.linalg.inv(Rmtx)
+    # print(R_T)
 
     """
     테스트
@@ -158,7 +158,7 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
 
     """
 
-    return np.eye(4)
+    return R_T
 
 
 def project2img_mtx(params_cam):
