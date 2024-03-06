@@ -29,6 +29,7 @@ setup(
             'path_tracking = sub2.path_tracking:main',
             'seg_binarizer = sub2.seg_binarizer:main',
             'detect=sub2.detect:main'
+            'lidar_trans = sub2.lidar_trans:main',
         ],
     },
 )
