@@ -28,7 +28,8 @@ setup(
             'odom = sub2.odom:main',
             'path_tracking = sub2.path_tracking:main',
             'seg_binarizer = sub2.seg_binarizer:main',
-            'detect=sub2.detect:main'
+            'detect = sub2.detect:main',
+            'tf = sub2.tf_detector:main'
         ],
     },
 )
