@@ -58,8 +58,10 @@ class odom(Node):
         self.odom_msg.header.frame_id='map'
         self.odom_msg.child_frame_id='base_link'
 
+
         self.base_link_transform.header.frame_id = 'map'
         self.base_link_transform.child_frame_id = 'base_link'
+
 
         self.laser_transform.header.frame_id = "base_link"
         self.laser_transform.child_frame_id = "laser"     
@@ -133,8 +135,6 @@ class odom(Node):
                 self.odom_msg.pose.pose.orientation.w = q.w
                 self.odom_msg.twist.twist.linear.x = linear_x
                 self.odom_msg.twist.twist.angular.z = angular_z
-
-                
 
                 self.broadcaster.sendTransform(self.base_link_transform)
                 self.broadcaster.sendTransform(self.laser_transform)
