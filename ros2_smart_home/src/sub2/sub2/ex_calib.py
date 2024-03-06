@@ -255,15 +255,13 @@ class LIDAR2CAMTransform:
 
     def transform_lidar2cam(self, xyz_p):
         
-        xyz_c = xyz_p
+        xyz_c = xyz_p 
         
-        """
+        #로직 2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환시킨다.
         
-        로직 2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환시킨다.
+        xyz_c = self.RT*xyz_p
+    
         
-        xyz_c = 
-        
-        """
         return xyz_c
 
     def project_pts2img(self, xyz_c, crop=True):
@@ -278,7 +276,7 @@ class LIDAR2CAMTransform:
         
         # 로직 4. normalizing plane 상의 라이다 포인트들에 proj_mtx를 곱해 픽셀 좌표값 계산.
 
-        # xyi = np.matmul(self.proj_mtx, np.concatenate([xn, yn, np.ones_like(xn)], axis=0))
+        xyi = np.matmul(self.proj_mtx, np.concatenate([xn, yn, np.ones_like(xn)], axis=0))
 
         """
         로직 5. 이미지 프레임 밖을 벗어나는 포인트들을 crop.
