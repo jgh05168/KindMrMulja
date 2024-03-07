@@ -44,8 +44,8 @@ class odom(Node):
         self.is_imu=False
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.
-        self.x=0.0
-        self.y=0.0
+        self.x=-9.3
+        self.y=-7.7
                 
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
@@ -81,11 +81,11 @@ class odom(Node):
         else:
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             imu_roll, imu_pitch, imu_yaw = imu_q.to_euler()
-            self.theta = imu_yaw - self.imu_offset
+            self.theta = imu_yaw - self.imu_offset + 0.5 * pi
 
 
     def listener_callback(self, msg):
-        print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
+        # print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
         if self.is_imu ==True:
             if self.is_status == False :
                 self.is_status=True
