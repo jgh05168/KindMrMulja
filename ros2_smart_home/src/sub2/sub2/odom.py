@@ -144,9 +144,9 @@ class odom(Node):
         
 def main(args=None):
     rclpy.init(args=args)
-    sub1_odom = odom()
-    rclpy.spin(sub1_odom)
-    sub1_odom.destroy_node()
+    sub2_odom = odom()
+    rclpy.spin(sub2_odom)
+    sub2_odom.destroy_node()
     rclpy.shutdown()
 
 
