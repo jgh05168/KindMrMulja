@@ -62,9 +62,10 @@ class a_star(Node):
         로직 3. 맵 데이터 행렬로 바꾸기
         map_to_grid=
         self.grid=
+        작성함
         '''
-        map_to_grid=self.map_msg.data
-        self.grid=np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y))
+        map_to_grid = self.map_msg.data
+        self.grid = np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y))
 
 
     def pose_to_grid_cell(self,x,y):
@@ -76,7 +77,10 @@ class a_star(Node):
         pose가 (-16.75,12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
         map_point_x= ?
         map_point_y= ?
+        작성함
         '''
+        map_point_x = (x - self.map_offset_x) / self.map_resolution
+        map_point_y = (y - self.map_offset_y) / self.map_resolution
         
         return map_point_x,map_point_y
 
@@ -92,8 +96,11 @@ class a_star(Node):
 
         x=?
         y=?
-
+        작성함
         '''
+        x = (grid_cell.x * self.map_resolution) + self.map_offset_x
+        y = (grid_cell.y * self.map_resolution) + self.map_offset_y
+
         return [x,y]
 
 
@@ -116,7 +123,14 @@ class a_star(Node):
             goal_y=
             goal_cell=
             self.goal = 
-            '''             
+            작성함
+            '''         
+
+            goal_x = msg.pose.position.x
+            goal_y = msg.pose.position.y
+            goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
+            self.goal = goal_cell
+
             print(msg)
             
 
@@ -137,8 +151,8 @@ class a_star(Node):
                 
                 # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
                 # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
-                # if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
-                #     self.dijkstra(start_grid_cell)
+                if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
+                    self.dijkstra(start_grid_cell)
 
 
                 self.global_path_msg=Path()
@@ -182,8 +196,35 @@ class a_star(Node):
             nextNode = ??
             self.final_path.??
             node = ??
-        '''       
-        
+        작성함
+        '''
+        while Q:
+            if found:
+                break
+
+            current = Q.popleft()
+
+            for i in range(8):
+                next = (current[0] + self.dx[i], current[1] + self.dy[i])
+                #범위를 벗어나지 않는지 확인
+                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
+                    if self.grid[next[0]][next[1]] < 50:
+                        #현재 최소 비용보다 작은 경우에만 처리
+                        if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
+                            Q.append(next)
+                            self.path[next[0]][next[1]] = current
+                            self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
+
+                            if next[0] == self.goal[0] and next[1] == self.goal[1]:
+                                found = True
+                                break
+
+        node = self.goal
+
+        while node != start:
+            next_node = self.path[node[0]][node[1]]
+            self.final_path.append(node)
+            node = next_node
 
         
 def main(args=None):
