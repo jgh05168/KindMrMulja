@@ -78,7 +78,7 @@ def rotationMtx(yaw, pitch, roll):
                     [0,         0,              0,               1],
                     ])
                      
-    R = np.matmul(R_x, np.matmul(R_y, R_z))
+    R = np.matmul(R_z, np.matmul(R_y, R_x))
  
     return R
 
@@ -178,8 +178,8 @@ def project2img_mtx(params_cam):
     camera_height=params_cam['HEIGHT']
     camera_fov=params_cam['FOV']
     
-    fc_x = camera_width/2*math.tan(math.radians(camera_fov/2))
-    fc_y = camera_height/2*math.tan(math.radians(camera_fov/2))
+    fc_x = camera_width/(2*math.tan(math.radians(camera_fov/2)))
+    fc_y = camera_height/(2*math.tan(math.radians(camera_fov/2)))
     
 
     
@@ -211,7 +211,7 @@ def project2img_mtx(params_cam):
     이면
 
     R_f = 
-    [[207.84609691   0.         160.        ]
+    [[277.12812921   0.         160.        ]
     [  0.         207.84609691 120.        ]]
     """
 
@@ -259,7 +259,7 @@ class LIDAR2CAMTransform:
         
         #로직 2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환시킨다.
         
-        xyz_c = self.RT*xyz_p
+        xyz_c *= self.RT
     
         
         return xyz_c
