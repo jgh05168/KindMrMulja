@@ -44,9 +44,7 @@ class astarLocalpath(Node):
         self.odom_msg=msg
 
 
-    def path_callback(self,msg):
-        
-        
+    def path_callback(self,msg):        
         #로직 2. global_path 데이터 수신 후 저장
 
         self.is_path=True
