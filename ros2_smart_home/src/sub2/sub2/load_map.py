@@ -79,7 +79,7 @@ class loadMap(Node):
                         for j in range(-radius, radius + 1):
                             if 0 <= x + i < 350 and 0 <= y + j < 350:
                                 # Add your filtering logic here, e.g., setting nearby cells to a specific value
-                                grid[x + i][y + j] = 50  # Adjust this value based on your filtering requirements
+                                grid[x + i][y + j] = 127  # Adjust this value based on your filtering requirements
 
         # Reshape the grid back to 1D array
         np_map_data = grid.reshape(1, 350 * 350)
