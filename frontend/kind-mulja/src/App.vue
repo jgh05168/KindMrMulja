@@ -1,11 +1,16 @@
 <template>
+  <div>
+    <RouterLink :to="{ name: 'main' }">main</RouterLink> /
+    <RouterLink :to="{ name: 'login' }">login</RouterLink> /
+    
+  </div>
   <div class="galaxy_20_ultra">
     <RouterView />
   </div>
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <style scoped>

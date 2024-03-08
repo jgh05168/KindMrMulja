@@ -17,6 +17,7 @@ export default defineConfig({
       manifest: {
         name: "Vue PWA",
         short_name: "PWA",
+        theme_color: "#111111",
         display: "standalone",
         icons: [
           {
