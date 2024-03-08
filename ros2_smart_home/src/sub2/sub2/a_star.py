@@ -110,7 +110,7 @@ class a_star(Node):
             for i in range(8):
                 next_node = (current[0] + self.dx[i], current[1] + self.dy[i])
                 if 0 <= next_node[0] < self.GRIDSIZE and 0 <= next_node[1] < self.GRIDSIZE:
-                    if self.grid[next_node[0]][next_node[1]] < 50:
+                    if self.grid[next_node[0]][next_node[1]] < 51:
                         if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next_node[0]][next_node[1]]:
                             Q.append(next_node)
                             self.path[next_node[0]][next_node[1]] = current
