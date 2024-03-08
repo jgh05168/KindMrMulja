@@ -51,8 +51,10 @@ class astarLocalpath(Node):
 
         self.is_path=
         self.global_path_msg=
-        
+        작성함
         '''
+        self.is_path = True
+        self.global_path_msg = msg
 
         
     def timer_callback(self):
@@ -74,8 +76,14 @@ class astarLocalpath(Node):
                 if distance < min_dis :
                     min_dis=
                     current_waypoint=
-
-            '''           
+            작성함
+            ''' 
+            min_dis = 1e9
+            for i, waypoint in enumerate(self.global_path_msg.poses):
+                distance = sqrt((waypoint.pose.position.x - x)**2 + (waypoint.pose.position.y - y)**2)
+                if distance < min_dis:
+                    min_dis = distance
+                    current_waypoint = i          
             
             
             '''
@@ -89,8 +97,16 @@ class astarLocalpath(Node):
                 else :
 
                     
-                              
-            '''           
+            작성함        
+            ''' 
+            if current_waypoint != -1:
+                if current_waypoint + self.local_path_size < len(self.global_path_msg.poses):
+                    # 지역 경로 설정
+                    local_path_msg.poses = self.global_path_msg.poses[current_waypoint:current_waypoint+self.local_path_size]
+                else:
+                    # 남은 전역 경로의 모든 지점을 가져와서 지역 경로로 설정
+                    local_path_msg.poses = self.global_path_msg.poses[current_waypoint:]
+          
 
             self.local_path_pub.publish(local_path_msg)
         
@@ -109,3 +125,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+

@@ -58,12 +58,7 @@ class a_star(Node):
 
     def grid_update(self):
         self.is_grid_update=True
-        '''
-        로직 3. 맵 데이터 행렬로 바꾸기
-        map_to_grid=
-        self.grid=
-        작성함
-        '''
+        
         map_to_grid = self.map_msg.data
         self.grid = np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y))
 
@@ -71,14 +66,7 @@ class a_star(Node):
     def pose_to_grid_cell(self,x,y):
         map_point_x = 0
         map_point_y = 0
-        '''
-        로직 4. 위치(x,y)를 map의 grid cell로 변환 
-        (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
-        pose가 (-16.75,12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
-        map_point_x= ?
-        map_point_y= ?
-        작성함
-        '''
+
         map_point_x = (x - self.map_offset_x) / self.map_resolution
         map_point_y = (y - self.map_offset_y) / self.map_resolution
         
@@ -89,15 +77,7 @@ class a_star(Node):
 
         x = 0
         y = 0
-        '''
-        로직 5. map의 grid cell을 위치(x,y)로 변환
-        (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
-        grid cell이 (350,350)라면 맵의 제일 끝 좌측 상단에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 좌측 상단인 (0.75,6.25)가 된다.
 
-        x=?
-        y=?
-        작성함
-        '''
         x = (grid_cell.x * self.map_resolution) + self.map_offset_x
         y = (grid_cell.y * self.map_resolution) + self.map_offset_y
 
@@ -116,15 +96,7 @@ class a_star(Node):
 
     def goal_callback(self,msg):
         
-        if msg.header.frame_id=='map':
-            '''
-            로직 6. goal_pose 메시지 수신하여 목표 위치 설정
-            goal_x=
-            goal_y=
-            goal_cell=
-            self.goal = 
-            작성함
-            '''         
+        if msg.header.frame_id=='map':    
 
             goal_x = msg.pose.position.x
             goal_y = msg.pose.position.y
@@ -173,31 +145,7 @@ class a_star(Node):
         Q.append(start)
         self.cost[start[0]][start[1]] = 1
         found = False
-        '''
-        로직 7. grid 기반 최단경로 탐색
-        
-        while ??:
-            if ??:
-                ??
 
-            current =??
-
-            for i in range(8):
-                next = ??
-                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                        if self.grid[next[0]][next[1]] < 50:
-                            if ??:
-                                Q.??
-                                self.path[next[0]][next[1]] = ???
-                                self.cost[next[0]][next[1]] = ???
-
-        node = ??
-        while ?? 
-            nextNode = ??
-            self.final_path.??
-            node = ??
-        작성함
-        '''
         while Q:
             if found:
                 break
