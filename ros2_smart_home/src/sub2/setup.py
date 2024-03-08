@@ -30,6 +30,8 @@ setup(
             'seg_binarizer = sub2.seg_binarizer:main',
             'detect=sub2.detect:main',
             'lidar_trans = sub2.lidar_trans:main',
+            'auto_handcontrol =sub2.auto_handcontrol:main',
+            'test_request_handcontrol=sub2.test_request_handcontrol_pub:main',
         ],
     },
 )
