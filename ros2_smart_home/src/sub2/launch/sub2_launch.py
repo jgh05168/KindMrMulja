@@ -24,6 +24,12 @@ def generate_launch_description():
             node_name='lidar_trans'
             # output='screen' 
         ),
+        Node(
+            package='sub2',
+            node_executable='load_map',
+            node_name='load_map'
+            # output='screen' 
+        ),
         # Node(
         #     package='sub1',
         #     node_executable='lidar_trans',

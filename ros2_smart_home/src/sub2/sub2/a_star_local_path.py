@@ -3,7 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,Path
-from math import pi,cos,sin,sqrt
+import math
 
 # a_star_local_path 노드는 a_star 노드에서 나오는 전역경로(/global_path)를 받아서, 로봇이 실제 주행하는 지역경로(/local_path)를 publish 하는 노드입니다.
 # path_pub 노드와 하는 역할은 비슷하나, path_pub은 텍스트를 읽어서 global_path를 지역경로를 생성하는 반면, a_star_local_path는 global_path를 다른 노드(a_star)에서 받아서 지역경로를 생성합니다.
@@ -25,16 +25,20 @@ class astarLocalpath(Node):
         self.local_path_pub = self.create_publisher(Path, 'local_path', 10)
         self.subscription = self.create_subscription(Path,'/global_path',self.path_callback,10)
         self.subscription = self.create_subscription(Odometry,'/odom',self.listener_callback,10)
+        
         self.odom_msg=Odometry()
         self.is_odom=False
-        self.is_path=False
+        
        
         self.global_path_msg=Path()
+        self.is_path=False
 
 
         # 로직 3. 주기마다 실행되는 타이머함수 생성, local_path_size 설정
         time_period=0.05 
         self.timer = self.create_timer(time_period, self.timer_callback)
+        
+        # local 탐색 개수 
         self.local_path_size=30 
         self.count=0
 
@@ -44,18 +48,11 @@ class astarLocalpath(Node):
         self.odom_msg=msg
 
 
-    def path_callback(self,msg):
-        pass
-        '''
-        로직 2. global_path 데이터 수신 후 저장
-
-        self.is_path=
-        self.global_path_msg=
-        작성함
-        '''
-        self.is_path = True
-        self.global_path_msg = msg
-
+    def path_callback(self,msg):        
+        #로직 2. global_path 데이터 수신 후 저장
+        self.is_path=True
+        self.global_path_msg=msg
+        
         
     def timer_callback(self):
         if self.is_odom and self.is_path ==True:
@@ -67,47 +64,39 @@ class astarLocalpath(Node):
             y=self.odom_msg.pose.pose.position.y
             current_waypoint=-1
             
-            '''
-            로직 4. global_path 중 로봇과 가장 가까운 포인트 계산
             
-            min_dis=
+            #로직 4. global_path 중 로봇과 가장 가까운 포인트 계산
+            
+            min_dis=float('inf') #양의 무한대 
             for i,waypoint in enumerate(self.global_path_msg.poses) : 
-                distance=
+                #global path- 현재 odom path 거리 
+                distance= math.sqrt(math.pow(x-waypoint.pose.position.x,2)+math.pow(y-waypoint.pose.position.y,2))
                 if distance < min_dis :
-                    min_dis=
-                    current_waypoint=
-            작성함
-            ''' 
-            min_dis = 1e9
-            for i, waypoint in enumerate(self.global_path_msg.poses):
-                distance = sqrt((waypoint.pose.position.x - x)**2 + (waypoint.pose.position.y - y)**2)
-                if distance < min_dis:
-                    min_dis = distance
-                    current_waypoint = i          
-            
-            
-            '''
-            로직 5. local_path 예외 처리
+                    min_dis=distance
+                    current_waypoint=i
+
+                       
+            #로직 5. local_path 예외 처리
 
             if current_waypoint != -1 : 
+                # 경로점이 20개 이상 남았을 때 
                 if current_waypoint + self.local_path_size < len(self.global_path_msg.poses):
-                    
-                    
-                
+                    for num in range(current_waypoint, current_waypoint+self.local_path_size):
+                        tmp_pose=PoseStamped()
+                        tmp_pose.pose.position.x=self.global_path_msg.poses[num].pose.position.x
+                        tmp_pose.pose.position.y=self.global_path_msg.poses[num].pose.position.y
+                        tmp_pose.pose.orientation.w=1.0 #방향(쿼터니언, th=0인 경우 w=cos(th))
+                        local_path_msg.poses.append(tmp_pose)
+ 
+                # 경로점이 20개 미만 남았을 때 
                 else :
-
-                    
-            작성함        
-            ''' 
-            if current_waypoint != -1:
-                if current_waypoint + self.local_path_size < len(self.global_path_msg.poses):
-                    # 지역 경로 설정
-                    local_path_msg.poses = self.global_path_msg.poses[current_waypoint:current_waypoint+self.local_path_size]
-                else:
-                    # 남은 전역 경로의 모든 지점을 가져와서 지역 경로로 설정
-                    local_path_msg.poses = self.global_path_msg.poses[current_waypoint:]
-          
-
+                    for num in range(current_waypoint,len(self.global_path_msg.poses)):
+                        tmp_pose=PoseStamped()
+                        tmp_pose.pose.position.x=self.global_path_msg.poses[num].pose.position.x
+                        tmp_pose.pose.position.y=self.global_path_msg.poses[num].pose.position.y
+                        tmp_pose.pose.orientation.w=1.0
+                        local_path_msg.poses.append(tmp_pose)
+                                  
             self.local_path_pub.publish(local_path_msg)
         
 
