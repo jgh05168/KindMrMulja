@@ -255,11 +255,9 @@ class LIDAR2CAMTransform:
 
     def transform_lidar2cam(self, xyz_p):
         
-        xyz_c = xyz_p 
-        
         #로직 2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환시킨다.
         
-        xyz_c *= self.RT
+        xyz_c = np.matmul(self.RT, xyz_p)
     
         
         return xyz_c
@@ -329,16 +327,14 @@ class SensorCalib(Node):
         self.img = None
 
     def img_callback(self, msg):
-        print(msg.data)
-        """
    
-        로직 3. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장.
+        # 로직 3. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장.
+        np_arr = np.frombuffer(msg.data, np.uint8)
+        # print(np_arr)
+        self.img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+        # cv2.imshow('img', self.img)
+        # cv2.waitKey(1)
 
-        np_arr = 
-
-        self.img = 
-
-        """
 
     def scan_callback(self, msg):
     
