@@ -30,9 +30,15 @@ def generate_launch_description():
             node_name='load_map'
             # output='screen' 
         ),
-        # Node(
-        #     package='sub1',
-        #     node_executable='lidar_trans',
-        #     node_name='lidar_trans'
-        # ) 
+        Node(
+            package='sub2',
+            node_executable='a_star',
+            node_name='a_star',
+            output='screen'
+        ), 
+        Node(
+            package='sub2',
+            node_executable='a_star_local_path',
+            node_name='a_star_local_path'
+        ) 
     ])
