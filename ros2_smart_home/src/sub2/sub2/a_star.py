@@ -63,6 +63,8 @@ class a_star(Node):
         map_to_grid=
         self.grid=
         '''
+        map_to_grid=self.map_msg.data
+        self.grid=np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y))
 
 
     def pose_to_grid_cell(self,x,y):
