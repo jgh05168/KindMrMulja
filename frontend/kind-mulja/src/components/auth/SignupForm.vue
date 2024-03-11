@@ -3,6 +3,8 @@
     <v-form class="login" v-model="form" @submit.prevent>
       <h1>회원가입</h1>
 
+      <v-text-field v-model="name" color="primary" label="Name" variant="underlined"></v-text-field>
+
       <v-text-field
         v-model="email"
         color="primary"
@@ -19,16 +21,37 @@
         variant="underlined"
       ></v-text-field>
 
-      <span>비밀번호 찾기</span>
+      <v-text-field
+        v-model="password_check"
+        color="primary"
+        label="Password Check"
+        placeholder="Enter your password"
+        variant="underlined"
+      ></v-text-field>
 
-      <v-btn :loading="loading" color="#212121" type="submit" variant="elevated"> 로그인 </v-btn>
+      <v-checkbox
+        v-model="terms"
+        color="secondary"
+        label="I agree to site terms and conditions"
+      ></v-checkbox>
 
-      <span>회원가입 하기</span>
+      <v-btn color="#212121" type="submit" variant="elevated"> 회원 가입 </v-btn>
+      <span>이미 계정이 있다면, <RouterLink :to="{ name: 'login' }">Login</RouterLink></span>
     </v-form>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+
+const form = ref(null)
+const name = ref(null)
+const email = ref(null)
+const password = ref(null)
+const password_check = ref(null)
+const terms = ref(false)
+</script>
 
 <style scoped>
 /* 로그인 폼의 배치 설정 */

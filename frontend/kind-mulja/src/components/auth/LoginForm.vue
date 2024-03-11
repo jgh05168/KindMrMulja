@@ -21,14 +21,30 @@
 
       <span>비밀번호 찾기</span>
 
-      <v-btn :loading="loading" color="#212121" type="submit" variant="elevated"> 로그인 </v-btn>
+      <v-btn color="#212121" type="submit" variant="elevated" @click="Login"> 로그인 </v-btn>
 
-      <span>회원가입 하기</span>
+      <span><RouterLink :to="{ name: 'signup' }">회원가입 하기</RouterLink></span>
     </v-form>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const form = ref(null)
+const email = ref(null)
+const password = ref(null)
+
+// 로그인 하면 로그인 요청을 서버에 보내고
+// 서버 응답이 OK 이면 로그인 되며
+// Home 페이지로 이동
+const Login = () => {
+  router.push({ name: 'home' })
+}
+</script>
 
 <style scoped>
 /* 로그인 폼의 배치 설정 */

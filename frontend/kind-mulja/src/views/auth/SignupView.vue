@@ -2,15 +2,15 @@
   <div class="login-view">
     <AuthHeader />
 
-    <div class="login-form">
-      <LoginForm />
+    <div class="register-form">
+      <SignupForm />
     </div>
   </div>
 </template>
 
 <script setup>
 import AuthHeader from '@/layouts/AuthHeader.vue'
-import LoginForm from '@/components/auth/LoginForm.vue'
+import SignupForm from '@/components/auth/SignupForm.vue'
 </script>
 
 <style scoped>
