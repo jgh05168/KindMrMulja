@@ -13,7 +13,7 @@ from ssafy_msgs.msg import TurtlebotStatus,HandControl,RequestHandControl
 # 4. Hand Control - Pick up
 # 5. Hand Control - Put down
 
-class Handcontrol(Node):
+class AutoHandcontrol(Node):
 
     def __init__(self):
         super().__init__('hand_control')
@@ -144,7 +144,7 @@ class Handcontrol(Node):
             
 def main(args=None):
     rclpy.init(args=args)
-    sub1_hand_control = Handcontrol()    
+    sub1_hand_control = AutoHandcontrol()    
     rclpy.spin(sub1_hand_control)
     sub1_hand_control.destroy_node()
     rclpy.shutdown()
