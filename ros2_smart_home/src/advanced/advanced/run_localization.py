@@ -451,7 +451,7 @@ class Localizer(Node):
             self.imu_offset=imu_q.to_euler()
         else :
             imu_q= Quaternion(msg.orientation.w,msg.orientation.x,msg.orientation.y,msg.orientation.z)
-            self.odom_theta=imu_q.to_euler()[2]+self.imu_offset[2]
+            self.odom_theta=imu_q.to_euler()[2]
 
 
     def init_pose_callback(self,msg):
