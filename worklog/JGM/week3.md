@@ -25,19 +25,21 @@
 💡 **금일 실시 사항**
     - odom과 lidar센서 각도 맞추기
     - lidar센서와 point_cloud각도 맞추기
-    
+    - lidar센서와 imu각도 맞추기
 
 📜 **세부 사항**
     - 맵 마다 turtlebot status 좌표를 기준으로 중심좌표를 만들어줘야 맵을 형성할 수 있다.
     - grid맵을 커스텀맵에서 그리는 방법 완료!
-    - odom진행방향과 라이다 센서 방향은 맞지만 point_cloud가 찍히는 각도가 달라져 진행방향과 point_cloud가 각도가 달라지는 문제 발생 -> 이를 turtlebot각도를 point_cloud각도에 더해주고 180도 뒤집어져 있어 트러블 슈팅방법으로 180도를 더하는 방법을 통해 각도를 맞춤 
+    - odom진행방향과 라이다 센서 방향은 맞지만 point_cloud가 찍히는 각도가 달라져 진행방향과 point_cloud가 각도가 달라지는 문제 발생 -> 이를 turtlebot각도를 point_cloud각도에 더해주고 180도 뒤집어져 있어 트러블 슈팅방법으로 180도를 더하는 방법을 통해 각도를 맞춤  
+    - turtle봇 처음 각도가 -90도 이므로 imu_offset에 초기 각도 적용
+    
 ## day-3
 
 💡 **금일 실시 사항**
 
 
 📜 **세부 사항**
-3
+
 
 
 ## day-4
