@@ -183,4 +183,16 @@ app.post("/api/product/wishlist-toggle", async (req, res) => {
   }
 });
 
+app.get("/api/product/wish-list/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  const query = `
+  SELECT wl.product_id, pl.product_name, pl.product_price
+  FROM wishlist wl
+  JOIN product_list pl ON wl.product_id = pl.product_id
+  WHERE wl.user_id = ?;
+  `;
+  const results = await pool.query(query, user_id);
+  console.log(results[0]);
+  return res.json(results[0]);
+});
 app.listen(PORT, () => console.log(`${PORT} 서버 기동중`));
