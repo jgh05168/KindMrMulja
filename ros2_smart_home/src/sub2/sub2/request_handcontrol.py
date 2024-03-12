@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
-from ssafy_msgs.msg import RequestHandControl,TurtlebotStatus
+from ssafy_msgs.msg import RequestHandControl,TurtlebotStatus,TargetGrid
 
 # 위치에 따른 물건 들고 내리기 로직 
 # 1. 로봇 위치를 받아온다. 
@@ -19,10 +19,19 @@ class RequestMsgHandControl(Node):
         self.odom_subscriber = self.create_subscription(Odometry,'/odom',self.listener_callback,10)
         self.turtlebot_status = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.turtlebot_status_cb,10)
 
-        # 2. 물건 위치
+        # 2. 트럭 위치
+        self.truck_x=-16.0
+        self.truck_y=-8.0
         
-        # 3. 목적지 위치
-        self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
+        # 3. 충전소 위치
+        # self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
+        self.charge_x=-8.0
+        self.charge_y=-4.0
+        
+        # 충전소 위치 임의 저장
+        self.target_publisher=self.create_publisher(TargetGrid,'/target_grid',1)
+        # self.charge_site_x=10
+        # self.charge_site_y=10
         
         # request 요청 publisher 생성
         self.request_handcontrol_publisher=self.create_publisher(RequestHandControl,'/request_handcontrol',10)
@@ -39,6 +48,7 @@ class RequestMsgHandControl(Node):
         
         #publisher
         self.request_hand_control_msg=RequestHandControl()
+        self.request_target_msg=TargetGrid()
         
         # Timer 1초마다 실행 
         self.timer = self.create_timer(1, self.timer_callback)
@@ -58,17 +68,23 @@ class RequestMsgHandControl(Node):
     def timer_callback(self):  
         
         # 4. 로봇은 물건 앞에 위치한다. 
+
+        # self.target_publisher.publish(self.request_target_msg)
+        
         # 5. 물건을 든다.
         if self.is_turtlebot_status and self.turtlebot_status_msg.can_lift:
             self.request_hand_control_msg.control_mode=2        
             self.request_handcontrol_publisher.publish(self.request_hand_control_msg)     
  
-        # 6. 물건을 들고 이동한다. 
+            # 6. 물건을 들고 이동한다. 
+            self.request_target_msg.x=self.truck_x
+            self.request_target_msg.y=self.truck_y
+            self.target_publisher.publish(self.request_target_msg)
     
         # 7. 로봇은 목적지에 위치한다. 
         x=self.odom_msg.pose.pose.position.x
         y=self.odom_msg.pose.pose.position.y
-        if abs(self.goal_x-x)<=1 and abs(self.goal_y-y)<=1:
+        if abs(self.request_target_msg.x-x)<=1 and abs(self.request_target_msg.y-y)<=1:
             
             # 8. 물건 preview
             self.request_hand_control_msg.control_mode=1        
@@ -78,6 +94,13 @@ class RequestMsgHandControl(Node):
             # 9. 물건을 내려놓는다.
             self.request_hand_control_msg.control_mode=3        
             self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
+ 
+            
+            # 목적지 주소를 전달한다. 
+            self.request_target_msg.x=-self.charge_x
+            self.request_target_msg.y=-self.charge_y
+            self.target_publisher.publish(self.request_target_msg)
+            
 
         
 

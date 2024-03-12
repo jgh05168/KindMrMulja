@@ -24,12 +24,12 @@ def generate_launch_description():
             node_name='lidar_trans'
             # output='screen' 
         ),
-        # Node(
-        #     package='sub2',
-        #     node_executable='load_map',
-        #     node_name='load_map'
-        #     # output='screen' 
-        # ),
+        Node(
+            package='sub2',
+            node_executable='load_map',
+            node_name='load_map'
+            # output='screen' 
+        ),
         Node(
             package='sub2',
             node_executable='a_star',
@@ -40,5 +40,15 @@ def generate_launch_description():
             package='sub2',
             node_executable='a_star_local_path',
             node_name='a_star_local_path'
-        ) 
+        ),
+        Node(
+            package='sub2',
+            node_executable='auto_handcontrol',
+            node_name='auto_handcontrol'
+        ),  
+        Node(
+            package='sub2',
+            node_executable='request_handcontrol',
+            node_name='request_handcontrol'
+        ),  
     ])

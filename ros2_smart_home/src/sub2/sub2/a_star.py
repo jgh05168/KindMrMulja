@@ -6,6 +6,7 @@ from squaternion import Quaternion
 from nav_msgs.msg import Odometry, OccupancyGrid, Path
 from math import pi, cos, sin
 from collections import deque
+from ssafy_msgs.msg import TargetGrid
 
 class a_star(Node):
 
@@ -13,7 +14,8 @@ class a_star(Node):
         super().__init__('a_Star')
         self.map_sub = self.create_subscription(OccupancyGrid, 'map', self.map_callback, 1)
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.odom_callback, 1)
-        self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 1)
+        # self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 1)
+        self.target_sub = self.create_subscription(TargetGrid, 'target_grid', self.goal_callback, 1)
         self.a_star_pub = self.create_publisher(Path, 'global_path', 1)
         
         self.map_msg = OccupancyGrid()
@@ -57,10 +59,16 @@ class a_star(Node):
     def map_callback(self, msg):
         self.is_map = True
         self.map_msg = msg
+        
+    def target_callback(self, msg):
+        self.is_target = True
+        self.target_msg = msg
 
     def goal_callback(self, msg):
-        if msg.header.frame_id == 'map':
-            goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
+        if msg or msg.header.frame_id == 'map':
+            goal_x, goal_y =msg.x, msg.y
+            # goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
+            # goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
             goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
             self.goal = goal_cell
             self.get_logger().info("Goal pose: {}, {}".format(goal_x, goal_y))
