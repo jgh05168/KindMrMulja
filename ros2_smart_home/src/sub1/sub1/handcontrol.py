@@ -101,7 +101,7 @@ class Handcontrol(Node):
             # Set the control_mode to 1 (Preview)
             self.hand_control_msg.control_mode = 1
             self.hand_control_msg.put_distance = 1.0
-            self.hand_control_msg.put_height = 2.0
+            self.hand_control_msg.put_height = 4.0
 
             timeout = 1  
             start_time = time.time()

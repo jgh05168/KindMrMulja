@@ -27,8 +27,8 @@ class a_star(Node):
         self.map_size_x = 350
         self.map_size_y = 350
         self.map_resolution = 0.05
-        self.map_offset_x = -8-8.75
-        self.map_offset_y = -4-8.75
+        self.map_offset_x = -50-8.75
+        self.map_offset_y = -50-8.75
         self.GRIDSIZE = 350 
 
         self.dx = [-1, 0, 0, 1, -1, -1, 1, 1]
@@ -60,7 +60,7 @@ class a_star(Node):
 
     def goal_callback(self, msg):
         if msg.header.frame_id == 'map':
-            goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
+            goal_x, goal_y = -55, -56
             goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
             self.goal = goal_cell
             self.get_logger().info("Goal pose: {}, {}".format(goal_x, goal_y))
