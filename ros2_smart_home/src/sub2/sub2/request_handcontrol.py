@@ -29,7 +29,8 @@ class RequestMsgHandControl(Node):
         self.charge_y=-4.0
         
         # 충전소 위치 임의 저장
-        self.target_publisher=self.create_publisher(TargetGrid,'/target_grid',1)
+        # self.target_publisher=self.create_publisher(TargetGrid,'/target_grid',1)
+        self.target_publisher=self.create_publisher(PoseStamped,'/target_grid',1)
         # self.charge_site_x=10
         # self.charge_site_y=10
         
@@ -48,7 +49,7 @@ class RequestMsgHandControl(Node):
         
         #publisher
         self.request_hand_control_msg=RequestHandControl()
-        self.request_target_msg=TargetGrid()
+        self.request_target_msg=PoseStamped()
         
         # Timer 1초마다 실행 
         self.timer = self.create_timer(1, self.timer_callback)
@@ -71,20 +72,22 @@ class RequestMsgHandControl(Node):
 
         # self.target_publisher.publish(self.request_target_msg)
         
-        # 5. 물건을 든다.
+        # 5. 물건을 든다. 
+        # 터틀봇 상태가 ture이고 can_lift가 ture인경우
         if self.is_turtlebot_status and self.turtlebot_status_msg.can_lift:
             self.request_hand_control_msg.control_mode=2        
             self.request_handcontrol_publisher.publish(self.request_hand_control_msg)     
  
             # 6. 물건을 들고 이동한다. 
-            self.request_target_msg.x=self.truck_x
-            self.request_target_msg.y=self.truck_y
+            self.request_target_msg.header.frame_id = 'map'
+            self.request_target_msg.pose.position.x=self.truck_x
+            self.request_target_msg.pose.position.y=self.truck_y
             self.target_publisher.publish(self.request_target_msg)
     
         # 7. 로봇은 목적지에 위치한다. 
         x=self.odom_msg.pose.pose.position.x
         y=self.odom_msg.pose.pose.position.y
-        if abs(self.request_target_msg.x-x)<=1 and abs(self.request_target_msg.y-y)<=1:
+        if abs(self.request_target_msg.pose.position.x-x)<=1 and abs(self.request_target_msg.pose.position.y-y)<=1:
             
             # 8. 물건 preview
             self.request_hand_control_msg.control_mode=1        
@@ -96,9 +99,10 @@ class RequestMsgHandControl(Node):
             self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
  
             
-            # 목적지 주소를 전달한다. 
-            self.request_target_msg.x=-self.charge_x
-            self.request_target_msg.y=-self.charge_y
+            # 목적지 주소를 전달한다.
+            self.request_target_msg.header.frame_id = 'map' 
+            self.request_target_msg.pose.position.x=self.charge_x
+            self.request_target_msg.pose.position.y=self.charge_y
             self.target_publisher.publish(self.request_target_msg)
             
 
