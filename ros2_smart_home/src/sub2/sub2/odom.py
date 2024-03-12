@@ -49,7 +49,7 @@ class odom(Node):
                 
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
-        self.imu_offset=0
+        self.imu_offset= - 0.5 * pi
         self.prev_time=0
 
         
@@ -77,7 +77,7 @@ class odom(Node):
             self.is_imu = True
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             imu_roll, imu_pitch, imu_yaw = imu_q.to_euler()
-            self.imu_offset = imu_yaw
+            self.imu_offset -= imu_yaw
         else:
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             imu_roll, imu_pitch, imu_yaw = imu_q.to_euler()
