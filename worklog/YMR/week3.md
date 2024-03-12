@@ -19,7 +19,7 @@
 ## day-2
 
 💡 **금일 실시 사항**
-dffd
+dffdadf
 dasfdasfdaf23adsfadf
 📜 **세부 사항**
 
