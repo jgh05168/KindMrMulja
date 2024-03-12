@@ -81,7 +81,7 @@ class odom(Node):
         else:
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             imu_roll, imu_pitch, imu_yaw = imu_q.to_euler()
-            self.theta = imu_yaw - self.imu_offset + 0.5 * pi
+            self.theta = imu_yaw - self.imu_offset
 
 
     def listener_callback(self, msg):
