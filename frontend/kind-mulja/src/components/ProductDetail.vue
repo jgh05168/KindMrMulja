@@ -1,26 +1,21 @@
 <template>
-    <slot name="detail-img">
-        <!-- 상세 이미지를 보여주는 부분 -->
-    </slot>
-
-    <slot name="detail-title">
-        <!-- 제품명 보여주는 부분 -->
-    </slot>
-
-    <slot>
-        <!-- 제품 가격을 보여주는 부분 -->
-    </slot>
-
-    <slot>
-        <!-- 제품 설명 보여주는 부분 -->
-    </slot>
-
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-</style>
+    <ProductItem>
+      <template #item-img>
+        
+      </template>
+      <template #item-title>
+        
+      </template>
+      <template #item-price>
+  
+      </template>
+    </ProductItem>
+  </template>
+  
+  <script setup>
+  import ProductItem from '@/components/home/item/ProductItem.vue'
+  </script>
+  
+  <style scoped>
+  </style>
+  
