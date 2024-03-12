@@ -1,13 +1,12 @@
 <template>
-    <div>
-
-    </div>
+  <div style="width: 415px; height: 50px; display: flex; flex-direction: row; align-items: center">
+    <v-btn icon="mdi-chevron-left" variant="plain"></v-btn>
+    <span style="font-weight: bold; font-size: 25px">
+      <slot name="header-bar"> </slot>
+    </span>
+  </div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

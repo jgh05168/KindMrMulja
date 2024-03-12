@@ -12,11 +12,15 @@
 
       <v-text-field
         v-model="password"
+        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="show1 ? 'text' : 'password'"
+        :rules="[rules.required, rules.min]"
         hint="Enter your password to access this website"
         color="primary"
         label="Password"
         placeholder="Enter your password"
         variant="underlined"
+        @click:append="show1 = !show1"
       ></v-text-field>
 
       <span>비밀번호 찾기</span>
@@ -33,6 +37,14 @@ import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 
 const router = useRouter()
+
+const show1 = ref(false)
+const rules = ref({
+          required: value => !!value || 'Required.',
+          min: v => v.length >= 8 || 'Min 8 characters',
+          emailMatch: () => (`The email and password you entered don't match`),
+        })
+
 
 const form = ref(null)
 const email = ref(null)
