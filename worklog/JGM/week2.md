@@ -39,7 +39,7 @@
     - 요구사항 정의서 완벽 구현
 
 📜 **세부 사항**
-
+3
 
 
 ## day-4
@@ -50,13 +50,17 @@
 
 
 📜 **세부 사항**
-    - 터틀봇 rqt에 나온 angular x,y값을 통해 터틀봇 초기값 setting값에 넣어줘서 달성
+    - 터틀봇 rqt에 나온 angular x,y값을 통해 터틀봇 초기값 setting값에 넣어줘서 달성`  
 
 
 ## day-5
 
 💡 **금일 실시 사항**
-
+    - load_map과 a_star, a_star_local_path를 합침
+    
 
 
 📜 **세부 사항**
+    - map.txt로 불러온 grid_map을 기준으로 목표지를 설정하면 a_star노드에서 다익스트라 알고리즘에 의해 grid에서 정한 기준 숫자이하의 노드로 이동하는
+    - global_path를 그린 후, a_star_local_path에 의해 local_path를 그리며 global_path를 따라가게 된다.
+    - path_tracking에서 종횡 속도를 조정하고, lfd즉 전방주시거리를 조정하고 경로를 그리는 숫자를 조절하여 최적화를 진행하는 부분이 가장 중요하면서 어려울 것 같다. 

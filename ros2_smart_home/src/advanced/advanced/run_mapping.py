@@ -178,7 +178,7 @@ class Mapping:
 
     def __del__(self):
         self.save_map(())
-        ㄴ
+        
     def save_map(self):
         map_clone = self.map.copy()
         cv2.imwrite(self.map_filename, map_clone*255)
@@ -245,7 +245,7 @@ class Mapper(Node):
         
         pose_x=msg.range_min
         pose_y=msg.scan_time
-        heading=msg.time_increment
+        heading=msg.time_increment + 180
         Distance=np.array(msg.ranges)
         x = Distance * np.cos(np.linspace(0, 2 * np.pi, 360))
         y = Distance * np.sin(np.linspace(0, 2 * np.pi, 360))
