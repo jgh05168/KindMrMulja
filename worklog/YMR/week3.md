@@ -20,7 +20,7 @@
 
 💡 **금일 실시 사항**
 dffd
-dasfdasfdaf23adsf
+dasfdasfdaf23adsfadf
 📜 **세부 사항**
 
 ## day-3
