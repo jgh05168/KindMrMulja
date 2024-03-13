@@ -19,13 +19,13 @@
 ## day-2
 
 💡 **금일 실시 사항**
-마지막 체크 해봅시다.asdasddfadfdfaasdasdas ddddddddd
+마지막 체크 해봅시다.asdasddfadfdfaasdasdas ddddddddd asdasd sasds
 📜 **세부 사항**
 
 ## day-3
 
 💡 **금일 실시 사항**
-
+asdasdasdasdasd
 📜 **세부 사항**
 
 ## day-4
