@@ -124,41 +124,6 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     R_T = np.matmul(Tmtx, Rmtx)
     # print(R_T)
 
-    """
-    테스트
-
-    params_lidar = {
-        "X": 0, # meter
-        "Y": 0,
-        "Z": 0.6,
-        "YAW": 0, # deg
-        "PITCH": 0,
-        "ROLL": 0
-    }
-
-
-    params_cam = {
-        "WIDTH": 640, # image width
-        "HEIGHT": 480, # image height
-        "FOV": 90, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
-
-    이면
-
-    R_T = 
-    [[ 6.12323400e-17 -1.00000000e+00  0.00000000e+00  0.00000000e+00]
-    [ 6.12323400e-17  3.74939946e-33 -1.00000000e+00  4.00000000e-01]
-    [ 1.00000000e+00  6.12323400e-17  6.12323400e-17 -2.44929360e-17]
-    [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
-
-    """
-
     return R_T
 
 
@@ -192,29 +157,6 @@ def project2img_mtx(params_cam):
     
     #로직 3. Projection 행렬을 계산.
     R_f=np.array([[fc_x,0,cx],[0,fc_y,cy]],dtype=float)
-
-
-    """
-    테스트
-
-    params_cam = {
-        "WIDTH": 320, # image width
-        "HEIGHT": 240, # image height
-        "FOV": 60, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
-
-    이면
-
-    R_f = 
-    [[277.12812921   0.         160.        ]
-    [  0.         207.84609691 120.        ]]
-    """
 
     return R_f
 
@@ -388,15 +330,10 @@ class SensorCalib(Node):
             # 로직 6. transformation class 의 transform_lidar2cam 로 카메라 3d 좌표로 변환
             xyz_c = self.l2c_trans.transform_lidar2cam(np.concatenate([xyz_p, np.ones((xyz_p.shape[0], 1))], axis=1).T)
             
-            
-            
-
-            
             # 로직 7. transformation class 의 project_pts2img로 카메라 프레임으로 정사영
             xy_i = self.l2c_trans.project_pts2img(xyz_c)
             # print(xy_i)
 
-            
             # 로직 8. draw_pts_img()로 카메라 이미지에 라이다 포인트를 draw 하고 show
             
             img_l2c = draw_pts_img(self.img, xy_i[0], xy_i[1])
@@ -404,7 +341,6 @@ class SensorCalib(Node):
             cv2.imshow("Lidar2Cam", img_l2c)
             cv2.waitKey(1)
             
-
         else:
 
             print("waiting for msg")
