@@ -5,6 +5,7 @@
     <RouterLink :to="{ name: 'home' }">home</RouterLink> /
     <RouterLink :to="{ name: 'address' }">address</RouterLink> /
     <RouterLink :to="{ name: 'create-address' }">create-address</RouterLink> /
+    <RouterLink :to="{ name: 'cart' }">my-cart</RouterLink> /
   </div>
   <div class="galaxy_20_ultra">
     <RouterView />

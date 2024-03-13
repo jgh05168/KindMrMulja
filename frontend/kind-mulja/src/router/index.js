@@ -6,6 +6,7 @@ import HomeView from '@/views/HomeView.vue'
 import DetailView from '@/views/DetailView.vue'
 import AddressView from '@/views/AddressView.vue'
 import CreateAddress from '@/views/CreateAddress.vue'
+import CartView from '@/views/CartView.vue'
 
 
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
     path: '/create-address',
     name: 'create-address',
     component: CreateAddress
+  },
+  {
+    path: '/my-cart',
+    name: 'cart',
+    component: CartView
   },
   ]
 })
