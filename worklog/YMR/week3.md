@@ -25,7 +25,7 @@
 ## day-3
 
 💡 **금일 실시 사항**
-asdasdasdasdasdasdas
+asdasdasdasdasdasdasasads
 📜 **세부 사항**
 
 ## day-4
