@@ -112,19 +112,19 @@ app.get("/api/product/product-detail/:product_id", async (req, res) => {
 app.post("/api/product/add-shopping-cart", async (req, res) => {
   const user_id = parseInt(req.body.user_id);
   const product_id = req.body.product_id;
-  const cart_quentity = parseInt(req.body.cart_quentity);
+  const product_quentity = parseInt(req.body.product_quentity);
 
   try {
     const query1 = `SELECT * FROM shopping_cart WHERE user_id = ? AND product_id = ?`;
     const checkResult = await pool.query(query1, [user_id, product_id]);
     if (checkResult[0].length > 0) {
-      // 이미 장바구니에 해당 제품이 있으면 cart_quentity를 증가시키는 쿼리
-      const updateQuery = `UPDATE shopping_cart SET cart_quentity = cart_quentity + ? WHERE user_id = ? AND product_id = ?`;
-      await pool.query(updateQuery, [cart_quentity, user_id, product_id]);
+      // 이미 장바구니에 해당 제품이 있으면 product_quentity를 증가시키는 쿼리
+      const updateQuery = `UPDATE shopping_cart SET product_quentity = product_quentity + ? WHERE user_id = ? AND product_id = ?`;
+      await pool.query(updateQuery, [product_quentity, user_id, product_id]);
     } else {
       // 장바구니에 해당 제품이 없으면 새로운 row를 추가하는 쿼리
-      const insertQuery = `INSERT INTO shopping_cart (user_id, product_id, cart_quentity) VALUES (?,?,?)`;
-      await pool.query(insertQuery, [user_id, product_id, cart_quentity]);
+      const insertQuery = `INSERT INTO shopping_cart (user_id, product_id, product_quentity) VALUES (?,?,?)`;
+      await pool.query(insertQuery, [user_id, product_id, product_quentity]);
     }
     return res.json({ result: true });
   } catch (error) {
@@ -217,6 +217,25 @@ app.delete("/api/product/wish-list-delete/:wishlist_id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error delete wishlist:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// 사용자 장바구니 목록 불러오기
+app.get("/api/product/shopping-cart/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  try {
+    const query = `
+      SELECT sc.cart_id, sc.product_id, pl.product_name, pl.product_price, sc.product_quentity
+      FROM shopping_cart sc
+      JOIN product_list pl ON sc.product_id = pl.product_id
+      WHERE sc.user_id = ?;
+    `;
+    const results = await pool.query(query, user_id);
+    console.log(results[0]);
+    return res.json(results[0]);
+  } catch (error) {
+    console.error("Error recieving shopping-cart:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
