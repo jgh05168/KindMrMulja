@@ -1,5 +1,5 @@
 <template>
-  <v-card width="360" class="mx-auto mt-10">
+  <v-card :width="props.width" class="mx-auto mt-5 mb-5">
     <v-card-title>
       <slot name="address-title" :editAddress="editAddress"></slot>
     </v-card-title>
@@ -11,10 +11,16 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue'
+
 const editAddress = (address_id) => {
   // 주소지 수정하는 페이지로 이동
   console.log(address_id, '번 주소지 수정 페이지로 이동')
 }
+
+const props = defineProps({
+  width: String
+})
 </script>
 
 <style scoped></style>

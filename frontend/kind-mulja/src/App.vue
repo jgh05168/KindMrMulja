@@ -6,6 +6,8 @@
     <RouterLink :to="{ name: 'address' }">address</RouterLink> /
     <RouterLink :to="{ name: 'create-address' }">create-address</RouterLink> /
     <RouterLink :to="{ name: 'cart' }">my-cart</RouterLink> /
+    <RouterLink :to="{ name: 'pay' }">Pay</RouterLink> /
+    <RouterLink :to="{ name: 'paid' }">Paid</RouterLink> /
   </div>
   <div class="galaxy_20_ultra">
     <RouterView />

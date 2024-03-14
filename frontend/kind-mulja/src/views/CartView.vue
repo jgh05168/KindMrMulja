@@ -62,7 +62,9 @@
       </CartRecipt>
     </div>
 
-    <BlackButton class="pay-button" button-width="380px">결제하기</BlackButton>
+    <BlackButton class="pay-button" button-width="380px">
+      <template #button-text>결제하기</template>
+    </BlackButton>
   </div>
 </template>
 

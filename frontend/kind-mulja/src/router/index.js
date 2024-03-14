@@ -7,6 +7,8 @@ import DetailView from '@/views/DetailView.vue'
 import AddressView from '@/views/AddressView.vue'
 import CreateAddress from '@/views/CreateAddress.vue'
 import CartView from '@/views/CartView.vue'
+import PayView from '@/views/PayView.vue'
+import PaidView from '@/views/PaidView.vue'
 
 
 const router = createRouter({
@@ -51,6 +53,16 @@ const router = createRouter({
     path: '/my-cart',
     name: 'cart',
     component: CartView
+  },
+  {
+    path: '/pay',
+    name: 'pay',
+    component: PayView
+  },
+  {
+    path: '/paid',
+    name: 'paid',
+    component: PaidView
   },
   ]
 })

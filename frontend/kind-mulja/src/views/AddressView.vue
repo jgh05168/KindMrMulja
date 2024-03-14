@@ -5,6 +5,7 @@
     </AppHeader>
     <div>
       <AddressItem
+        :width="'360px'"
         @click="clickAddress(n)"
         :class="{ 'default-address': address.id == default_address }"
         v-for="(address, n) in sorted_address_list"
