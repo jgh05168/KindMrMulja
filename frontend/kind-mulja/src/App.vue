@@ -8,8 +8,9 @@
     <RouterLink :to="{ name: 'cart' }">my-cart</RouterLink> /
     <RouterLink :to="{ name: 'pay' }">Pay</RouterLink> /
     <RouterLink :to="{ name: 'paid' }">Paid</RouterLink> /
+    <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
   </div>
-  <div class="galaxy_20_ultra">
+  <div class="galaxy_24">
     <RouterView />
     <AppFooter />
   </div>
@@ -22,8 +23,8 @@ import AppFooter from '@/layouts/AppFooter.vue'
 </script>
 
 <style scoped>
-.galaxy_20_ultra {
+.galaxy_24 {
   width: 415px;
-  height: 915px;
+  height: 900px;
 }
 </style>

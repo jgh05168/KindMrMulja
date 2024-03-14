@@ -2,28 +2,20 @@
   <slot name="app-footer">
     <v-layout class="overflow-visible" style="height: 56px">
       <v-bottom-navigation v-model="value" color="teal" grow>
-        <v-btn>
-          <v-icon>mdi-history</v-icon>
-
-          Recents
+        <v-btn @click="router.push({ name: 'home' })">
+          <v-icon>mdi-home</v-icon>
         </v-btn>
 
-        <v-btn>
-          <v-icon>mdi-heart</v-icon>
-
-          Favorites
+        <v-btn @click="router.push({ name: 'address' })">
+          <v-icon>mdi-bookmark-outline</v-icon>
         </v-btn>
 
-        <v-btn>
-          <v-icon>mdi-map-marker</v-icon>
-
-          Nearby
+        <v-btn @click="router.push({ name: 'cart' })">
+          <v-icon>mdi-cart-check</v-icon>
         </v-btn>
 
-        <v-btn>
-          <v-icon>mdi-map-marker</v-icon>
-
-          Nearby
+        <v-btn @click="router.push({ name: 'profile' })">
+          <v-icon>mdi-account</v-icon>
         </v-btn>
       </v-bottom-navigation>
     </v-layout>
@@ -32,6 +24,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const value = ref(1)
 </script>
