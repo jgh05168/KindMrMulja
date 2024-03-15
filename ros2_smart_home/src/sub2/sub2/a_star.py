@@ -60,7 +60,7 @@ class a_star(Node):
 
     def goal_callback(self, msg):
         if msg.header.frame_id == 'map':
-            goal_x, goal_y = -55, -56
+            goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
             goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
             self.goal = goal_cell
             self.get_logger().info("Goal pose: {}, {}".format(goal_x, goal_y))
@@ -116,9 +116,9 @@ class a_star(Node):
                             self.path[next_node[0]][next_node[1]] = current
                             self.cost[next_node[0]][next_node[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
 
-                            if next_node == self.goal:
-                                found = True
-                                break
+            if next_node == self.goal:
+                found = True
+                break
 
         node = self.goal
         while node != start:

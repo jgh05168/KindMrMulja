@@ -36,15 +36,17 @@ class lidarTrans(Node):
             pcd_msg = PointCloud()
             pcd_msg.header.frame_id = 'map'
 
+
             for angle, r in enumerate(msg.ranges):
                 lidar_point = Point32()
-
                 if 0.0 < r < 12:
                     lidar_point.x = self.x + r * cos(( angle + 180 ) * pi / 180 + self.theta)
                     lidar_point.y = self.y + r * sin(( angle + 180 ) * pi / 180 + self.theta)
                     pcd_msg.points.append(lidar_point)
 
+
             self.pcd_pub.publish(pcd_msg)
+
 
 def main(args=None):
     rclpy.init(args=args)

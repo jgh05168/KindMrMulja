@@ -107,16 +107,8 @@ class loadMap(Node):
         self.map_pub.publish(self.map_msg)
 
 
-
-  
-        
-        
-
-        
 def main(args=None):
     rclpy.init(args=args)
-
-
     load_map = loadMap()
     rclpy.spin(load_map)
     load_map.destroy_node()
