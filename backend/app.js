@@ -408,6 +408,7 @@ app.get("/api/product/order-list/:user_id", async (req, res) => {
   }
 });
 
+// 주문 목록 디테일 보기
 app.get("/api/product/order-list-detail/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   try {
