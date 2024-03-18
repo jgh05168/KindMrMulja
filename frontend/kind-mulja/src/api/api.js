@@ -1,15 +1,15 @@
 
 import axios from "axios";
 //여기 사이트에 json 데이터 파일 있음
-const api_url = "http://localhost:3000/";
+const api_url = "http://localhost:3000";
 
 
-class accountService {
+class Service {
 
   static SignIn(email,password) {
     axios({
       method: 'post',
-      api: api_url + '/user/signin',
+      url: api_url + '/user/signin',
       data : {
         email : email,
         password : password
@@ -28,37 +28,34 @@ class accountService {
 
 
   static SignUp(account) {
+    return new Promise((resolve, reject) => {
     axios({
       method: 'post',
       url: api_url + '/user/signup',
       data: {
         name : account.name,
-        email : account.name,
-        password : account.name,
-        }
+        email : account.email,
+        password : account.password,
+        },
+         // `headers`는 사용자 지정 헤더입니다.
+         withCredentials: false, // 기본값
     }) 
     .then((res) => {
-      const data = res.data;
+      console.log('회원가입 요청',res.data)
       // 결과값 result
-      return data.User.map((guild_owner) => ({ ...guild_owner }));
-    }) .then((res) => {
-      // 만약 회원가입에 성공했다면
-      console.log('회원가입 성공 여부 : ', res.result )
-      if (res.result == 1) {
-        // 해당 계정으로 로그인
-      }
-      return res
+      resolve(res.data)
     })
     .catch((error) => {
-      throw new Error(`회원가입에 실패하였습니다.: ${error.message}`);
+      reject( new Error(`회원가입에 실패하였습니다.: ${error.message}`));
     });
+  })
   } 
 
 
   static email_duplicate_check(email) {
     axios({
       method: 'post',
-      api: api_url + '/user/email_duplicate_check',
+      url: api_url + '/user/email_duplicate_check',
       data : {
         email : email,
       }
@@ -78,17 +75,10 @@ class accountService {
   }
 
 
-
-}
-
-
-
-class productService {
-
   static getProductList() {
     axios({
       method : 'get',
-      api: api_url + '/product/product-list',
+      url: api_url + '/product/product-list',
     })
     .then((res) => {
       // "product_id" : string,"product_name" : string,"product_price" : int,"product_category” : string
@@ -104,7 +94,7 @@ class productService {
   static getProduct(id) {
     axios({
       method : 'get',
-      api: api_url + `/product/product-detail/${id}`,
+      url: api_url + `/product/product-detail/${id}`,
     })
     .then((res) => {
       // "product_name" : string,"product_price" : int,"description” : string
@@ -120,7 +110,7 @@ class productService {
   static checkProductWish(user_id, product_id) {
     axios({
       method : 'get',
-      api: api_url + `/product/check-wish-product/${user_id}/${product_id}`,
+      url: api_url + `/product/check-wish-product/${user_id}/${product_id}`,
     })
     .then((res) => {
 
@@ -136,7 +126,7 @@ class productService {
   static toggleWish(user_id, product_id) {
     axios({
       method : 'post',
-      api: api_url + `/product/wishlist-toggle`,
+      url: api_url + `/product/wishlist-toggle`,
       data : {
         user_id : user_id,
         product_id : product_id
@@ -156,7 +146,7 @@ class productService {
   static getWishList(user_id) {
     axios({
       method : 'get',
-      api: api_url + `/wishlist/${user_id}`,
+      url: api_url + `/wishlist/${user_id}`,
     })
     .then((res) => {
 
@@ -172,7 +162,7 @@ class productService {
   static deleteWish(wishlist_id) {
     axios({
       method : 'delete',
-      api: api_url + `/wishlist/${wishlist_id}`,
+      url: api_url + `/wishlist/${wishlist_id}`,
     })
     .then((res) => {
       const data = res.data;
@@ -183,9 +173,7 @@ class productService {
       throw new Error(`위시리스트에서 삭제 실패: ${error.message}`);
     });
   } 
-}
 
-class cartService {
   
   static addToCart(user_id,product_id,product_quentity) {
     axios({
@@ -255,15 +243,13 @@ class cartService {
       throw new Error(`장바구니 상품 삭제 실패: ${error.message}`);
     });
   }
-}
 
 
-class deliveryService {
 
   static addDelivery(info) {
     axios({
       method:'post',
-      api: api_url + '/delivery/delivery-address/add',
+      url: api_url + '/delivery/delivery-address/add',
       data : {
         user_id : info.user_id,
         address_name : info.address_name,
@@ -285,7 +271,7 @@ class deliveryService {
   static getAddress(user_id) {
     axios({
       method:'get',
-      api: api_url + `/delivery/delivery-address/list/${user_id}`,
+      url: api_url + `/delivery/delivery-address/list/${user_id}`,
     }) 
     .then ((res) => {
       const data = res.data
@@ -300,7 +286,7 @@ class deliveryService {
   static setDefaultAddress(user_id,address_id) {
     axios({
       method:'patch',
-      api: api_url + `/delivery/delivery-address/default-address`,
+      url: api_url + `/delivery/delivery-address/default-address`,
       data : {
         user_id:user_id,
         address_id : address_id,
@@ -318,15 +304,10 @@ class deliveryService {
  
 
 
-}
-
-
-class orderService {
-
   static createOrder(order_info) {
     axios({
       method : 'post',
-      api: api_url + '/order',
+      url: api_url + '/order',
       data : {
         user_id : order_info.user_id,
         address_id : order_info.address_id,
@@ -357,7 +338,7 @@ class orderService {
     //   }
     axios({
       method : 'get',
-      api: api_url + `/order/order-list/${user_id}`,
+      url: api_url + `/order/order-list/${user_id}`,
     })
     .then((res) => {
       const data = res.data;
@@ -382,7 +363,7 @@ class orderService {
     //   }
     axios({
       method : 'get',
-      api: api_url + `/order/order-list-detail/${user_id}`,
+      url: api_url + `/order/order-list-detail/${user_id}`,
     })
     .then((res) => {
       const data = res.data;
@@ -396,5 +377,5 @@ class orderService {
 
 }
 
-export default { orderService, productService, accountService, cartService, deliveryService };
+export default Service 
 

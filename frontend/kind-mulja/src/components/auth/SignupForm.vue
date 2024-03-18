@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form class="signup" v-model="form" @submit.prevent>
+    <v-form class="signup" v-model="form" @submit.prevent="CreateAccount">
       <h1>회원가입</h1>
 
       <v-text-field v-model="name" color="primary" label="Name" variant="underlined"></v-text-field>
@@ -52,6 +52,7 @@
 <script setup>
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import Service from '@/api/api.js'
 
 // 비밀번호 표시 ox 기능을 위한 변수
 const show1 = ref(false)
@@ -63,7 +64,6 @@ const rules = ref({
 })
 // ---
 
-
 // 회원가입 폼 내의 변수들
 const form = ref(null)
 const name = ref(null)
@@ -71,8 +71,26 @@ const email = ref(null)
 const password = ref(null)
 const password_check = ref(null)
 const terms = ref(false)
-// --- 
+// ---
 
+const CreateAccount = async () => {
+  // 유효성 검사
+
+  // 유효성 검사를 통과 하면 회원가입 진행
+
+  try {
+    const res = await Service.SignUp({
+      name: name.value,
+      email: email.value,
+      password: password.value
+    })
+    console.log('회원가입 정보 받아와 짐?', res)
+    return res
+  } catch (err) {
+    err.value = err.message
+    throw err
+  }
+}
 </script>
 
 <style scoped>
