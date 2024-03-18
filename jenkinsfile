@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    // tools {nodejs "nodejs-20.11"} //tools에서 설정한 nodejs 이름
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        // stage('build test') {
+        //     steps {
+        //         sh '''
+        //             cd ./backend
+        //             npm i
+        //             node index.js
+        //         '''
+        //     }
+        // }
+    }
+}
