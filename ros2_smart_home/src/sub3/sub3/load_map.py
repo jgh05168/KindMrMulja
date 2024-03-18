@@ -81,17 +81,17 @@ class loadMap(Node):
 
         for y in range(350):
             for x in range(350):
-                if grid[x][y]==100 :
 
+                if grid[x][y]==100 :
                     '''
                     로직 3. 점유영역 근처 필터처리
                     '''
                     for box_x in range(-5,6):
                         for box_y in range(-5,6):
-                            if  0< x+box_x < 350 and 0 < y+box_y <350 and grid[x+box_x][y+box_y]<80 :
+                            if  0< x+box_x < 350 and 0 < y+box_y <350 and grid[x+box_x][y+box_y]<100 :
                                 grid[x+box_x][y+box_y]=127
 
-        
+
         np_map_data=grid.reshape(1,350*350) 
         list_map_data=np_map_data.tolist()
    

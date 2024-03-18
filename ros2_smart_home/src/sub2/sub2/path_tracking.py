@@ -66,7 +66,7 @@ class followTheCarrot(Node):
                 # print(robot_pose_x,robot_pose_y,lateral_error)
                 
                 # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
-                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.5
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 1.0
 
                 if self.lfd < self.min_lfd :
                     self.lfd=self.min_lfd
