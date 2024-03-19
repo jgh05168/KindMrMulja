@@ -60,10 +60,9 @@ user.post("/signin", async (req, res) => {
     const result = await pool.query(query, [email, password]);
     console.log(result[0]);
     if (result[0].length > 0) {
-      const user_id = result[0].user_id;
-      return res.json({ user_id: user_id, result: true });
+      return res.json({ user_id: result[0][0].user_id, result: true });
     } else {
-      return res.json({ user_id: null, result: false });
+      return res.json({ result: false });
     }
   } catch (error) {
     console.error(error);
