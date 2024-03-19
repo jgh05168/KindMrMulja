@@ -23,7 +23,7 @@ pipeline {
         stage('Parallel Build Docker Image'){
             parallel{
                 stage('frontend Build Docker Image'){
-                    step{
+                    steps{
                         script{
                             sh'''
                                 cd ./frontend/kind-mulja
@@ -34,7 +34,7 @@ pipeline {
                 }
 
                 stage('backend Build Docker Image'){
-                    step{
+                    steps{
                         script{
                             sh'''
                                 cd ./backend
@@ -81,14 +81,14 @@ pipeline {
         stage('Parallel Run Docker Container'){
             parallel{
                 stage('Run Front Docker Container'){
-                    step{
+                    steps{
                         script{
                             sh "docker run -d --name ${FRONT_CONTAINER_NAME} -p 5173:5173 ${FRONT_DOCKER_IMAGE_NAME}"
                         }
                     }
                 }
                 stage('Run Back Docker Container'){
-                    step{
+                    steps{
                         script{
                             sh "docker run -d --link ${DATABASE_NAME} --name ${BACK_CONTAINER_NAME} -p 3000:3000 ${BACK_DOCKER_IMAGE_NAME}"
                         }
