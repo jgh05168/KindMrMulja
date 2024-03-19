@@ -9,7 +9,20 @@ product.get("/hihi", (req, res) => {
 // 홈화면 상품리스트 전체 불러오기 api
 product.get("/product-list", async (req, res) => {
   try {
-    const query = `SELECT product_id, product_name, product_price, product_category FROM product_list`;
+    const query = `
+      SELECT 
+          p.product_id,
+          p.product_name,
+          p.product_price,
+          p.product_category,
+          COUNT(w.product_id) AS wish_count
+      FROM 
+          product_list p
+      LEFT JOIN 
+          wishlist w ON p.product_id = w.product_id
+      GROUP BY 
+          p.product_id, p.product_name, p.product_price, p.product_category
+    `;
     const results = await pool.query(query);
     console.log(results[0]);
     return res.json(results[0]);
