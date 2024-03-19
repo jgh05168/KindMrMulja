@@ -54,7 +54,7 @@ class followTheCarrot(Node):
 
         if self.is_status and self.is_odom and self.is_path:
 
-            if len(self.path_msg.poses)> 1:
+            if len(self.path_msg.poses)> 10:
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
