@@ -38,4 +38,7 @@ asdasdasdasdasdasdasasadsasdasd
 
 💡 **금일 실시 사항**
 오늘은 발표를 했습니다.
+dddd
+dddd
+dddd
 📜 **세부 사항**
