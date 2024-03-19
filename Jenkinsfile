@@ -26,7 +26,7 @@ pipeline {
                     steps{
                         script{
                             sh'''
-                                cd ./frontend/kind-mulja
+                                cd ./frontend
                                 docker build -t ${FRONT_DOCKER_IMAGE_NAME} .
                             '''
                         }
