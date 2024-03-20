@@ -84,7 +84,7 @@ const clickAddress = (id) => {
   console.log('클릭된 주소 순서-', click_id.value)
 }
 
-const default_address = ref(1)
+const default_address = ref(0)
 
 const setDefault = async (id) => {
   default_address.value = id
@@ -95,9 +95,7 @@ const setDefault = async (id) => {
 }
 
 const sorted_address_list = computed(() => {
-  const default_idx = address_list.value.findIndex(
-    (address) => address.id === default_address.value
-  )
+  const default_idx = address_list.value.findIndex((address) => address.is_default === 1)
 
   if (default_idx !== -1) {
     return [

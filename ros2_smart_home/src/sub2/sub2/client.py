@@ -28,8 +28,7 @@ def connect():
 # 로직 2. 데이터 수신 콜백함수
 @sio.event
 def order(data):
-    print('recevied massage from server : ',data)
-    
+    print(data[0][0]['product_id'])
     
 @sio.event
 def disconnect():
@@ -44,3 +43,4 @@ sio.connect('http://localhost:12001/')
 
 
 sio.wait()
+sio.disconnect()
