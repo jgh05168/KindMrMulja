@@ -29,5 +29,5 @@ coverage
 
 *.tsbuildinfo
 
-/dev-dist
-/dev-dist/*
+#
+dev-dist/
