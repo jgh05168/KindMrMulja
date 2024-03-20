@@ -2,7 +2,7 @@
   <v-container>
     <v-infinite-scroll height="900" side="end" @load="load">
       <v-row>
-        <v-col v-for="(item, n) in items" :key="n" cols="6">
+        <v-col v-for="(item, n) in props.items" :key="n" cols="6">
           <ProductItem @click="GoDetail(n)">
             <template #item-img>
               <div style="position: relative">
@@ -48,28 +48,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {  defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductItem from './ProductItem.vue'
 
-const router = useRouter()
+const props = defineProps({
+  items:Array
+})
 
-const items = ref([
-  { name: '1번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '2번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '3번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' },
-  { name: '4번', price: '가격', img: '/src/assets/atom/addcart.png' }
-])
+const router = useRouter()
 
 // 일반적으로 상품의 상세 정보를 표시하는 페이지로 이동하기 전에 데이터를 먼저 요청하고 받는 것이 좋습니다. 이 방법은 사용자 경험을 향상시킬 수 있습니다.
 
