@@ -23,4 +23,4 @@ export const useProductStore = defineStore('product', () => {
 
   return {product_list, category, now_category, item,
   now_product_id, }
-})
+}, { persist: true })

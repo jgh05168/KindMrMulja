@@ -202,21 +202,24 @@ class Service {
   }
 
   static cartList(user_id) {
+    return new Promise((resolve, reject) => {
     axios({
-      method : 'post',
+      method : 'get',
       url : api_url + `/cart/${user_id}`,
     })
     .then ((res) => {
       const data = res.data
       console.log('장바구니 목록 : ', data)
-      return data
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`장바구니 목록 불러오기 실패: ${error.message}`);
+      reject(new Error(`장바구니 목록 불러오기 실패: ${error.message}`))
     });
+  })
   }
 
   static cartUpdate(cart_id,  product_quentity) {
+    return new Promise((resolve, reject) => {
     axios({
       method : 'patch',
       url : api_url + `/cart/cart-update`,
@@ -228,14 +231,16 @@ class Service {
     .then ((res) => {
       const data = res.data
       console.log('장바구니 업데이트 : ', data)
-      return data
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`장바구니 업데이트 실패: ${error.message}`);
+      reject(new Error(`장바구니 업데이트 실패: ${error.message}`))
     });
+  })
   }
 
   static cartDelete(cart_id) {
+    return new Promise((resolve, reject) => {
     axios({
       method : 'delete',
       url : api_url + `/cart/${cart_id}`,
@@ -243,11 +248,12 @@ class Service {
     .then ((res) => {
       const data = res.data
       console.log('장바구니 에서 상품 삭제 : ', data)
-      return data
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`장바구니 상품 삭제 실패: ${error.message}`);
+      reject(new Error(`장바구니 상품 삭제 실패: ${error.message}`))
     });
+  })
   }
 
 

@@ -26,28 +26,44 @@
         </template>
       </DeliveryChoice>
 
-      <CartItem v-for="(item, idx) in cart_items" :value="item.id" :key="idx">
+      <CartItem
+        v-for="(item, idx) in cart_items"
+        :value="item.product_id"
+        :key="idx"
+        :cart-id="item.cart_id"
+        :item-quentity="item.product_quentity"
+      >
         <template #item-image>
-          <v-img :src="item.img"></v-img>
+          <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
         </template>
-        <template #item-name>{{ item.name }}</template>
-        <template #item-price>{{ item.price }}</template>
+        <template #item-name>{{ item.product_name }}</template>
+        <template #item-price>{{ item.product_price }}</template>
         <template #item-cnt>
           <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
           <v-btn
             size="xs"
             icon="mdi-minus"
             varient="tonal"
-            :disabled="item.cnt <= 1"
-            @click="item.cnt--"
+            :disabled="item.product_quentity <= 1"
+            @click="item.product_quentity--"
           ></v-btn>
-          <input style="width: 20px; text-align: center" type="number" :value="item.cnt" />
-          <v-btn class="ps-0" size="xs" icon="mdi-plus" varient="tonal" @click="item.cnt++"></v-btn>
+          <input
+            style="width: 20px; text-align: center"
+            type="number"
+            :value="item.product_quentity"
+          />
+          <v-btn
+            class="ps-0"
+            size="xs"
+            icon="mdi-plus"
+            varient="tonal"
+            @click="item.product_quentity++"
+          ></v-btn>
         </template>
 
         <template #cancel-btn>
           <v-btn
-            @click="removeItem(item.id)"
+            @click="removeItem(item.product_id, item.cart_id)"
             size="xs"
             icon="mdi-close-circle-outline"
             variant="plain"
@@ -74,8 +90,11 @@ import DeliveryChoice from '@/components/cart/DeliveryChoice.vue'
 import CartItem from '@/components/cart/CartItem.vue'
 import CartRecipt from '@/components/cart/CartRecipt.vue'
 import BlackButton from '@/components/BlackButton.vue'
+import Service from '@/api/api'
+import { useAuthStore } from '@/stores/auth'
+import { ref, computed, onMounted } from 'vue'
 
-import { ref, computed } from 'vue'
+const authStore = useAuthStore()
 
 const selectedOption = ref(0) // 선택된 옵션을 저장할 변수
 
@@ -83,43 +102,27 @@ const select = (option) => {
   selectedOption.value = option
 }
 
-const cart_items = ref([
-  {
-    id: 0,
-    name: '1번',
-    price: 1000,
-    cnt: 1,
-    img: 'https://source.unsplash.com/random/150x150/?furniture'
-  },
-  {
-    id: 1,
-    name: '2번',
-    price: 2000,
-    cnt: 2,
-    img: 'https://source.unsplash.com/random/150x150/?furniture'
-  },
-  {
-    id: 2,
-    name: '3번',
-    price: 3000,
-    cnt: 3,
-    img: 'https://source.unsplash.com/random/150x150/?furniture'
-  }
-])
-
+const cart_items = ref([])
 const items_price = ref(0)
 const delivery_price = ref(0)
 const total_price = computed(() => {
   return items_price.value + delivery_price.value
 })
 
-const removeItem = (id) => {
+const removeItem = async (product_id, cart_id) => {
   // 장바구니에서 해당 상품 삭제하는 요청 보내야 함
-  const idx = cart_items.value.findIndex((item) => item.id === id)
+  await Service.cartDelete(cart_id)
+  // 화면상에서도 삭제
+  const idx = cart_items.value.findIndex((item) => item.product_id === product_id)
   if (idx !== -1) {
     cart_items.value.splice(idx, 1)
   }
 }
+
+onMounted(async () => {
+  const cart_list_res = await Service.cartList(authStore.user_id)
+  cart_items.value = cart_list_res
+})
 </script>
 
 <style scoped>

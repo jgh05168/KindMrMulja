@@ -20,6 +20,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
 import { useProductStore } from '@/stores/product'
@@ -28,6 +29,8 @@ import { useAuthStore } from '@/stores/auth'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
+
+const router = useRouter()
 
 const width = ref('280px')
 const cnt = ref(1)
@@ -56,6 +59,7 @@ const addCart = async () => {
   if (addToCart_res) {
     // 만약 로그인 안되어 있으면 로그인 창으로 이동
     // 로그인 후 현재 창으로 올 수 있도록 해야 됨
+    router.push({name:'cart',})
   }
 }
 </script>
