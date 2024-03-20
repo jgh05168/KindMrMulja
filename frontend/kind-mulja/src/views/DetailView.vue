@@ -3,34 +3,12 @@
     <v-btn icon="mdi-chevron-left" style="position: absolute; left: -5%; top: 3%; z-index: 99">
     </v-btn>
 
-    <ProductItem>
-      <template #item-img>
-        <v-img
-          aspect-ratio="3/4"
-          src="https://source.unsplash.com/random/300x400/?furniture"
-          style="border-bottom-left-radius: 10%"
-        >
-        </v-img>
-      </template>
-      <template #item-title>
-        <p>상품 이름</p>
-      </template>
-      <template #item-price>
-        <div style="display: flex; flex-direction: row; justify-content: space-between">
-          <div>상품 가격</div>
-          <div>
-            <v-btn :disabled="cnt <= 1" @click="cnt--">-</v-btn>
-            <input style="width: 20px" type="number" :value="cnt" />
-            <v-btn @click="cnt++">+</v-btn>
-          </div>
-        </div>
-      </template>
-
-      <template #item-description>
-        상품 설명ㄴㅇㅁ나엄너아ㅣㅁ너이ㅏ먼엄나ㅣㅓ이ㅏㅁ너아ㅣㅁ너ㅏ임너ㅏㅣ엄 ㅇㅁㄴㅇㅁㄴㅇㅁ
-      </template>
-    </ProductItem>
-
+    <ProductDetail :item="productStore.item" />
+    <div>
+      <v-btn :disabled="cnt <= 1" @click="cnt--">-</v-btn>
+      <input style="width: 20px" type="number" :value="cnt" />
+      <v-btn @click="cnt++">+</v-btn>
+    </div>
     <div class="buy-button">
       <v-btn @click="zzim" width="55px" height="55px" rounded="lg" :icon="zzim_state"></v-btn>
       <BlackButton @click="addCart" :buttonWidth="width">
@@ -42,8 +20,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import ProductItem from '@/components/home/item/ProductItem.vue'
+import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
+import { useProductStore } from '@/stores/product'
+
+const productStore = useProductStore()
 
 const width = ref('280px')
 const cnt = ref(1)

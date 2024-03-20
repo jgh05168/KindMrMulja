@@ -2,14 +2,15 @@
   <v-container>
     <v-infinite-scroll height="900" side="end" @load="load">
       <v-row>
-        <v-col v-for="(item, n) in props.items" :key="n" cols="6">
-          <ProductItem @click="GoDetail(n)">
+        <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
+          <ProductItem @click="GoDetail(item.product_id)">
             <template #item-img>
               <div style="position: relative">
                 <v-img
+                  :aspect-ratio="1 / 1"
                   width="cover"
                   style="border-radius: 3%"
-                  src="https://source.unsplash.com/random/300x400/?furniture"
+                  :src="`/product/${item.product_id}.jpg`"
                 >
                 </v-img>
                 <v-btn
@@ -31,13 +32,14 @@
 
             <template #item-title>
               <v-card-subtitle>
-                {{ item.name }}
+                {{ item.product_name }}
               </v-card-subtitle>
             </template>
 
             <template #item-price>
               <v-card-title>
-                {{ item.price }}
+                <v-icon size="xs">mdi-currency-krw</v-icon>
+                {{ item.product_price }}
               </v-card-title>
             </template>
           </ProductItem>
@@ -48,20 +50,29 @@
 </template>
 
 <script setup>
-import {  defineProps } from 'vue'
+import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductItem from './ProductItem.vue'
+import Service from '@/api/api';
+import { useProductStore } from '@/stores/product';
+
 
 const props = defineProps({
-  items:Array
+  items: Array
 })
+
+const productStore = useProductStore()
 
 const router = useRouter()
 
 // 일반적으로 상품의 상세 정보를 표시하는 페이지로 이동하기 전에 데이터를 먼저 요청하고 받는 것이 좋습니다. 이 방법은 사용자 경험을 향상시킬 수 있습니다.
 
 // 사용자가 상세 정보 페이지로 이동하려고 클릭하면, 상세 정보를 요청하는 API 호출을 먼저 하고, 그 응답을 받은 후에 페이지를 이동하는 것이 좋습니다. 이 방법은 사용자가 페이지를 빠르게 로드하고 즉시 상세 정보를 볼 수 있게 해줍니다.
-
+const getItemDetail = async (id) => {
+  const detail = await Service.getProduct(id)
+  console.log('상품 상세 정보,', detail)
+  productStore.item = detail
+}
 // 따라서 일반적으로는 다음과 같은 순서로 작업을 진행합니다:
 
 // 사용자가 상품을 클릭하여 상세 정보 페이지로 이동하려고 시도합니다.
@@ -72,6 +83,7 @@ const router = useRouter()
 const GoDetail = (id) => {
   // 디테일 페이지로 이동
   // 1. api 함수 모음집에서 함수 가져와서 상품 상세정보 요청
+  getItemDetail(id)
   // 2. 응답 데이터가 온 다음에 데이터를 저장하거나 가지고 이동
   router.push({ name: 'detail', params: { id: id } })
 }

@@ -94,6 +94,7 @@ class Service {
   } 
 
   static getProduct(id) {
+    return new Promise((resolve, reject) => {
     axios({
       method : 'get',
       url: api_url + `/product/product-detail/${id}`,
@@ -102,11 +103,12 @@ class Service {
       // "product_name" : string,"product_price" : int,"description” : string
       const data = res.data;
       console.log('상품 단일 데이터 : ',data)
-      return data.User.map((guild_owner) => ({ ...guild_owner }));
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`상품 단일 데이터 실패: ${error.message}`);
+      reject(new Error(`상품 단일 데이터 실패: ${error.message}`))
     });
+  })
   } 
 
   static checkProductWish(user_id, product_id) {
