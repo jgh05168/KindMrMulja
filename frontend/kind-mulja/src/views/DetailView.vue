@@ -20,11 +20,17 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
 import { useProductStore } from '@/stores/product'
+import Service from '@/api/api'
+import { useAuthStore } from '@/stores/auth'
 
 const productStore = useProductStore()
+const authStore = useAuthStore()
+
+const router = useRouter()
 
 const width = ref('280px')
 const cnt = ref(1)
@@ -42,8 +48,19 @@ const zzim = () => {
   }
 }
 
-const addCart = () => {
+const addCart = async () => {
   // 사용자 장바구니에 추가 요청
+  const addToCart_res = await Service.addToCart(
+    authStore.user_id,
+    productStore.now_product_id,
+    cnt.value
+  )
+  // 장바구니에 추가되면 모달창 띄워야 함
+  if (addToCart_res) {
+    // 만약 로그인 안되어 있으면 로그인 창으로 이동
+    // 로그인 후 현재 창으로 올 수 있도록 해야 됨
+    router.push({name:'cart',})
+  }
 }
 </script>
 
@@ -51,6 +68,7 @@ const addCart = () => {
 .detail-frame {
   position: relative;
   margin: 0 7%;
+  padding-bottom: 100px;
 }
 
 .buy-button {

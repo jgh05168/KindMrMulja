@@ -29,6 +29,24 @@
   </v-card>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps, watch } from 'vue'
+import Service from '@/api/api'
+
+const props = defineProps({
+  cartId: Number,
+  itemQuentity: Number
+})
+
+watch(
+  () => props.itemQuentity,
+  (newValue, oldValue) => {
+    // props.productQuentity 값이 변경될 때 실행되는 로직
+    console.log('productQuentity 변경:', oldValue, '->', newValue)
+    // 업데이트 함수 실행
+    Service.cartUpdate(props.cartId, newValue)
+  }
+)
+</script>
 
 <style scoped></style>

@@ -4,20 +4,34 @@
       <v-carousel height="500" show-arrows="hover" hide-delimiters>
         <v-carousel-item :src="`/product/${item_id}.jpg`"></v-carousel-item>
         <v-carousel-item :src="`/product/${item_id}_showroom.jpg`"></v-carousel-item>
-        <v-carousel-item :src="`/product/${item_id}_size.jpg`"></v-carousel-item>
       </v-carousel>
     </template>
+
     <template #item-title>
-      <p>{{ props.item }}</p>
+      <h2>{{ props.item.product_name }}</h2>
+      <div>
+        {{ props.item.summary }}
+      </div>
     </template>
+
     <template #item-price>
       <div style="display: flex; flex-direction: row; justify-content: space-between">
-        <div>상품 가격</div>
+        <div><v-icon>mdi-currency-krw</v-icon>{{ props.item.product_price }}</div>
       </div>
     </template>
 
     <template #item-description>
-      상품 설명ㄴㅇㅁ나엄너아ㅣㅁ너이ㅏ먼엄나ㅣㅓ이ㅏㅁ너아ㅣㅁ너ㅏ임너ㅏㅣ엄 ㅇㅁㄴㅇㅁㄴㅇㅁ
+      <h3>상품 정보</h3>
+      <div>
+        {{ props.item.description }}
+      </div>
+    </template>
+    <template #item-size>
+      <h3>치수</h3>
+      <span>가로 {{ props.item.width }}</span>
+      <span>세로 {{ props.item.length }}</span>
+      <span>높이 {{ props.item.height }}</span>
+      <v-img :src="`/product/${item_id}_size.jpg`"></v-img>
     </template>
   </ProductItem>
 </template>
