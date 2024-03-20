@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-infinite-scroll height="900" side="end" @load="load">
-      <v-row>
+      <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
           <ProductItem @click="GoDetail(item.product_id)">
             <template #item-img>
@@ -53,9 +53,8 @@
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductItem from './ProductItem.vue'
-import Service from '@/api/api';
-import { useProductStore } from '@/stores/product';
-
+import Service from '@/api/api'
+import { useProductStore } from '@/stores/product'
 
 const props = defineProps({
   items: Array
@@ -71,6 +70,7 @@ const router = useRouter()
 const getItemDetail = async (id) => {
   const detail = await Service.getProduct(id)
   console.log('상품 상세 정보,', detail)
+  productStore.now_product_id = id
   productStore.item = detail
 }
 // 따라서 일반적으로는 다음과 같은 순서로 작업을 진행합니다:

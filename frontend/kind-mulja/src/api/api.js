@@ -180,6 +180,7 @@ class Service {
 
   
   static addToCart(user_id,product_id,product_quentity) {
+    return new Promise((resolve, reject) => {
     axios({
       method : 'post',
       url : api_url + '/product/add-shopping-cart',
@@ -192,11 +193,12 @@ class Service {
     .then ((res) => {
       const data = res.data
       console.log('장바구니 담기 : ', data)
-      return data.result
+      resolve(data.result)
     })
     .catch((error) => {
-      throw new Error(`장바구니 담기 실패: ${error.message}`);
+      reject(new Error(`장바구니 담기 실패: ${error.message}`))
     });
+  })
   }
 
   static cartList(user_id) {

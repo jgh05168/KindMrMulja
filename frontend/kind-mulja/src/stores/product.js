@@ -13,11 +13,14 @@ export const useProductStore = defineStore('product', () => {
   
   const now_category = ref('popular')
 
+  const now_product_id = ref(null)
+
   const product_list = ref([])
 
   // 상세 페이지로 들어가는 버튼 클릭하면 보여줄 상품
   const item = ref({})
 
 
-  return {product_list, category, now_category, item }
+  return {product_list, category, now_category, item,
+  now_product_id, }
 })
