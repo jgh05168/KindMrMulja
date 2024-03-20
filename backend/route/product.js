@@ -36,7 +36,7 @@ product.get("/product-list", async (req, res) => {
 product.get("/product-detail/:product_id", async (req, res) => {
   const product_id = req.params.product_id;
   try {
-    const query = `SELECT product_name, product_price, description FROM product_list WHERE product_id = ?`;
+    const query = `SELECT product_name, summary, product_price, product_stock, description, width, length, height FROM product_list WHERE product_id = ?`;
     const results = await pool.query(query, [product_id]);
     if (results[0].length > 0) {
       return res.json(results[0][0]);
