@@ -36,7 +36,9 @@
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Service from '@/api/api.js'
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore()
 const router = useRouter()
 
 const show1 = ref(false)
@@ -57,7 +59,8 @@ const Login = async () => {
   const login_res = await Service.SignIn(email.value, password.value)
   if (login_res.result) {
     // login_res.user_id
-
+    authStore.user_id = login_res.user_id
+    console.log('store 에 저장 확인',authStore.user_id)
     router.push({ name: 'home' })
   }
 }

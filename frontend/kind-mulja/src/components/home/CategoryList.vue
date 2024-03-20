@@ -33,7 +33,7 @@ import { useProductStore } from '@/stores/product'
 
 const productStore = useProductStore()
 
-const NowCategory = ref('O')
+const NowCategory = ref('popular')
 
 const toggle = (id) => {
   NowCategory.value = id
