@@ -7,6 +7,7 @@ const api_url = "http://localhost:3000";
 class Service {
 
   static SignIn(email,password) {
+    return new Promise((resolve, reject) => {
     axios({
       method: 'post',
       url: api_url + '/user/signin',
@@ -18,13 +19,14 @@ class Service {
     .then((res) => {
       const data = res.data;
       // 만약 로그인이 완료 되면 회원 정보 local 에 저장
-      console.log('회원 로그인 성공 여부 : ',data.user_id,data.result)
-      return data
+      console.log('회원 로그인 성공 여부 : ',data)
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`로그인에 실패했습니다.: ${error.message}`);
+      reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
     });
-  }
+  })
+}
 
 
   static SignUp(account) {
@@ -53,9 +55,10 @@ class Service {
 
 
   static email_duplicate_check(email) {
+    return new Promise((resolve, reject) => {
     axios({
       method: 'post',
-      url: api_url + '/user/email_duplicate_check',
+      url: api_url + '/user/email-duplicate-check',
       data : {
         email : email,
       }
@@ -63,19 +66,17 @@ class Service {
     .then((res) => {
       const data = res.data
       // 이메일 중복 여부에 따라 반환해주기
-      console.log('이메일 중복 여부 : ', data.result)
-      if (data.result) {
-        //
-      }
-      return data
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`중복 체크에 실패 했습니다.: ${error.message}`);
+      reject(new Error(`중복 체크에 실패 했습니다.: ${error.message}`))
     });
+  })
   }
 
 
   static getProductList() {
+    return new Promise((resolve, reject) => {
     axios({
       method : 'get',
       url: api_url + '/product/product-list',
@@ -83,12 +84,13 @@ class Service {
     .then((res) => {
       // "product_id" : string,"product_name" : string,"product_price" : int,"product_category” : string
       const data = res.data;
-      console.log('상품 전체 리스트 : ',data)
-      return data.User.map((guild_owner) => ({ ...guild_owner }));
+      // console.log('상품 전체 리스트 : ',data)
+      resolve(data)
     })
     .catch((error) => {
-      throw new Error(`상품 전체 리스트 실패: ${error.message}`);
+      reject(new Error(`상품 전체 리스트 실패: ${error.message}`))
     });
+  })
   } 
 
   static getProduct(id) {
