@@ -1,7 +1,7 @@
 <template>
   <v-card :width="props.width" class="mx-auto mt-5 mb-5">
     <v-card-title>
-      <slot name="address-title" :editAddress="editAddress"></slot>
+      <slot name="address-title" :editAddress="editAddress"> </slot>
     </v-card-title>
     <v-divider class="border-opacity-50" color="success"></v-divider>
     <v-card-text>
