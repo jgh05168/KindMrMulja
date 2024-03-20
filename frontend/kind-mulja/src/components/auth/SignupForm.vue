@@ -92,16 +92,9 @@ const CreateAccount = async () => {
     })
     // 만약 회원가입이 성공적으로 되었다면
     if (res.result) {
-      // 현재 계정으로 로그인
-      const login_res = await Service.SignIn(email.value, password.value)
-      console.log('로그인 성공여부 받아오기', login_res)
-      // 만약 로그인이 정상적으로 잘 되면 홈페이지로
-      if (login_res.result) {
-        router.push({ name: 'home' })
-      } else {
-        // 안되면 로그인 페이지로
+        // 로그인 페이지로
         router.push({ name: 'login' })
-      }
+    
     }
   } catch (err) {
     err.value = err.message
