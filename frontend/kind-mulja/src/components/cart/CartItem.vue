@@ -1,7 +1,8 @@
 <template>
-  <v-card class="mb-auto" style="position: relative">
+  <v-card class="mb-auto" style="position: relative; display: flex; flex-direction: row">
     <div class="d-flex flex-no-wrap">
-      <v-avatar class="ma-3" rounded="0" size="125">
+      <slot name="item-check"> </slot>
+      <v-avatar class="ma-3" rounded="0" size="95">
         <slot name="item-image">
           <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
         </slot>

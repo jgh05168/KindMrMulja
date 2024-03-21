@@ -91,7 +91,7 @@ const GoDetail = (id) => {
 const load = ({ side, done }) => {
   setTimeout(() => {
     if (side === 'start') {
-      const arr = Array.from({ length: 10 }, (k, v) => this.items[0] - (10 - v))
+      const arr = Array.from({ length: 10 }, (k, v) => props.items[0] - (10 - v))
       this.items = [...arr, ...this.items]
     } else if (side === 'end') {
       const arr = Array.from({ length: 10 }, (k, v) => this.items.at(-1) + 1 + v)

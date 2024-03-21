@@ -25,7 +25,7 @@
           </div>
         </template>
       </DeliveryChoice>
-
+      {{ selected_items }}
       <CartItem
         v-for="(item, idx) in cart_items"
         :value="item.product_id"
@@ -33,6 +33,10 @@
         :cart-id="item.cart_id"
         :item-quentity="item.product_quentity"
       >
+        <template #item-check>
+          <v-checkbox v-model="selected_items" :value="item"></v-checkbox>
+        </template>
+
         <template #item-image>
           <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
         </template>
@@ -78,7 +82,7 @@
       </CartRecipt>
     </div>
 
-    <BlackButton class="pay-button" button-width="380px">
+    <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
       <template #button-text>결제하기</template>
     </BlackButton>
   </div>
@@ -92,9 +96,13 @@ import CartRecipt from '@/components/cart/CartRecipt.vue'
 import BlackButton from '@/components/BlackButton.vue'
 import Service from '@/api/api'
 import { useAuthStore } from '@/stores/auth'
+import { useOrderStore } from '@/stores/order'
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const authStore = useAuthStore()
+const orderStore = useOrderStore()
 
 const selectedOption = ref(0) // 선택된 옵션을 저장할 변수
 
@@ -103,8 +111,22 @@ const select = (option) => {
 }
 
 const cart_items = ref([])
-const items_price = ref(0)
-const delivery_price = ref(0)
+const selected_items = ref([])
+
+const items_price = computed(() => {
+  let item_total_price = 0
+  selected_items.value.forEach((item) => {
+    item_total_price += item.product_price * item.product_quentity
+  })
+  return item_total_price
+})
+const delivery_price = computed(() => {
+  if (selected_items.value.length > 0) {
+    return 25000
+  } else {
+    return 0
+  }
+})
 const total_price = computed(() => {
   return items_price.value + delivery_price.value
 })
@@ -112,11 +134,32 @@ const total_price = computed(() => {
 const removeItem = async (product_id, cart_id) => {
   // 장바구니에서 해당 상품 삭제하는 요청 보내야 함
   await Service.cartDelete(cart_id)
+  // 선택된 상품에 있으면 선택된 상품에서 제외해줘야함
+  selected_items.value = selected_items.value.filter((item) => item.cart_id !== cart_id)
   // 화면상에서도 삭제
   const idx = cart_items.value.findIndex((item) => item.product_id === product_id)
   if (idx !== -1) {
     cart_items.value.splice(idx, 1)
   }
+}
+
+const save_data = () => {
+  orderStore.selected_item = selected_items.value
+  // 선택된 배송 옵션 저장
+  orderStore.order_type = selectedOption.value
+  // 결제 금액 정보 저장
+  orderStore.item_price = items_price.value
+  orderStore.delivery_price = delivery_price.value
+  orderStore.total_price = total_price.value
+}
+
+const goToOrder = async () => {
+  // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
+  // 선택된 정보 저장
+  await save_data()
+  orderStore.address_list = await Service.getAddress(authStore.user_id)
+  // 결제하기 버튼 클릭 시 결제 페이지로 이동
+  await router.push({ name: 'pay' })
 }
 
 onMounted(async () => {
