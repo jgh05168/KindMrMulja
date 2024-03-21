@@ -19,9 +19,28 @@ io.on("connection", (socket) => {
     console.log("수신한 메시지:", data);
   });
 
+<<<<<<< HEAD
   //ros로 보내는 메세지 (msgName, data)
   io.emit("order", { product_id: "A001", user_id: "1" });
 });
+=======
+    //ros에서 받은 메세지 
+    socket.on('sendTime', (data) => {
+        console.log('수신한 메시지:', data);
+    });
+
+    //ros로 보내는 메세지 (msgName, data)
+    const jsonData = {
+        num: 123,
+        grid: {
+            x: 12,
+            y: 13
+        }
+    };
+    io.emit('order', JSON.stringify(jsonData));
+
+})
+>>>>>>> 09133b89a4261340eadbb994ddfaf62a3bfab5a4
 
 // 로직 2. 포트번호 지정
 const port = process.env.port || 12001;
