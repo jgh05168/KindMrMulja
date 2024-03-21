@@ -53,6 +53,7 @@ pipeline {
                         script {
                             def frontContainerExists = sh(script: "docker ps -a --filter name=${FRONT_CONTAINER_NAME}", returnStatus: true).trim().split('\n').size()
                             if (frontContainerExists>0) {
+                                echo "${frontContainerExists}"
                                 sh "docker stop ${FRONT_CONTAINER_NAME}"
                                 sh "docker rm ${FRONT_CONTAINER_NAME}"
                             } else {
