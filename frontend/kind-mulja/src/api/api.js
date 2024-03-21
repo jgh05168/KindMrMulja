@@ -343,6 +343,7 @@ export class Service {
     //   "total_quentity": int,
     //   "total_price": int
     //   }
+    return new Promise((resolve, reject) => {
     axios({
       method: 'get',
       url: api_url + `/order/order-list/${user_id}`
@@ -350,14 +351,15 @@ export class Service {
       .then((res) => {
         const data = res.data
         console.log('주문목록 묶음 리스트', data)
-        return data
+        resolve(data)
       })
       .catch((error) => {
-        throw new Error(`주문목록 묶음 리스트 조회 실패: ${error.message}`)
+        reject(new Error(`주문목록 묶음 리스트 조회 실패: ${error.message}`))
       })
+    })
   }
 
-  static getOrderDetailList(user_id) {
+  static getOrderDetailList(order_id) {
     // {
     //   "order_detail_id": int,
     //   "order_id": int,
@@ -367,18 +369,20 @@ export class Service {
     //   "product_name": string,
     //   "product_price": int
     //   }
+    return new Promise((resolve, reject) => {
     axios({
       method: 'get',
-      url: api_url + `/order/order-list-detail/${user_id}`
+      url: api_url + `/order/order-list-detail/${order_id}`
     })
       .then((res) => {
         const data = res.data
         console.log('주문목록 묶음 상세 리스트', data)
-        return data
+        resolve(data)
       })
       .catch((error) => {
-        throw new Error(`주문목록 묶음 상세 리스트 조회 실패: ${error.message}`)
+        reject(new Error(`주문목록 묶음 상세 리스트 조회 실패: ${error.message}`))
       })
+    })
   }
 }
 

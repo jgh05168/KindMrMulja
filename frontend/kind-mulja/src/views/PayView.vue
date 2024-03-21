@@ -72,7 +72,7 @@ import CartRecipt from '@/components/cart/CartRecipt.vue'
 import BlackButton from '@/components/BlackButton.vue'
 import { useOrderStore } from '@/stores/order'
 import { useAuthStore } from '@/stores/auth'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Service from '@/api/api'
 import { useRouter } from 'vue-router'
 
@@ -100,14 +100,24 @@ const updateSelectedAddress = (address) => {
   selected_address.value = address
 }
 
+const selected_cart_id = computed(() => {
+  if (orderStore.selected_item && orderStore.selected_item.length > 0) {
+    let res = orderStore.selected_item.map((item) => item.cart_id)
+    console.log(res)
+    return res
+  } else {
+    return null
+  }
+})
+
 const orderCreate = async () => {
   const order_info = {
     user_id: authStore.user_id,
-    address_id: orderStore.address_id,
+    address_id: address_id.value,
     order_type: orderStore.order_type,
-    selected_cart_id: orderStore.selected_cart_id.value
+    selected_cart_id: JSON.stringify(selected_cart_id.value)
   }
-
+  console.log(order_info)
   const pay_res = await Service.createOrder(order_info)
 
   if (pay_res) {
