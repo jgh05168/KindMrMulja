@@ -10,10 +10,37 @@
       <v-btn @click="cnt++">+</v-btn>
     </div>
     <div class="buy-button">
-      <v-btn @click="zzim" width="55px" height="55px" rounded="lg" :icon="zzim_state"></v-btn>
-      <BlackButton @click="addCart" :buttonWidth="width">
-        <template v-slot:button-text> 장바구니 </template>
-      </BlackButton>
+      <v-btn
+        class="me-5"
+        @click="zzim"
+        width="55px"
+        height="55px"
+        rounded="lg"
+        :icon="zzim_state"
+      ></v-btn>
+      <CartModal :add-cart="addCart">
+        <template v-slot:modal-button="slotProps">
+          <BlackButton :buttonWidth="width" @click="slotProps.modalOpen">
+            <template #button-text>장바구니</template>
+          </BlackButton>
+        </template>
+        <template #modal-choice>
+          <v-btn
+            class="modal-choice-btn"
+            rounded="xl"
+            size="x-large"
+            @click="router.push({ name: 'home' })"
+            >쇼핑 계속하기</v-btn
+          >
+          <v-btn
+            class="modal-choice-btn"
+            rounded="xl"
+            size="x-large"
+            @click="router.push({ name: 'cart' })"
+            >장바구니로 이동하기</v-btn
+          >
+        </template>
+      </CartModal>
     </div>
   </div>
 </template>
@@ -26,6 +53,7 @@ import BlackButton from '@/components/BlackButton.vue'
 import { useProductStore } from '@/stores/product'
 import Service from '@/api/api'
 import { useAuthStore } from '@/stores/auth'
+import CartModal from '@/components/cart/CartModal.vue'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
@@ -50,16 +78,15 @@ const zzim = () => {
 
 const addCart = async () => {
   // 사용자 장바구니에 추가 요청
+  // 만약 로그인 안되어 있으면 로그인 창으로 이동
   const addToCart_res = await Service.addToCart(
     authStore.user_id,
     productStore.now_product_id,
     cnt.value
   )
-  // 장바구니에 추가되면 모달창 띄워야 함
   if (addToCart_res) {
-    // 만약 로그인 안되어 있으면 로그인 창으로 이동
+    // 장바구니에 추가되면 모달창 띄워야 함
     // 로그인 후 현재 창으로 올 수 있도록 해야 됨
-    router.push({name:'cart',})
   }
 }
 </script>
@@ -78,5 +105,12 @@ const addCart = async () => {
   position: fixed;
   bottom: 8%;
   width: 356.91px;
+}
+
+.modal-choice-btn {
+  width: 90%;
+  height: 55px;
+  margin: 15px auto;
+  border: solid 2px black;
 }
 </style>
