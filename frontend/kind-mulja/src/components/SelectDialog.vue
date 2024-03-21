@@ -23,10 +23,10 @@
       <v-card-text class="px-4" style="height: 500px">
         <AddressItem
           :width="'300px'"
-          @click="clickAddress(idx)"
-          :class="{ 'selected-address': idx == selected_Address }"
-          v-for="(address, idx) in address_list"
-          :value="address.id"
+          @click="clickAddress(address)"
+          :class="{ 'selected-address': address.address_id == selected_Address }"
+          v-for="(address, idx) in props.addressList"
+          :value="address.address_id"
           :key="idx"
         >
           <template v-slot:address-title="slotProps">
@@ -38,7 +38,7 @@
                 align-items: center;
               "
             >
-              <div>{{ address.title }}</div>
+              <div>{{ address.address_name }}</div>
               <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
               <v-btn
                 @click="slotProps.editAddress(address.id)"
@@ -48,7 +48,9 @@
             </div>
           </template>
           <template #address-detail>
-            <div>{{ address.detail }}</div>
+            <p>{{ address.address_normal }}</p>
+            <p>{{ address.address_detail }}</p>
+            <p>{{ address.user_name }}</p>
           </template>
         </AddressItem>
       </v-card-text>
@@ -68,39 +70,29 @@
 <script setup>
 import AddressItem from '@/components/AddressItem.vue'
 import CreateDialog from '@/components/CreateDialog.vue'
-
+import { defineProps, defineEmits } from 'vue'
 import { ref } from 'vue'
+
+const props = defineProps({
+  addressList: Array
+})
+
+const emit = defineEmits(['update:addressId', 'update:selectedAddress'])
 
 const dialog = ref(false)
 
-const address_list = ref([
-  {
-    id: 1,
-    title: '삼성전자 광주사업장 1',
-    detail: '광주 관산구 하남산단 6번로 107, SSAFY 멀티캠퍼스'
-  },
-  {
-    id: 2,
-    title: '삼성전자 광주사업장 2',
-    detail: '광주 관산구 하남산단 6번로 107, SSAFY 멀티캠퍼스'
-  },
-  {
-    id: 3,
-    title: '삼성전자 광주사업장 3',
-    detail: '광주 관산구 하남산단 6번로 107, SSAFY 멀티캠퍼스'
-  }
-])
-
 const selected_Address = ref('')
 
-const clickAddress = (idx) => {
-  selected_Address.value = idx
+const clickAddress = (address) => {
+  selected_Address.value = address
+
 }
 
 const saveChange = () => {
   dialog.value = false
   // 상위 컴포넌트에 선택된 주소지를 현재 다이얼로그에서 선택된 주소로 바꾸기
-  // address = address_list[idx]
+  emit('update:addressId', selected_Address.value.address_id)
+  emit('update:selectedAddress', selected_Address.value)
 }
 </script>
 

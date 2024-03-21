@@ -60,23 +60,24 @@ import AddressItem from '@/components/AddressItem.vue'
 import AppHeader from '@/layouts/AppHeader.vue'
 import { useAuthStore } from '@/stores/auth'
 import Service from '@/api/api.js'
-
+import { useOrderStore } from '@/stores/order'
 const router = useRouter()
 const authStore = useAuthStore()
-const address_list = ref([])
-
+const orderStore = useOrderStore()
 console.log(authStore.user_id)
+const default_address = ref([null])
 // getAddress 메서드 호출
 onMounted(async () => {
   const address_res = await Service.getAddress(authStore.user_id)
-  address_list.value = address_res.map((item) => ({
+  orderStore.address_list = address_res.map((item) => ({
     id: item.address_id,
     title: item.address_name,
     detail: `${item.address_normal} ${item.address_detail}`,
     is_default: item.is_default
   }))
+  const defaultAddress = address_res.find((item) => item.is_default === 1)
+  default_address.value = defaultAddress ? defaultAddress.address_id : null
 })
-
 const click_id = ref(null)
 
 const clickAddress = (id) => {
@@ -84,7 +85,22 @@ const clickAddress = (id) => {
   console.log('클릭된 주소 순서-', click_id.value)
 }
 
-const default_address = ref(1)
+const sorted_address_list = computed(() => {
+  const default_idx = orderStore.address_list.findIndex(
+    (address) => address.id == default_address.value
+  )
+  let sorted_array = []
+  if (default_idx !== -1) {
+    sorted_array = [
+      orderStore.address_list[default_idx],
+      ...orderStore.address_list.slice(0, default_idx),
+      ...orderStore.address_list.slice(default_idx + 1)
+    ]
+  } else {
+    sorted_array = [...orderStore.address_list]
+  }
+  return sorted_array
+})
 
 const setDefault = async (id) => {
   default_address.value = id
@@ -92,34 +108,9 @@ const setDefault = async (id) => {
   click_id.value = null
   console.log('기본 배송지 설정, 클릭 요소 초기화', click_id.value)
   await Service.setDefaultAddress(authStore.user_id, id)
+  // orderStore.address_list = await Service.getAddress(authStore.user_id)
+  console.log(sorted_address_list.value)
 }
-
-const sorted_address_list = computed(() => {
-  const default_idx = address_list.value.findIndex(
-    (address) => address.id === default_address.value
-  )
-
-  if (default_idx !== -1) {
-    return [
-      address_list.value[default_idx],
-      ...address_list.value.slice(0, default_idx),
-      ...address_list.value.slice(default_idx + 1)
-    ]
-  } else {
-    return [...address_list.value]
-  }
-})
-
-// const sorted_address_list = computed(() => {
-//   const sortedList = [...address_list.value]
-//   sortedList.sort((a, b) => {
-//     // is_default가 더 큰(더 큰 우선순위를 가진) 것을 먼저 배치하도록 정렬
-//     if (a.is_default > b.is_default) return -1
-//     if (a.is_default < b.is_default) return 1
-//     return 0
-//   })
-//   return sortedList
-// })
 
 const goCreate = () => {
   router.push({ name: 'create-address' })
