@@ -6,7 +6,7 @@ const pool = require("../DB.js");
 // 주문 내역 업로드 api
 order.post("", async (req, res) => {
   const { user_id, address_id, order_type } = req.body;
-  const selected_cart_id = JSON.parse(req.body.selected_cart_id);
+  const selected_cart_id = req.body.selected_cart_id;
   try {
     const order_date = moment().format("YYYY-MM-DD");
     const order_time = moment().format("HH:mm:ss");
