@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref} from 'vue'
 import { defineStore } from 'pinia'
 
 export const useOrderStore = defineStore(
@@ -11,14 +11,6 @@ export const useOrderStore = defineStore(
     const total_price = ref(0)
     const address_list = ref([])
 
-    return {
-      selected_item,
-      order_type,
-      item_price,
-      delivery_price,
-      total_price,
-      address_list
-    }
-  },
-  { persist: true }
-)
+  return { selected_item, order_type,
+  item_price,delivery_price,total_price, address_list,}
+}, { persist: true })
