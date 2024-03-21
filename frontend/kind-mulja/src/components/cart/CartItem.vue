@@ -1,7 +1,8 @@
 <template>
-  <v-card class="mb-auto" style="position: relative">
+  <v-card class="mb-auto" style="position: relative; display: flex; flex-direction: row">
     <div class="d-flex flex-no-wrap">
-      <v-avatar class="ma-3" rounded="0" size="125">
+      <slot name="item-check"> </slot>
+      <v-avatar class="ma-3" rounded="0" size="95">
         <slot name="item-image">
           <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
         </slot>
@@ -29,6 +30,24 @@
   </v-card>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps, watch } from 'vue'
+import Service from '@/api/api'
+
+const props = defineProps({
+  cartId: Number,
+  itemQuentity: Number
+})
+
+watch(
+  () => props.itemQuentity,
+  (newValue, oldValue) => {
+    // props.productQuentity 값이 변경될 때 실행되는 로직
+    console.log('productQuentity 변경:', oldValue, '->', newValue)
+    // 업데이트 함수 실행
+    Service.cartUpdate(props.cartId, newValue)
+  }
+)
+</script>
 
 <style scoped></style>
