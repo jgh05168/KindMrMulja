@@ -17,7 +17,6 @@ import socketio
 sio = socketio.Client()
 
 
-
 @sio.event
 def connect():
     print('connection established')
@@ -32,7 +31,6 @@ def aircon_on(data):
 def aircon_off(data):
     print('message received with ', data)
 
-
 @sio.event
 def disconnect():
     print('disconnected from server')
@@ -40,6 +38,7 @@ def disconnect():
 
 # 로직 3. 서버 연결
 sio.connect('http://ec2-3-34-134-166.ap-northeast-2.compute.amazonaws.com:12001/')
+
 
 # 로직 4. 데이터 송신
 sio.emit('sendTime','TEST')
