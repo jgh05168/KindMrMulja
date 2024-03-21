@@ -89,15 +89,14 @@ order.get("/order-list/:user_id", async (req, res) => {
 });
 
 // 주문 목록 디테일 보기
-order.get("/order-list-detail/:user_id", async (req, res) => {
-  const user_id = req.params.user_id;
+order.get("/order-list-detail/:order_id", async (req, res) => {
+  const order_id = req.params.order_id;
   try {
-    const query = `SELECT odl.order_detail_id, odl.order_id, odl.order_quentity, odl.order_progress, odl.product_id
-          FROM order_detail_list odl 
-          JOIN order_list ol ON ol.order_id = odl.order_id 
-          WHERE ol.user_id = '1'`;
-    const results = await pool.query(query, user_id);
-
+    const query = `SELECT order_detail_id, order_id, order_quentity, order_progress, product_id
+          FROM order_detail_list
+          WHERE order_id = ? `;
+    const results = await pool.query(query, [order_id]);
+    console.log(results);
     for (let i = 0; i < results[0].length; i++) {
       const product_id = results[0][i].product_id;
       const query2 = `SELECT product_name, product_price FROM product_list WHERE product_id = ?`;
