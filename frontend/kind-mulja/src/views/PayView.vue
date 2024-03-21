@@ -6,7 +6,12 @@
     <div class="set-address">
       <div style="display: flex; justify-content: space-between; align-items: center">
         <h3>배송지 설정</h3>
-        <SelectDialog />
+        <SelectDialog
+          @click="getAddressMore()"
+          @update:addressId="updateAddressId"
+          @update:selectedAddress="updateSelectedAddress"
+          :address-list="address_list"
+        />
       </div>
       <AddressItem :width="'360px'">
         <template v-slot:address-title="slotProps">
@@ -18,17 +23,20 @@
               align-items: center;
             "
           >
-            <div>{{ address.title }}</div>
+            <div>{{ selected_address?.address_name }}</div>
+
             <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
             <v-btn
-              @click="slotProps.editAddress(address.id)"
+              @click="slotProps.editAddress(selected_address?.address_id)"
               icon="mdi-home-edit-outline"
               variant="plain"
             ></v-btn>
           </div>
         </template>
         <template #address-detail>
-          <div>{{ address.detail }}</div>
+          <p>{{ selected_address?.address_normal }}</p>
+          <p>{{ selected_address?.address_detail }}</p>
+          <p>받는사람 : {{ selected_address?.user_name }}</p>
         </template>
       </AddressItem>
     </div>
@@ -44,13 +52,13 @@
 
     <div class="order-info">
       <CartRecipt>
-        <template #items-price>{{ items_price }}</template>
+        <template #items-price>{{ item_price }}</template>
         <template #delivery-price>{{ delivery_price }}</template>
         <template #total-price>{{ total_price }}</template>
       </CartRecipt>
     </div>
 
-    <BlackButton class="pay-button" button-width="380px">
+    <BlackButton class="pay-button" button-width="380px" @click="orderCreate()">
       <template #button-text>결제하기</template>
     </BlackButton>
   </div>
@@ -62,18 +70,60 @@ import AddressItem from '@/components/AddressItem.vue'
 import SelectDialog from '@/components/SelectDialog.vue'
 import CartRecipt from '@/components/cart/CartRecipt.vue'
 import BlackButton from '@/components/BlackButton.vue'
+import { useOrderStore } from '@/stores/order'
+import { useAuthStore } from '@/stores/auth'
+import { ref, onMounted } from 'vue'
+import Service from '@/api/api'
+import { useRouter } from 'vue-router'
 
-import { ref } from 'vue'
+const router = useRouter()
 
-const address = ref({
-  id: 1,
-  title: '삼성전자 광주사업장 1',
-  detail: '광주 관산구 하남산단 6번로 107, SSAFY 멀티캠퍼스'
+const orderStore = useOrderStore()
+const authStore = useAuthStore()
+
+const address_list = orderStore.address_list
+const item_price = orderStore.item_price
+const delivery_price = orderStore.delivery_price
+const total_price = orderStore.total_price
+
+const address_id = ref(null)
+// 선택된 id 로 선택된 배송지 저장
+const selected_address = ref(null)
+
+const getAddressMore = () => {}
+
+const updateAddressId = (id) => {
+  address_id.value = id
+}
+
+const updateSelectedAddress = (address) => {
+  selected_address.value = address
+}
+
+const orderCreate = async () => {
+  const order_info = {
+    user_id: authStore.user_id,
+    address_id: orderStore.address_id,
+    order_type: orderStore.order_type,
+    selected_cart_id: orderStore.selected_cart_id.value
+  }
+
+  const pay_res = await Service.createOrder(order_info)
+
+  if (pay_res) {
+    router.push({ name: 'paid' })
+  }
+}
+
+onMounted(() => {
+  if (orderStore.address_list && orderStore.address_list.length > 0) {
+    let selected = orderStore.address_list.find((address) =>
+      address.is_default === 1 ? address : null
+    )
+    selected_address.value = selected
+    address_id.value = selected.address_id
+  }
 })
-
-const items_price = ref(0)
-const delivery_price = ref(0)
-const total_price = ref(0)
 </script>
 
 <style scoped>
