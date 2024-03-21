@@ -1,110 +1,88 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-from nav_msgs.msg import OccupancyGrid, MapMetaData
-from geometry_msgs.msg import Pose, Point, TransformStamped
+from nav_msgs.msg import Odometry
 from squaternion import Quaternion
-from math import cos, sin, pi
 import numpy as np
-import tf2_ros
+from std_msgs.msg import Header
+from nav_msgs.msg import OccupancyGrid  # 변경된 부분: OccupancyGrid 메시지를 추가
 
 class LocalGridMap(Node):
     def __init__(self):
         super().__init__('local_grid_map')
-        self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
-        self.create_subscription(Pose, '/robot_pose', self.robot_pose_callback, 10)  # 수정된 부분
-        self.map_pub = self.create_publisher(OccupancyGrid, '/local_map', 10)
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.odom_msg = Odometry()
+        self.is_odom = False
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
+        self.map_resolution = 0.2
+        self.map_size_x = 50
+        self.map_size_y = 50
+        self.map_center_x = -50.0
+        self.map_center_y = -50.0
+        self.local_grid_map = np.zeros((self.map_size_x, self.map_size_y), dtype=int)
+        self.map_pub = self.create_publisher(OccupancyGrid, 'local_grid_map', 1)  # 변경된 부분: OccupancyGrid를 게시하기 위한 퍼블리셔 생성
 
-        # Initialize map parameters
-        self.resolution = 0.05  # Map resolution in meters per pixel
-        self.map_size = (100, 100)  # Map size in pixels (width, height)
-        self.map_center = (-50, -50)  # Initial map center coordinates in pixels
-
-        # Initialize the local grid map
-        self.local_map = np.zeros(self.map_size, dtype=np.int8)
-
-        # Initialize map metadata
-        self.map_metadata = MapMetaData()
-        self.map_metadata.resolution = self.resolution
-        self.map_metadata.width = self.map_size[0]
-        self.map_metadata.height = self.map_size[1]
-        self.map_metadata.origin = Pose(position=Point(x=-50.0, y=-50.0))
-
-        # Initialize tf2 broadcaster
-        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
-
-        # Variables to store robot pose
-        self.x = 0
-        self.y = 0
-        self.theta = 0
-
-    def robot_pose_callback(self, msg):  # 수정된 부분
-        # Update robot pose based on pose data
-        self.x = msg.position.x
-        self.y = msg.position.y
-        q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
-        _, _, self.theta = q.to_euler()
-
-        # Update map center to robot's current position
-        self.map_center = (int(-50 + self.x / self.resolution),
-                           int(-50 + self.y / self.resolution))
-
-        # Broadcast tf2 transform from "map" to "base_link"
-        self.broadcast_tf2_transform()
-
-        # Update the local grid map
-        self.update_local_map()
-        self.publish_local_map()
+    def odom_callback(self, msg):
+        self.is_odom = True
+        self.odom_msg = msg
+        self.x = msg.pose.pose.position.x
+        self.y = msg.pose.pose.position.y
+        q = Quaternion(msg.pose.pose.orientation.w,
+                       msg.pose.pose.orientation.x,
+                       msg.pose.pose.orientation.y,
+                       msg.pose.pose.orientation.z)
+        roll, pitch, self.theta = q.to_euler()
+        # 변경된 부분: 로봇의 위치가 변할 때 맵 중앙을 업데이트
+        self.map_center_x = self.x - (self.map_size_x / 2) * self.map_resolution
+        self.map_center_y = self.y - (self.map_size_y / 2) * self.map_resolution
+        # 로봇의 위치가 변할 때마다 로컬 그리드를 0으로 초기화
+        self.local_grid_map = np.zeros((self.map_size_x, self.map_size_y), dtype=int)
 
     def lidar_callback(self, msg):
-        # Process lidar data and update the local grid map
-        angles = np.arange(msg.angle_min, msg.angle_max, msg.angle_increment)
-        ranges = np.array(msg.ranges)
-        self.update_local_map(angles, ranges)
-        self.publish_local_map()
-
-    def update_local_map(self, angles=None, ranges=None):
-        # Clear the local grid map
-        self.local_map = np.zeros(self.map_size, dtype=np.int8)
-
-        # Process lidar data and update the local grid map
-        if angles is not None and ranges is not None:
-            for angle, dist in zip(angles, ranges):
-                # Calculate the endpoint of the laser ray in the map coordinates
-                end_x = self.x + dist * cos(angle + self.theta)
-                end_y = self.y + dist * sin(angle + self.theta)
-
-                # Convert the endpoint to pixel coordinates in the local map
-                map_x = int((end_x / self.resolution) + self.map_center[0])
-                map_y = int((end_y / self.resolution) + self.map_center[1])
-
-                # Update the corresponding cell in the local map
-                if 0 <= map_x < self.map_size[0] and 0 <= map_y < self.map_size[1]:
-                    self.local_map[map_y, map_x] = 100  # Occupied cell
-
-    def publish_local_map(self):
-        # Create and publish OccupancyGrid message
-        map_msg = OccupancyGrid()
-        map_msg.header.frame_id = 'map'
-        map_msg.info = self.map_metadata
-        map_msg.data = np.ravel(self.local_map).tolist()
-        self.map_pub.publish(map_msg)
-
-    def broadcast_tf2_transform(self):
-        # Broadcast transform from "map" to "base_link"
-        t = TransformStamped()
-        t.header.stamp = self.get_clock().now().to_msg()
-        t.header.frame_id = "map"
-        t.child_frame_id = "base_link"
-        t.transform.translation.x = self.x
-        t.transform.translation.y = self.y
-        t.transform.translation.z = 0.0
-        q = Quaternion.from_euler(0, 0, self.theta)
-        t.transform.rotation.x = q.x
-        t.transform.rotation.y = q.y
-        t.transform.rotation.z = q.z
-        t.transform.rotation.w = q.w
-        self.tf_broadcaster.sendTransform(t)
+        if self.is_odom:
+            angle_min = msg.angle_min
+            angle_increment = msg.angle_increment
+            ranges = msg.ranges
+            for i, range_data in enumerate(ranges):
+                if range_data < msg.range_max and range_data > msg.range_min:
+                    angle = self.theta + angle_min + i * angle_increment
+                    x = self.x + range_data * np.cos(angle)
+                    y = self.y + range_data * np.sin(angle)
+                    map_x = int((x - self.map_center_x) / self.map_resolution)
+                    map_y = int((y - self.map_center_y) / self.map_resolution)
+                    if 0 <= map_x < self.map_size_x and 0 <= map_y < self.map_size_y:
+                        # 로봇 위치에 해당하는 그리드 셀은 장애물로 표시하지 않음
+                        if abs(map_x - int(self.map_size_x / 2)) < 2 and abs(map_y - int(self.map_size_y / 2)) < 2:
+                            continue
+                        self.local_grid_map[map_y, map_x] = 100 if range_data < 4.0 else 0
+                        # 주변 좌표도 장애물로 표시
+                        for dx in range(-3, 4):
+                            for dy in range(-3, 4):
+                                nx, ny = map_x + dx, map_y + dy
+                                if 0 <= nx < self.map_size_x and 0 <= ny < self.map_size_y:
+                                    self.local_grid_map[ny, nx] = 100
+            # 변경된 부분: 로컬 그리드 맵을 좌우로 뒤집고 상하로 뒤집기
+            flipped_map = np.flipud(np.fliplr(self.local_grid_map))
+            # 변경된 부분: 로컬 그리드 맵을 OccupancyGrid 메시지로 변환하여 게시
+            map_msg = OccupancyGrid()
+            map_msg.header.stamp = self.get_clock().now().to_msg()
+            map_msg.header.frame_id = 'map'
+            map_msg.info.width = self.map_size_x
+            map_msg.info.height = self.map_size_y
+            map_msg.info.resolution = self.map_resolution
+            map_msg.info.origin.position.x = self.map_center_x
+            map_msg.info.origin.position.y = self.map_center_y
+            map_msg.info.origin.position.z = 0.0
+            map_msg.info.origin.orientation.x = 0.0
+            map_msg.info.origin.orientation.y = 0.0
+            map_msg.info.origin.orientation.z = 0.0
+            map_msg.info.origin.orientation.w = 1.0
+            map_data = flipped_map.flatten().tolist()
+            map_msg.data = map_data
+            self.map_pub.publish(map_msg)
 
 def main(args=None):
     rclpy.init(args=args)

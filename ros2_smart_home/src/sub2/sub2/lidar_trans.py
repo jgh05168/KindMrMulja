@@ -10,8 +10,8 @@ import tf2_ros
 class lidarTrans(Node):
     def __init__(self):
         super().__init__('lidar_trans')
-        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
-        self.pcd_pub = self.create_publisher(PointCloud, 'pcd', 10)
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 1)
+        self.pcd_pub = self.create_publisher(PointCloud, 'pcd', 1)
         self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
         self.odom_msg = Odometry()
         self.is_odom = False
