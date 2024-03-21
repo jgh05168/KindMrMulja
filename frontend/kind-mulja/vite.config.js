@@ -21,7 +21,7 @@ export default defineConfig({
       manifest: {
         name: "친절한 물자씨",
         short_name: "Mr.Mulja",
-        theme_color: "#111111",
+        theme_color: "#111112",
         display: "standalone",
         icons: [
           {
