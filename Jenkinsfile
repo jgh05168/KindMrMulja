@@ -52,12 +52,12 @@ pipeline {
                     steps {
                         script {
                             def frontContainerExists = sh(script: "docker ps -a --filter name=${FRONT_CONTAINER_NAME}", returnStatus: true)
+                            echo "${frontContainerExists}"
                             if (frontContainerExists) {
                                 echo "${frontContainerExists}"
                                 sh "docker stop ${FRONT_CONTAINER_NAME}"
                                 sh "docker rm ${FRONT_CONTAINER_NAME}"
                             } else {
-                                echo "${frontContainerExists}"
                                 echo "Frontend container does not exist. Skipping deletion."
                             }
                         }
@@ -67,12 +67,11 @@ pipeline {
                     steps {
                         script {
                             def backContainerExists = sh(script: "docker ps -a --filter name=${BACK_CONTAINER_NAME}", returnStatus: true)
+                            echo "${frontContainerExists}"
                             if (backContainerExists) {
-                                echo "${frontContainerExists}"
                                 sh "docker stop ${BACK_CONTAINER_NAME}"
                                 sh "docker rm ${BACK_CONTAINER_NAME}"
                             } else {
-                                echo "${frontContainerExists}"
                                 echo "backend container does not exist. Skipping deletion."
                             }
                         }
