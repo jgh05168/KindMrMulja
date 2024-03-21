@@ -1,4 +1,5 @@
 import socketio
+import json
 
 
 # client 는 socketio의 기본 API로 구성된 노드입니다. 서버와 연결을 시도해서 서버와 통신을 합니다.
@@ -16,6 +17,8 @@ import socketio
 # 로직 1. 클라이언트 소켓 생성
 sio = socketio.Client()
 
+# 지역 
+
 
 # 서버 연결 
 @sio.event
@@ -29,7 +32,26 @@ def connect():
 @sio.event
 def order(data):
     print('recevied massage from server : ',data)
-    
+    # json 받기 
+    try:
+        json_data=json.loads(data)
+        #json 파싱 
+        local_num=json_data.get('local_num')
+        target_grid=json_data.get('target_grid')
+        
+        if local_num is not None and target_grid is not None:
+            x = target_grid.get('x')  
+            y = target_grid.get('y')
+            
+            #target_grid 목표 지정 이동
+            
+            
+            
+
+        else:
+            print('not found num and grid')
+    except json.JSONDecodeError:
+        print('Invalid JSON format:', data)
     
 @sio.event
 def disconnect():
@@ -43,4 +65,4 @@ sio.connect('http://localhost:12001/')
 # 로직 4. 데이터 송신
 
 
-sio.wait()
+# sio.wait()

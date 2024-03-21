@@ -21,7 +21,14 @@ io.on('connection',socket=>{
     });
 
     //ros로 보내는 메세지 (msgName, data)
-    io.emit('order', 'hi');
+    const jsonData = {
+        num: 123,
+        grid: {
+            x: 12,
+            y: 13
+        }
+    };
+    io.emit('order', JSON.stringify(jsonData));
 
 })
 
