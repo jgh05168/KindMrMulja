@@ -19,23 +19,18 @@ class RequestMsgHandControl(Node):
         self.odom_subscriber = self.create_subscription(Odometry,'/odom',self.listener_callback,10)
         self.turtlebot_status = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.turtlebot_status_cb,10)
 
-        # 2. 트럭 위치
-        self.truck_x=-16.0
-        self.truck_y=-8.0
+        # 2. 상품 및 트럭 위치 subscription
+        self.target_grid_sub=self.create_subscription(TargetGrid,'/target_grid',self.target_grid_cb,10)
+        self.moving_x=0.0
+        self.moving_y=0.0
         
         # 3. 충전소 위치
-        self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
-        self.charge_x=-8.0
-        self.charge_y=-4.0
-        
-        # 충전소 위치 임의 저장
-        # self.target_publisher=self.create_publisher(TargetGrid,'/target_grid',1)
-        # self.target_publisher=self.create_publisher(PoseStamped,'/target_grid',1)
-        # self.charge_site_x=10
-        # self.charge_site_y=10
+        # self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
+    
         
         # request 요청 publisher 생성
         self.request_handcontrol_publisher=self.create_publisher(RequestHandControl,'/request_handcontrol',10)
+        self.target_publisher=self.create_publisher(PoseStamped,'goal_pose',1)
         
         ## 제어 메시지 변수 생성 
         #subscriber
@@ -44,15 +39,17 @@ class RequestMsgHandControl(Node):
         self.is_turtlebot_status=False
         self.turtlebot_status_msg=TurtlebotStatus()
         self.goal_msg=PoseStamped()
+        self.target_grid_msg=TargetGrid()
         
-        self.goal_x, self.goal_y=0,0
         
         #publisher
         self.request_hand_control_msg=RequestHandControl()
         self.request_target_msg=PoseStamped()
         
         # Timer 1초마다 실행 
-        self.timer = self.create_timer(1, self.timer_callback)
+        self.timer = self.create_timer(30, self.timer_callback)
+        
+        
         
     def listener_callback(self,msg):
         self.is_odom=True
@@ -66,11 +63,27 @@ class RequestMsgHandControl(Node):
         self.is_turtlebot_status=True
         self.turtlebot_status_msg=msg
         
+    def target_grid_cb(self,msg):
+        self.target_grid_msg=msg
+        print("msg: ",msg)
+        print("callback fun: ", self.target_grid_msg)
+
+        
     def timer_callback(self):  
         
-        # 4. 로봇은 물건 앞에 위치한다. 
-
-        # self.target_publisher.publish(self.request_target_msg)
+        
+        # 4. 로봇은 물건 앞에 위치한다.
+        if self.target_grid_msg:
+            print(self.target_grid_msg.product_x)
+            print(self.target_grid_msg.product_y)
+            self.target_publisher.publish(self.request_target_msg)
+            self.request_target_msg.header.frame_id = 'map'
+            self.request_target_msg.pose.position.x=self.target_grid_msg.product_x
+            self.request_target_msg.pose.position.y=self.target_grid_msg.product_y
+            self.target_publisher.publish(self.request_target_msg)
+            print(self.request_target_msg)
+        else: 
+            print("request_target is None")
         
         # 5. 물건을 든다. 
         # 터틀봇 상태가 ture이고 can_lift가 ture인경우
@@ -79,16 +92,18 @@ class RequestMsgHandControl(Node):
             self.request_handcontrol_publisher.publish(self.request_hand_control_msg)     
  
             # 6. 물건을 들고 이동한다. 
-            # self.request_target_msg.header.frame_id = 'map'
-            # self.request_target_msg.pose.position.x=self.truck_x
-            # self.request_target_msg.pose.position.y=self.truck_y
-            # self.target_publisher.publish(self.request_target_msg)
+            self.request_target_msg.header.frame_id = 'map'
+            self.moving_x=self.target_grid_msg.moving_zone_x
+            self.moving_y=self.target_grid_msg.moving_zone_y
+            self.request_target_msg.pose.position.x=self.moving_x
+            self.request_target_msg.pose.position.y=self.moving_y
+            self.target_publisher.publish(self.request_target_msg)
     
         # 7. 로봇은 목적지에 위치한다. 
         x=self.odom_msg.pose.pose.position.x
         y=self.odom_msg.pose.pose.position.y
         # if abs(self.request_target_msg.pose.position.x-x)<=1 and abs(self.request_target_msg.pose.position.y-y)<=1:
-        if abs(self.goal_x-x)<=1 and abs(self.goal_y-y)<=1:
+        if abs(self.moving_x-x)<=1 and abs(self.moving_y-y)<=1:
             
             # 8. 물건 preview
             self.request_hand_control_msg.control_mode=1        

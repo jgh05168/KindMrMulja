@@ -1,5 +1,8 @@
 import socketio
 import json
+import asyncio
+import rclpy
+from ssafy_msgs.msg import TargetGrid
 
 
 # client 는 socketio의 기본 API로 구성된 노드입니다. 서버와 연결을 시도해서 서버와 통신을 합니다.
@@ -14,23 +17,36 @@ import json
 # 3. 서버 연결
 # 4. 데이터 송신
 
-# 로직 1. 클라이언트 소켓 생성
-sio = socketio.Client()
+# 트럭 위치 배열 
+truct_x=[10.0,20.0,30.0,40.0,50.0]
+truct_y=[100.0,100.0,100.0,100.0,100.0]
 
-# 지역 
+# 로직 1. 클라이언트 소켓 생성
+sio = socketio.AsyncClient()
+# sio = socketio.Client()
+
+rclpy.init()
+
+location_node=rclpy.create_node('socket_to_location_publisher')
+
+location_publisher=location_node.create_publisher(TargetGrid,'/target_grid',10)
 
 
 # 서버 연결 
 @sio.event
-def connect():
+async def connect():
     print('connection established')
     
-    sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
+    await sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
 
 
 # 로직 2. 데이터 수신 콜백함수
+# 1. json 파싱
+# 2. TargetGrid msg 작성
+# 3. msg Publish
+ 
 @sio.event
-def order(data):
+async def order(data):
     print('recevied massage from server : ',data)
     # json 받기 
     try:
@@ -40,29 +56,46 @@ def order(data):
         target_grid=json_data.get('target_grid')
         
         if local_num is not None and target_grid is not None:
-            x = target_grid.get('x')  
-            y = target_grid.get('y')
+            product_x = float(target_grid.get('x'))
+            product_y = float(target_grid.get('y'))
             
-            #target_grid 목표 지정 이동
+            #target_grid msg 작성 및 publish
+            moving_zone_x=truct_x[int(local_num)-1]
+            moving_zone_y=truct_y[int(local_num)-1]
             
+            location_msg=TargetGrid()
+            location_msg.product_x=product_x
+            location_msg.product_y=product_y
+            location_msg.moving_zone_x=moving_zone_x
+            location_msg.moving_zone_y=moving_zone_y
+            location_msg.is_done=False
+            location_publisher.publish(location_msg)
+            print(location_msg)
             
-            
-
         else:
             print('not found num and grid')
     except json.JSONDecodeError:
         print('Invalid JSON format:', data)
     
 @sio.event
-def disconnect():
-    print('disconnected from server')
+async def disconnect():
+    await print('disconnected from server')
+    
+async def start_socketio():
+    await sio.connect('http://localhost:12001/')
+    await sio.wait()
+
+async def main():
+    await start_socketio()
+
+if __name__ == '__main__':
+    asyncio.run(main())
 
 
 # 로직 3. 서버 연결
 # sio.connect('http://ec2-3-34-134-166.ap-northeast-2.compute.amazonaws.com:12001/')
-sio.connect('http://localhost:12001/')
+# sio.connect('http://localhost:12001/')
 
 # 로직 4. 데이터 송신
-
 
 # sio.wait()
