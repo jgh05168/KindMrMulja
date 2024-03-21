@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const PORT = 3000;
-const cors = require("cors");
 const pool = require("./DB.js");
 const userRouter = require("./route/users.js");
 const productRouter = require("./route/product.js");
