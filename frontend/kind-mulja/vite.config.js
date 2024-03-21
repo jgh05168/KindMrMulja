@@ -19,8 +19,8 @@ export default defineConfig({
       },
       injectRegister: 'auto',
       manifest: {
-        name: "Vue PWA",
-        short_name: "PWA",
+        name: "친절한 물자씨",
+        short_name: "Mr.Mulja",
         theme_color: "#111111",
         display: "standalone",
         icons: [
