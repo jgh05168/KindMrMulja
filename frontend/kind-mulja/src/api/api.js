@@ -1,6 +1,6 @@
 import axios from 'axios'
 //여기 사이트에 json 데이터 파일 있음
-const api_url = 'http://localhost:3000'
+const api_url = 'http://j10c109.p.ssafy.io:3000'
 
 export class Service {
   static SignIn(email, password) {
