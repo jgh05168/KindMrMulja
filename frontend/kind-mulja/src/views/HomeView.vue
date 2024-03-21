@@ -32,6 +32,10 @@ const items = computed(() => {
     return category_product
   }
 })
+
+// onMounted(() => {
+//   productStore.now_category = 'popular'
+// })
 </script>
 
 <style scoped></style>

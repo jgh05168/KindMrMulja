@@ -10,7 +10,7 @@
               :icon="item.icon"
               aspect-ratio="1"
               class="bg-grey-lighten-2"
-              :class="{ 'selected-category': NowCategory === item.id }"
+              :class="{ 'selected-category': productStore.now_category === item.id }"
               @click="toggle(item.id)"
               size="large"
               style="border-radius: 20%"

@@ -7,10 +7,15 @@
       <p>곧 친절한 문자씨가 상품을 준비해줄 거에요!</p>
     </div>
 
-    <BlackButton class="go-order-list" button-width="360px">
+    <BlackButton @click="router.push({ name: 'order' })" class="go-order-list" button-width="360px">
       <template #button-text>주문정보 확인하기</template>
     </BlackButton>
-    <BlackButton class="go-order-list" button-width="360px" color="#fafafa">
+    <BlackButton
+      @click="router.push({ name: 'home' })"
+      class="go-order-list"
+      button-width="360px"
+      color="#fafafa"
+    >
       <template #button-text>BACK TO HOME</template>
     </BlackButton>
   </div>
@@ -18,6 +23,9 @@
 
 <script setup>
 import BlackButton from '@/components/BlackButton.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 </script>
 
 <style scoped>
