@@ -3,34 +3,12 @@
     <v-btn icon="mdi-chevron-left" style="position: absolute; left: -5%; top: 3%; z-index: 99">
     </v-btn>
 
-    <ProductItem>
-      <template #item-img>
-        <v-img
-          aspect-ratio="3/4"
-          src="https://source.unsplash.com/random/300x400/?furniture"
-          style="border-bottom-left-radius: 10%"
-        >
-        </v-img>
-      </template>
-      <template #item-title>
-        <p>상품 이름</p>
-      </template>
-      <template #item-price>
-        <div style="display: flex; flex-direction: row; justify-content: space-between">
-          <div>상품 가격</div>
-          <div>
-            <v-btn :disabled="cnt <= 1" @click="cnt--">-</v-btn>
-            <input style="width: 20px" type="number" :value="cnt" />
-            <v-btn @click="cnt++">+</v-btn>
-          </div>
-        </div>
-      </template>
-
-      <template #item-description>
-        상품 설명ㄴㅇㅁ나엄너아ㅣㅁ너이ㅏ먼엄나ㅣㅓ이ㅏㅁ너아ㅣㅁ너ㅏ임너ㅏㅣ엄 ㅇㅁㄴㅇㅁㄴㅇㅁ
-      </template>
-    </ProductItem>
-
+    <ProductDetail :item="productStore.item" />
+    <div>
+      <v-btn :disabled="cnt <= 1" @click="cnt--">-</v-btn>
+      <input style="width: 20px" type="number" :value="cnt" />
+      <v-btn @click="cnt++">+</v-btn>
+    </div>
     <div class="buy-button">
       <v-btn @click="zzim" width="55px" height="55px" rounded="lg" :icon="zzim_state"></v-btn>
       <BlackButton @click="addCart" :buttonWidth="width">
@@ -42,8 +20,17 @@
 
 <script setup>
 import { ref } from 'vue'
-import ProductItem from '@/components/home/item/ProductItem.vue'
+import { useRouter } from 'vue-router'
+import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
+import { useProductStore } from '@/stores/product'
+import Service from '@/api/api'
+import { useAuthStore } from '@/stores/auth'
+
+const productStore = useProductStore()
+const authStore = useAuthStore()
+
+const router = useRouter()
 
 const width = ref('280px')
 const cnt = ref(1)
@@ -61,8 +48,19 @@ const zzim = () => {
   }
 }
 
-const addCart = () => {
+const addCart = async () => {
   // 사용자 장바구니에 추가 요청
+  const addToCart_res = await Service.addToCart(
+    authStore.user_id,
+    productStore.now_product_id,
+    cnt.value
+  )
+  // 장바구니에 추가되면 모달창 띄워야 함
+  if (addToCart_res) {
+    // 만약 로그인 안되어 있으면 로그인 창으로 이동
+    // 로그인 후 현재 창으로 올 수 있도록 해야 됨
+    router.push({name:'cart',})
+  }
 }
 </script>
 
@@ -70,6 +68,7 @@ const addCart = () => {
 .detail-frame {
   position: relative;
   margin: 0 7%;
+  padding-bottom: 100px;
 }
 
 .buy-button {
