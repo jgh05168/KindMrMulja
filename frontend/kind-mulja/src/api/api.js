@@ -310,6 +310,7 @@ export class Service {
   }
 
   static createOrder(order_info) {
+    return new Promise((resolve, reject) => {
     axios({
       method: 'post',
       url: api_url + '/order',
@@ -323,10 +324,12 @@ export class Service {
       .then((res) => {
         const data = res.data
         console.log('주문', data)
+        resolve(data)
       })
       .catch((error) => {
-        throw new Error(`주문 실패: ${error.message}`)
+        reject(new Error(`주문 실패: ${error.message}`))
       })
+    })
   }
 
   static getOrderList(user_id) {
