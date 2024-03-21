@@ -1,7 +1,7 @@
 import axios from 'axios'
 //여기 사이트에 json 데이터 파일 있음
-const api_url = 'https://j10c109.p.ssafy.io:3000'
-
+const api_url = 'http://localhost:3000'
+// const api_url = 'http://j10c109.p.ssafy.io:3000'
 export class Service {
   static SignIn(email, password) {
     return new Promise((resolve, reject) => {
@@ -169,48 +169,48 @@ export class Service {
       })
   }
 
-  static addToCart(user_id,product_id,product_quentity) {
+  static addToCart(user_id, product_id, product_quentity) {
     return new Promise((resolve, reject) => {
-   axios({
-      method: 'post',
-      url: api_url + '/product/add-shopping-cart',
-      data: {
-        user_id: user_id,
-        product_id: product_id,
-        product_quentity: product_quentity
-      }
+      axios({
+        method: 'post',
+        url: api_url + '/product/add-shopping-cart',
+        data: {
+          user_id: user_id,
+          product_id: product_id,
+          product_quentity: product_quentity
+        }
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('장바구니 담기 : ', data)
+          resolve(data.result)
+        })
+        .catch((error) => {
+          reject(new Error(`장바구니 담기 실패: ${error.message}`))
+        })
     })
-    .then ((res) => {
-      const data = res.data
-      console.log('장바구니 담기 : ', data)
-      resolve(data.result)
-    })
-    .catch((error) => {
-      reject(new Error(`장바구니 담기 실패: ${error.message}`))
-    });
-  })
- }
+  }
 
   static cartList(user_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method : 'get',
-      url : api_url + `/cart/${user_id}`,
+      axios({
+        method: 'get',
+        url: api_url + `/cart/${user_id}`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('장바구니 목록 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`장바구니 목록 불러오기 실패: ${error.message}`))
+        })
     })
-    .then ((res) => {
-      const data = res.data
-      console.log('장바구니 목록 : ', data)
-      resolve(data)
-    })
-    .catch((error) => {
-      reject(new Error(`장바구니 목록 불러오기 실패: ${error.message}`))
-    });
-  })
   }
 
-  static cartUpdate(cart_id,  product_quentity) {
+  static cartUpdate(cart_id, product_quentity) {
     return new Promise((resolve, reject) => {
-  axios({
+      axios({
         method: 'patch',
         url: api_url + `/cart/cart-update`,
         data: {
@@ -218,35 +218,32 @@ export class Service {
           product_quentity: product_quentity
         }
       })
-
-    .then ((res) => {
-      const data = res.data
-      console.log('장바구니 업데이트 : ', data)
-      resolve(data)
+        .then((res) => {
+          const data = res.data
+          console.log('장바구니 업데이트 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`장바구니 업데이트 실패: ${error.message}`))
+        })
     })
-    .catch((error) => {
-      reject(new Error(`장바구니 업데이트 실패: ${error.message}`))
-    });
-  })
-}
-
+  }
 
   static cartDelete(cart_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'delete',
-      url: api_url + `/cart/${cart_id}`
+      axios({
+        method: 'delete',
+        url: api_url + `/cart/${cart_id}`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('장바구니 에서 상품 삭제 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`장바구니 상품 삭제 실패: ${error.message}`))
+        })
     })
-
-    .then ((res) => {
-      const data = res.data
-      console.log('장바구니 에서 상품 삭제 : ', data)
-      resolve(data)
-    })
-    .catch((error) => {
-      reject(new Error(`장바구니 상품 삭제 실패: ${error.message}`))
-    });
-  })
   }
 
   static addDelivery(info) {
@@ -311,24 +308,24 @@ export class Service {
 
   static createOrder(order_info) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'post',
-      url: api_url + '/order',
-      data: {
-        user_id: order_info.user_id,
-        address_id: order_info.address_id,
-        order_type: order_info.order_type,
-        selected_cart_id: order_info.selected_cart_id
-      }
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('주문', data)
-        resolve(data)
+      axios({
+        method: 'post',
+        url: api_url + '/order',
+        data: {
+          user_id: order_info.user_id,
+          address_id: order_info.address_id,
+          order_type: order_info.order_type,
+          selected_cart_id: order_info.selected_cart_id
+        }
       })
-      .catch((error) => {
-        reject(new Error(`주문 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('주문', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`주문 실패: ${error.message}`))
+        })
     })
   }
 
@@ -344,18 +341,18 @@ export class Service {
     //   "total_price": int
     //   }
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'get',
-      url: api_url + `/order/order-list/${user_id}`
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('주문목록 묶음 리스트', data)
-        resolve(data)
+      axios({
+        method: 'get',
+        url: api_url + `/order/order-list/${user_id}`
       })
-      .catch((error) => {
-        reject(new Error(`주문목록 묶음 리스트 조회 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('주문목록 묶음 리스트', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`주문목록 묶음 리스트 조회 실패: ${error.message}`))
+        })
     })
   }
 
@@ -370,18 +367,18 @@ export class Service {
     //   "product_price": int
     //   }
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'get',
-      url: api_url + `/order/order-list-detail/${order_id}`
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('주문목록 묶음 상세 리스트', data)
-        resolve(data)
+      axios({
+        method: 'get',
+        url: api_url + `/order/order-list-detail/${order_id}`
       })
-      .catch((error) => {
-        reject(new Error(`주문목록 묶음 상세 리스트 조회 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('주문목록 묶음 상세 리스트', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`주문목록 묶음 상세 리스트 조회 실패: ${error.message}`))
+        })
     })
   }
 }
