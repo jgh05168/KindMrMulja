@@ -31,16 +31,13 @@ def connect():
 # 로직 2. 데이터 수신 콜백함수
 @sio.event
 def order(data):
-<<<<<<< HEAD
-    print(data[0][0]['product_id'])
-=======
     print('recevied massage from server : ',data)
     # json 받기 
     try:
         json_data=json.loads(data)
         #json 파싱 
-        local_num=json_data.get('local_num')
-        target_grid=json_data.get('target_grid')
+        local_num=json_data.get('num')
+        target_grid=json_data.get('grid')
         
         if local_num is not None and target_grid is not None:
             x = target_grid.get('x')  
@@ -55,7 +52,6 @@ def order(data):
             print('not found num and grid')
     except json.JSONDecodeError:
         print('Invalid JSON format:', data)
->>>>>>> 09133b89a4261340eadbb994ddfaf62a3bfab5a4
     
 @sio.event
 def disconnect():
@@ -69,9 +65,5 @@ sio.connect('http://localhost:12001/')
 # 로직 4. 데이터 송신
 
 
-<<<<<<< HEAD
 sio.wait()
 sio.disconnect()
-=======
-# sio.wait()
->>>>>>> 09133b89a4261340eadbb994ddfaf62a3bfab5a4

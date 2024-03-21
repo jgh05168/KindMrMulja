@@ -58,10 +58,10 @@ order.post("", async (req, res) => {
       order_id[0][0].order_id,
     ]);
 
-    // for (let i = 0; i < selected_cart_id.length; i++) {
-    //   const query = `DELETE FROM shopping_cart WHERE cart_id = ?`;
-    //   await pool.query(query, [selected_cart_id[i]]);
-    // }
+    for (let i = 0; i < selected_cart_id.length; i++) {
+      const query = `DELETE FROM shopping_cart WHERE cart_id = ?`;
+      await pool.query(query, [selected_cart_id[i]]);
+    }
 
     return res.json({ result: true }); // 성공적인 응답을 반환
   } catch (error) {
