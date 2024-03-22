@@ -8,6 +8,7 @@
       variant="outlined"
       v-model="address"
       @click="sample6_execDaumPostcode()"
+      :error-messages="address_errors"
     >
     </v-text-field>
     <v-text-field
@@ -24,18 +25,27 @@
       label="배송지명"
       variant="outlined"
       v-model="address_name"
+      :error-messages="address_name_errors"
     ></v-text-field>
 
-    <v-text-field clearable label="이름" variant="outlined" v-model="name"></v-text-field>
+    <v-text-field
+      clearable
+      label="이름"
+      variant="outlined"
+      v-model="name"
+      :error-messages="name_errors"
+    ></v-text-field>
 
     <h3>연락처</h3>
     <v-text-field
       clearable
       label="전화번호"
-      hint="국가번호 없이 입력해주세요."
       variant="outlined"
       v-model="phone_number"
+      :error-messages="phone_number_errors"
+      hint="하이픈(-)을 빼고 입력해주세요"
     ></v-text-field>
+
     <v-checkbox
       v-model="is_default"
       color="secondary"
@@ -52,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, watch } from 'vue'
 import BlackButton from '@/components/BlackButton.vue'
 import Service from '@/api/api.js'
 import { useAuthStore } from '@/stores/auth'
@@ -67,9 +77,53 @@ const address_name = ref('')
 const combined_address = ref('')
 const name = ref('')
 const phone_number = ref('')
+const address_errors = ref([])
+const address_name_errors = ref([])
+const name_errors = ref([])
+const phone_number_errors = ref([])
 let address_label = ref('우편번호 찾기')
+
+const validateForm = () => {
+  let isValid = true
+  address_errors.value = []
+  address_name_errors.value = []
+  name_errors.value = []
+  phone_number_errors.value = []
+
+  if (!address.value || !address.value.trim()) {
+    address_errors.value.push('주소를 입력해주세요.')
+    isValid = false
+  }
+
+  if (!address_name.value || !address_name.value.trim()) {
+    address_name_errors.value.push('배송지명을 입력해주세요.')
+    isValid = false
+  }
+
+  if (!name.value || !name.value.trim()) {
+    name_errors.value.push('이름을 입력해주세요.')
+    isValid = false
+  }
+
+  if (!phone_number.value || !phone_number.value.trim()) {
+    phone_number_errors.value.push('전화번호를 입력해주세요.')
+    isValid = false
+  }
+
+  const phoneRegex = /^\d{10,11}$/ // 숫자 10자리 또는 11자리
+  if (!phoneRegex.test(phone_number.value.trim())) {
+    phone_number_errors.value.push(
+      '올바른 전화번호 형식이 아닙니다. (숫자 10자리 또는 11자리만 입력 가능)'
+    )
+    isValid = false
+  }
+
+  return isValid
+}
+
 const createAddress = async () => {
   try {
+    if (!validateForm()) return
     const info = {
       user_id: authStore.user_id,
       address_name: address_name.value,
@@ -82,7 +136,9 @@ const createAddress = async () => {
     console.log(info)
     const results = await Service.addDelivery(info)
     console.log(results)
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const toggle = () => {
@@ -95,38 +151,23 @@ const toggle = () => {
 function sample6_execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function (data) {
-      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-      // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-      var addr = '' // 주소 변수
-      var extraAddr = '' // 참고항목 변수
-
-      //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+      var addr = ''
+      var extraAddr = ''
       if (data.userSelectedType === 'R') {
-        // 사용자가 도로명 주소를 선택했을 경우
         addr = data.roadAddress
       } else {
-        // 사용자가 지번 주소를 선택했을 경우(J)
         addr = data.jibunAddress
       }
-
-      // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
       if (data.userSelectedType === 'R') {
-        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
         if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
           extraAddr += data.bname
         }
-        // 건물명이 있고, 공동주택일 경우 추가한다.
         if (data.buildingName !== '' && data.apartment === 'Y') {
           extraAddr += extraAddr !== '' ? ', ' + data.buildingName : data.buildingName
         }
-        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
         if (extraAddr !== '') {
           extraAddr = ' (' + extraAddr + ')'
         }
-        // 조합된 참고항목을 해당 필드에 넣는다.
         extra_address.value = extraAddr
       } else {
         extra_address.value = ''
@@ -136,6 +177,34 @@ function sample6_execDaumPostcode() {
     }
   }).open()
 }
+
+watch(address, (newValue) => {
+  if (newValue && newValue.trim() !== '') {
+    address_errors.value = []
+  }
+})
+
+// address_name 값이 변경될 때마다 유효성 검사 수행
+watch(address_name, (newValue) => {
+  if (newValue && newValue.trim() !== '') {
+    address_name_errors.value = []
+  }
+})
+
+// name 값이 변경될 때마다 유효성 검사 수행
+watch(name, (newValue) => {
+  if (newValue && newValue.trim() !== '') {
+    name_errors.value = []
+  }
+})
+
+// phone_number 값이 변경될 때마다 유효성 검사 수행
+watch(phone_number, (newValue) => {
+  if (newValue && newValue.trim() !== '') {
+    phone_number_errors.value = []
+  }
+})
+
 watchEffect(() => {
   combined_address.value = address.value + ' ' + extra_address.value
   console.log(combined_address.value)
