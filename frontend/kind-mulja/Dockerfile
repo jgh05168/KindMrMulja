@@ -1,6 +1,6 @@
 FROM node:20.11.1
 
-WORKDIR /kind-mulja
+WORKDIR /app
 
 COPY package.json .
 COPY package-lock.json .

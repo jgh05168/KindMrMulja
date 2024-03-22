@@ -82,9 +82,10 @@
       </CartRecipt>
     </div>
 
-    <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
-      <template #button-text>결제하기</template>
-    </BlackButton>
+      <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
+        <template #button-text>결제하기</template>
+      </BlackButton>
+      
   </div>
 </template>
 
@@ -206,5 +207,12 @@ onMounted(async () => {
   border-radius: 2px sloid #424242;
   background-color: antiquewhite;
   transition: ease-in-out 0.3s;
+}
+
+.modal-choice-btn {
+  width: 90%;
+  height: 55px;
+  margin: 15px auto;
+  border: solid 2px black;
 }
 </style>
