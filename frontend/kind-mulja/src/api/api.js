@@ -1,7 +1,7 @@
 import axios from 'axios'
 //여기 사이트에 json 데이터 파일 있음
 //const api_url = 'http://localhost:3000'
-const api_url = 'https://j10c109.p.ssafy.io/api/'
+const api_url = 'https://j10c109.p.ssafy.io/api'
 export class Service {
   static SignIn(email, password) {
     return new Promise((resolve, reject) => {
@@ -247,25 +247,29 @@ export class Service {
   }
 
   static addDelivery(info) {
-    axios({
-      method: 'post',
-      url: api_url + '/delivery/delivery-address/add',
-      data: {
-        user_id: info.user_id,
-        address_name: info.address_name,
-        user_name: info.user_name,
-        address_normal: info.address_normal,
-        address_detail: info.address_detail
-      }
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: api_url + '/delivery/delivery-address/add',
+        data: {
+          user_id: info.user_id,
+          address_name: info.address_name,
+          user_name: info.user_name,
+          address_normal: info.address_normal,
+          address_detail: info.address_detail,
+          phone_number: info.phone_number,
+          is_default: info.is_default
+        }
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('배송지 추가 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`배송지 추가 실패: ${error.message}`))
+        })
     })
-      .then((res) => {
-        const data = res.data
-        console.log('배송지 추가 : ', data)
-        return data
-      })
-      .catch((error) => {
-        throw new Error(`배송지 추가 실패: ${error.message}`)
-      })
   }
 
   static getAddress(user_id) {
