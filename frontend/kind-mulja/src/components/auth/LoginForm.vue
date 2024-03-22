@@ -36,9 +36,11 @@
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Service from '@/api/api.js'
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
+import { useProductStore } from '@/stores/product'
 
+const productStore = useProductStore()
 const orderStore = useOrderStore()
 const authStore = useAuthStore()
 const router = useRouter()
@@ -62,10 +64,16 @@ const Login = async () => {
   if (login_res.result) {
     // login_res.user_id
     authStore.user_id = login_res.user_id
-    console.log('store 에 저장 확인',authStore.user_id)
+    console.log('store 에 저장 확인', authStore.user_id)
     orderStore.address_list = await Service.getAddress(login_res.user_id)
     router.push({ name: 'home' })
   }
+  // 로그인 요청 완료 되면 사용자별로 품들을 찜 했는지 안헀는지 체크해줘야 함
+  productStore.product_list.forEach(async (product) => {
+    const check_res = await Service.checkProductWish(authStore.user_id, product.product_id)
+    console.log('상품 찜 여부 : ', check_res.result)
+    product.is_zzim = check_res.result
+  })
 }
 </script>
 

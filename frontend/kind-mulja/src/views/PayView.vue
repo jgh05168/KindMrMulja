@@ -115,7 +115,7 @@ const orderCreate = async () => {
     user_id: authStore.user_id,
     address_id: address_id.value,
     order_type: orderStore.order_type,
-    selected_cart_id: JSON.stringify(selected_cart_id.value)
+    selected_cart_id: selected_cart_id.value
   }
   console.log(order_info)
   const pay_res = await Service.createOrder(order_info)
