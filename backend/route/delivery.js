@@ -10,19 +10,27 @@ delivery.post("/delivery-address/add", async (req, res) => {
   const user_name = req.body.user_name;
   const address_normal = req.body.address_normal;
   const address_detail = req.body.address_detail;
-
+  const phone_number = req.body.phone_number;
+  const is_default = req.body.is_default;
   try {
-    const query = `INSERT INTO address_information (user_id, address_name, user_name, address_normal, address_detail, is_default) VALUES (?,?,?,?,?,?)`;
+    const query3 = `SELECT address_id FROM address_information WHERE is_default = 1 and user_id = ?`;
+    const result2 = await pool.query(query3, user_id);
+    const query = `INSERT INTO address_information (user_id, address_name, user_name, address_normal, address_detail, phone_number, is_default) VALUES (?,?,?,?,?,?,?)`;
     const result = await pool.query(query, [
       user_id,
       address_name,
       user_name,
       address_normal,
       address_detail,
-      0,
+      phone_number,
+      1,
     ]);
 
     if (result[0].affectedRows > 0) {
+      const query2 = `UPDATE address_information SET is_default = 0 WHERE address_id = ?`;
+      if (is_default === true) {
+        await pool.query(query2, result2[0][0].address_id);
+      }
       return res.json({ result: true });
     } else {
       return res.json({ result: false });
