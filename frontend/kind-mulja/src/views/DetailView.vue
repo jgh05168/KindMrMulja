@@ -12,12 +12,13 @@
     <div class="buy-button">
       <v-btn
         class="me-5"
-        @click="zzim"
+        @click="zzim(productStore.item.product_id)"
         width="55px"
         height="55px"
         rounded="lg"
-        :icon="zzim_state"
-      ></v-btn>
+        ><v-icon size="30" color="red-darken-1">{{ zzim_state }}</v-icon>
+      </v-btn>
+
       <CartModal :add-cart="addCart">
         <template v-slot:modal-button="slotProps">
           <BlackButton :buttonWidth="width" @click="slotProps.modalOpen">
@@ -46,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
@@ -54,6 +55,7 @@ import { useProductStore } from '@/stores/product'
 import Service from '@/api/api'
 import { useAuthStore } from '@/stores/auth'
 import CartModal from '@/components/cart/CartModal.vue'
+import { onMounted } from 'vue'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
@@ -63,17 +65,18 @@ const router = useRouter()
 const width = ref('280px')
 const cnt = ref(1)
 
-const is_zzim = ref(0)
-const zzim_state = ref('mdi-bookmark-outline')
-
-const zzim = () => {
-  is_zzim.value = ~is_zzim.value
-  // 사용자 찜 목록에 추가/삭제
-  if (is_zzim.value == 0) {
-    zzim_state.value = 'mdi-bookmark-outline'
+const is_zzim = ref(false)
+const zzim_state = computed(() => {
+  if (is_zzim.value) {
+    return 'mdi-heart'
   } else {
-    zzim_state.value = 'mdi-bookmark'
+    return 'mdi-heart-outline'
   }
+})
+
+const zzim = async (product_id) => {
+  // 사용자 찜 목록에 추가/삭제
+  is_zzim.value = await Service.toggleWish(authStore.user_id, product_id)
 }
 
 const addCart = async () => {
@@ -89,6 +92,12 @@ const addCart = async () => {
     // 로그인 후 현재 창으로 올 수 있도록 해야 됨
   }
 }
+
+onMounted(async () => {
+  if (authStore.user_id) {
+    is_zzim.value = Service.checkProductWish(authStore.user_id, productStore.item.product_id)
+  }
+})
 </script>
 
 <style scoped>

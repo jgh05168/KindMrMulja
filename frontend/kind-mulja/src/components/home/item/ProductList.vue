@@ -3,9 +3,10 @@
     <v-infinite-scroll height="900" side="end" @load="load">
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
-          <ProductItem @click="GoDetail(item.product_id)">
+          {{ item.is_zzim }}
+          <ProductItem>
             <template #item-img>
-              <div style="position: relative">
+              <div @click="GoDetail(item.product_id)">
                 <v-img
                   :aspect-ratio="1 / 1"
                   width="cover"
@@ -13,20 +14,6 @@
                   :src="`/product/${item.product_id}.jpg`"
                 >
                 </v-img>
-                <v-btn
-                  variant="plain"
-                  size="xs"
-                  style="
-                    width: 30px;
-                    height: 30px;
-                    position: absolute;
-                    bottom: 5%;
-                    right: 5%;
-                    padding: 0 0;
-                  "
-                >
-                  <v-img width="30" aspect-ratio="1/1" src="/src/assets/atom/addcart.png"></v-img>
-                </v-btn>
               </div>
             </template>
 
@@ -40,6 +27,12 @@
               <v-card-title>
                 <v-icon size="xs">mdi-currency-krw</v-icon>
                 {{ item.product_price }}
+                <v-btn size="xs" variant="plain" @click="zzim(item, item.product_id)">
+                  <v-icon v-if="item.is_zzim == true" size="30" color="red-darken-1"
+                    >mdi-heart</v-icon
+                  >
+                  <v-icon v-else size="30" color="red-darken-1">mdi-heart-outline</v-icon>
+                </v-btn>
               </v-card-title>
             </template>
           </ProductItem>
@@ -55,11 +48,13 @@ import { useRouter } from 'vue-router'
 import ProductItem from './ProductItem.vue'
 import Service from '@/api/api'
 import { useProductStore } from '@/stores/product'
+import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps({
   items: Array
 })
 
+const authStore = useAuthStore()
 const productStore = useProductStore()
 
 const router = useRouter()
@@ -86,6 +81,13 @@ const GoDetail = (id) => {
   getItemDetail(id)
   // 2. 응답 데이터가 온 다음에 데이터를 저장하거나 가지고 이동
   router.push({ name: 'detail', params: { id: id } })
+}
+
+const zzim = async (item, product_id) => {
+  // 내 찜 목록에 추가거나 삭제
+  // 추가하면 true, 삭제하면 false
+  await Service.toggleWish(authStore.user_id, product_id)
+  item.is_zzim = !item.is_zzim
 }
 
 const load = ({ side, done }) => {
