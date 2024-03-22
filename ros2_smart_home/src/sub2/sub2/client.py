@@ -18,8 +18,12 @@ from ssafy_msgs.msg import TargetGrid
 # 4. 데이터 송신
 
 # 트럭 위치 배열 
-truct_x=[10.0,20.0,30.0,40.0,50.0]
-truct_y=[100.0,100.0,100.0,100.0,100.0]
+truct_x=[130.0,20.0,30.0,40.0,50.0]
+truct_y=[235.0,50.0,50.0,50.0,50.0]
+
+# 터틀봇 충전소 위치 
+charge_x=30.0
+charge_y=30.0
 
 # 로직 1. 클라이언트 소켓 생성
 sio = socketio.AsyncClient()

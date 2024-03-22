@@ -33,6 +33,7 @@ setup(
             'lidar_trans = sub2.lidar_trans:main',
             'auto_handcontrol =sub2.auto_handcontrol:main',            
             'request_handcontrol=sub2.request_handcontrol:main',
+            'client=sub2.client:main',
 
         ],
     },

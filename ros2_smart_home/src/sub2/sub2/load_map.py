@@ -58,7 +58,7 @@ class loadMap(Node):
         
         # 로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
 
-        full_path = "C:\\2. SpecializationPJT\\SUB2\\ros2_smart_home\\src\\sub2\\map\\mapex8.txt"  # Provide the full path to your map file
+        full_path = "C:\\2. SpecializationPJT\\SUB2\\ros2_smart_home\\src\\sub2\\map\\map.txt"  # Provide the full path to your map file
         self.f = open(full_path, 'r')
 
         line = self.f.readline()

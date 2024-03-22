@@ -21,8 +21,8 @@ class RequestMsgHandControl(Node):
 
         # 2. 상품 및 트럭 위치 subscription
         self.target_grid_sub=self.create_subscription(TargetGrid,'/target_grid',self.target_grid_cb,10)
-        self.moving_x=0.0
-        self.moving_y=0.0
+        # self.moving_x=0.0
+        # self.moving_y=0.0
         
         # 3. 충전소 위치
         # self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
