@@ -5,13 +5,15 @@
   <div class="cart-frame">
     <div class="set-address">
       <div style="display: flex; justify-content: space-between; align-items: center">
-        <h3>배송지 설정</h3>
-        <SelectDialog
-          @click="getAddressMore()"
-          @update:addressId="updateAddressId"
-          @update:selectedAddress="updateSelectedAddress"
-          :address-list="address_list"
-        />
+        <h3 v-if="orderStore.order_type == 0">배송지 설정</h3>
+        <h3 v-else>픽업 장소</h3>
+        <div v-if="orderStore.order_type == 0">
+          <SelectDialog
+            @click="getAddressMore()"
+            @update:addressId="updateAddressId"
+            @update:selectedAddress="updateSelectedAddress"
+          />
+        </div>
       </div>
       <AddressItem :width="'360px'">
         <template v-slot:address-title="slotProps">
@@ -81,7 +83,6 @@ const router = useRouter()
 const orderStore = useOrderStore()
 const authStore = useAuthStore()
 
-const address_list = orderStore.address_list
 const item_price = orderStore.item_price
 const delivery_price = orderStore.delivery_price
 const total_price = orderStore.total_price
@@ -111,9 +112,18 @@ const selected_cart_id = computed(() => {
 })
 
 const orderCreate = async () => {
+  console.log(
+    '보내는 주소지',
+    JSON.stringify(selected_address.value.address_normal) +
+      ',' +
+      JSON.stringify(selected_address.value.address_detail)
+  )
   const order_info = {
     user_id: authStore.user_id,
-    address_id: address_id.value,
+    address_content:
+      JSON.stringify(selected_address.value.address_normal) +
+      ',' +
+      JSON.stringify(selected_address.value.address_detail),
     order_type: orderStore.order_type,
     selected_cart_id: selected_cart_id.value
   }
@@ -154,7 +164,7 @@ onMounted(() => {
 
 .order-info {
   position: fixed;
-  bottom: 20%;
+  bottom: 15%;
   margin: auto auto;
   width: 370px;
 }

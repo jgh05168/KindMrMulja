@@ -1,6 +1,6 @@
 <template>
   <div class="address-form">
-    <h2>배송주소</h2>
+    
     <!-- 도로명 주소 API 를 사용해 클릭하면 모달창, 선택 결과를 해당 value 값으로 사용 -->
     <v-text-field
       clearable
@@ -173,7 +173,7 @@ function sample6_execDaumPostcode() {
         extra_address.value = ''
       }
       address.value = addr
-      address_label = '주소'
+      address_label.value = '주소'
     }
   }).open()
 }

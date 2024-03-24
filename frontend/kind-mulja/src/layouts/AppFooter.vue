@@ -6,7 +6,7 @@
           <v-icon>mdi-home</v-icon>
         </v-btn>
 
-        <v-btn @click="router.push({ name: 'address' })">
+        <v-btn @click="router.push({ name: 'zzim' })">
           <v-icon>mdi-bookmark-outline</v-icon>
         </v-btn>
 

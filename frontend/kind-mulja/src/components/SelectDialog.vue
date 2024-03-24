@@ -25,7 +25,7 @@
           :width="'300px'"
           @click="clickAddress(address)"
           :class="{ 'selected-address': address.address_id == selected_Address }"
-          v-for="(address, idx) in props.addressList"
+          v-for="(address, idx) in address_list"
           :value="address.address_id"
           :key="idx"
         >
@@ -68,24 +68,24 @@
   </v-dialog>
 </template>
 <script setup>
+import Service from '@/api/api'
 import AddressItem from '@/components/AddressItem.vue'
 import CreateDialog from '@/components/CreateDialog.vue'
-import { defineProps, defineEmits } from 'vue'
-import { ref } from 'vue'
-
-const props = defineProps({
-  addressList: Array
-})
+import { useAuthStore } from '@/stores/auth'
+import { defineEmits } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const emit = defineEmits(['update:addressId', 'update:selectedAddress'])
+const authStore = useAuthStore()
 
 const dialog = ref(false)
+
+const address_list = ref([])
 
 const selected_Address = ref('')
 
 const clickAddress = (address) => {
   selected_Address.value = address
-
 }
 
 const saveChange = () => {
@@ -94,6 +94,11 @@ const saveChange = () => {
   emit('update:addressId', selected_Address.value.address_id)
   emit('update:selectedAddress', selected_Address.value)
 }
+
+onMounted(async () => {
+  console.log(useAuthStore.user_id)
+  address_list.value = await Service.getAddress(authStore.user_id)
+})
 </script>
 
 <style scoped>
