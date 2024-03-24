@@ -1,6 +1,10 @@
 <template>
   <div class="detail-frame">
-    <v-btn icon="mdi-chevron-left" style="position: absolute; left: -5%; top: 3%; z-index: 99">
+    <v-btn
+      @click="router.go(-1)"
+      icon="mdi-chevron-left"
+      style="position: absolute; left: -5%; top: 3%; z-index: 99"
+    >
     </v-btn>
 
     <ProductDetail :item="productStore.item" />
