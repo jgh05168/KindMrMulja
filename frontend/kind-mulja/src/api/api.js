@@ -325,7 +325,7 @@ export class Service {
         url: api_url + '/order',
         data: {
           user_id: order_info.user_id,
-          address_id: order_info.address_id,
+          address_content: order_info.address_content,
           order_type: order_info.order_type,
           selected_cart_id: order_info.selected_cart_id
         }
