@@ -86,6 +86,11 @@ const zzim = async (product_id) => {
 const addCart = async () => {
   // 사용자 장바구니에 추가 요청
   // 만약 로그인 안되어 있으면 로그인 창으로 이동
+  if (authStore.user_id == null) {
+    alert()
+    router.push({name:'login'})
+  } else {
+
   const addToCart_res = await Service.addToCart(
     authStore.user_id,
     productStore.now_product_id,
@@ -93,8 +98,8 @@ const addCart = async () => {
   )
   if (addToCart_res) {
     // 장바구니에 추가되면 모달창 띄워야 함
-    // 로그인 후 현재 창으로 올 수 있도록 해야 됨
   }
+}
 }
 
 onMounted(async () => {

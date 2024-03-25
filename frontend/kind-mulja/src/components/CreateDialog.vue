@@ -28,13 +28,6 @@
             variant="plain"
             @click="dialog = false"
           ></v-btn>
-
-          <v-btn
-            color="primary"
-            text="Save"
-            variant="tonal"
-            @click="dialog = false"
-          ></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
