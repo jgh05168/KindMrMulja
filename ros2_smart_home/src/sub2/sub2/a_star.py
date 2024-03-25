@@ -14,7 +14,7 @@ class a_star(Node):
         super().__init__('a_Star')
         self.map_sub = self.create_subscription(OccupancyGrid, 'map', self.map_callback, 1)
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.odom_callback, 1)
-        self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 1)
+        self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 10)
         self.a_star_pub = self.create_publisher(Path, 'global_path', 1)
         
         self.map_msg = OccupancyGrid()

@@ -21,8 +21,8 @@ class RequestMsgHandControl(Node):
 
         # 2. 상품 및 트럭 위치 subscription
         self.target_grid_sub=self.create_subscription(TargetGrid,'/target_grid',self.target_grid_cb,10)
-        # self.moving_x=0.0
-        # self.moving_y=0.0
+        self.moving_x=0.0
+        self.moving_y=0.0
         
         # 3. 충전소 위치
         # self.goal_sub = self.create_subscription(PoseStamped,'goal_pose', self.goal_callback, 1)
@@ -30,7 +30,7 @@ class RequestMsgHandControl(Node):
         
         # request 요청 publisher 생성
         self.request_handcontrol_publisher=self.create_publisher(RequestHandControl,'/request_handcontrol',10)
-        self.target_publisher=self.create_publisher(PoseStamped,'goal_pose',1)
+        self.target_publisher=self.create_publisher(PoseStamped,'goal_pose',10)
         
         ## 제어 메시지 변수 생성 
         #subscriber
@@ -47,7 +47,7 @@ class RequestMsgHandControl(Node):
         self.request_target_msg=PoseStamped()
         
         # Timer 1초마다 실행 
-        self.timer = self.create_timer(30, self.timer_callback)
+        self.timer = self.create_timer(3, self.timer_callback)
         
         
         
@@ -74,8 +74,8 @@ class RequestMsgHandControl(Node):
         
         # 4. 로봇은 물건 앞에 위치한다.
         if self.target_grid_msg:
-            print(self.target_grid_msg.product_x)
-            print(self.target_grid_msg.product_y)
+            # print(self.target_grid_msg.product_x)
+            # print(self.target_grid_msg.product_y)
             self.target_publisher.publish(self.request_target_msg)
             self.request_target_msg.header.frame_id = 'map'
             self.request_target_msg.pose.position.x=self.target_grid_msg.product_x

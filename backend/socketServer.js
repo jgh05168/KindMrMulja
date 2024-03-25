@@ -24,8 +24,8 @@ io.on('connection',socket=>{
     const jsonData = {
         local_num: 1,
         target_grid: {
-            x: 150.0,
-            y: 85.0
+            x: -44.0,
+            y: -39.0
         }
     };
     io.emit('order', JSON.stringify(jsonData));

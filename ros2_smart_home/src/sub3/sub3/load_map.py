@@ -86,8 +86,8 @@ class loadMap(Node):
                     '''
                     로직 3. 점유영역 근처 필터처리
                     '''
-                    for box_x in range(-5,6):
-                        for box_y in range(-5,6):
+                    for box_x in range(-2,3):
+                        for box_y in range(-2,3):
                             if  0< x+box_x < 250 and 0 < y+box_y <250 and grid[x+box_x][y+box_y]<80 :
                                 grid[x+box_x][y+box_y]=127
 
