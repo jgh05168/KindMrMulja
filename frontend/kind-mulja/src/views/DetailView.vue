@@ -16,11 +16,13 @@
     <div class="buy-button">
       <v-btn
         class="me-5"
-        @click="zzim(productStore.item.product_id)"
+        @click="zzim(productStore.now_product_id)"
         width="55px"
         height="55px"
         rounded="lg"
-        ><v-icon size="30" color="red-darken-1">{{ zzim_state }}</v-icon>
+      >
+        <v-icon v-if="is_zzim == true" size="30" color="red-darken-1">mdi-heart</v-icon>
+        <v-icon v-else size="30" color="red-darken-1">mdi-heart-outline</v-icon>
       </v-btn>
 
       <CartModal :add-cart="addCart">
@@ -51,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductDetail from '@/components/ProductDetail.vue'
 import BlackButton from '@/components/BlackButton.vue'
@@ -70,17 +72,11 @@ const width = ref('280px')
 const cnt = ref(1)
 
 const is_zzim = ref(false)
-const zzim_state = computed(() => {
-  if (is_zzim.value) {
-    return 'mdi-heart'
-  } else {
-    return 'mdi-heart-outline'
-  }
-})
 
 const zzim = async (product_id) => {
   // 사용자 찜 목록에 추가/삭제
-  is_zzim.value = await Service.toggleWish(authStore.user_id, product_id)
+  const res = await Service.toggleWish(authStore.user_id, product_id)
+  is_zzim.value = res.result
 }
 
 const addCart = async () => {
@@ -88,23 +84,24 @@ const addCart = async () => {
   // 만약 로그인 안되어 있으면 로그인 창으로 이동
   if (authStore.user_id == null) {
     alert()
-    router.push({name:'login'})
+    router.push({ name: 'login' })
   } else {
-
-  const addToCart_res = await Service.addToCart(
-    authStore.user_id,
-    productStore.now_product_id,
-    cnt.value
-  )
-  if (addToCart_res) {
-    // 장바구니에 추가되면 모달창 띄워야 함
+    const addToCart_res = await Service.addToCart(
+      authStore.user_id,
+      productStore.now_product_id,
+      cnt.value
+    )
+    if (addToCart_res) {
+      // 장바구니에 추가되면 모달창 띄워야 함
+    }
   }
-}
 }
 
 onMounted(async () => {
   if (authStore.user_id) {
-    is_zzim.value = Service.checkProductWish(authStore.user_id, productStore.item.product_id)
+    const res = await Service.checkProductWish(authStore.user_id, productStore.now_product_id)
+    console.log(res)
+    is_zzim.value = res.result
   }
 })
 </script>

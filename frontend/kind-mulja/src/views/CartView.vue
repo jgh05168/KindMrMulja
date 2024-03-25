@@ -82,10 +82,9 @@
       </CartRecipt>
     </div>
 
-      <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
-        <template #button-text>결제하기</template>
-      </BlackButton>
-      
+    <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
+      <template #button-text>결제하기</template>
+    </BlackButton>
   </div>
 </template>
 
@@ -155,13 +154,17 @@ const save_data = () => {
 }
 
 const goToOrder = async () => {
-  // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
-  // 선택된 정보 저장
-  await save_data()
-  console.log(orderStore.selected_item)
-  orderStore.address_list = await Service.getAddress(authStore.user_id)
-  // 결제하기 버튼 클릭 시 결제 페이지로 이동
-  await router.push({ name: 'pay' })
+  console.log(selected_items.value.length)
+  if (selected_items.value.length > 0) {
+    // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
+    await save_data()
+    console.log(orderStore.selected_item)
+    orderStore.address_list = await Service.getAddress(authStore.user_id)
+    // 결제하기 버튼 클릭 시 결제 페이지로 이동
+    await router.push({ name: 'pay' })
+  } else {
+    alert('선택한 상품이 없습니다.')
+  }
 }
 
 onMounted(async () => {
