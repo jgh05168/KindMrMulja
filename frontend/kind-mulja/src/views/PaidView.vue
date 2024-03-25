@@ -23,9 +23,38 @@
 
 <script setup>
 import BlackButton from '@/components/BlackButton.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { confirmPayment } from '@/confirmPayments'
+import { ref, onMounted } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
+
+const confirmed = ref(false)
+
+onMounted(async () => {
+  const requestData = {
+    orderId: route.query.orderId,
+    amount: route.query.amount,
+    paymentKey: route.query.paymentKey
+  }
+
+  const confirm = async () => {
+    try {
+      const { response, json } = await confirmPayment(requestData)
+      console.log(json)
+      if (!response.ok) {
+        router.push(`/fail?message=${json.message}&code=${json.code}`)
+      } else {
+        confirmed.value = true
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  await confirm()
+})
 </script>
 
 <style scoped>

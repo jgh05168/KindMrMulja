@@ -23,7 +23,7 @@ delivery.post("/delivery-address/add", async (req, res) => {
       address_normal,
       address_detail,
       phone_number,
-      1,
+      is_default,
     ]);
 
     if (result[0].affectedRows > 0) {
