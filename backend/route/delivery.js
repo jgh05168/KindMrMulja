@@ -55,6 +55,20 @@ delivery.get("/delivery-address/list/:user_id", async (req, res) => {
   }
 });
 
+// 배송지 목록에서 삭제
+delivery.delete("/delivery-address/:address_id", async (req, res) => {
+  const address_id = req.params.address_id;
+  try {
+    const query = `DELETE FROM address_information WHERE address_id = ?`;
+    const result = await pool.query(query, [address_id]);
+    console.log(result[0]);
+    return res.json({ result: result[0].affectedRows > 0 });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // 기본 배송지로 선택하기
 delivery.patch("/delivery-address/default-address", async (req, res) => {
   const user_id = req.body.user_id;
