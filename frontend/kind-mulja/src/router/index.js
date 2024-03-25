@@ -13,7 +13,6 @@ import OrderView from '@/views/OrderView.vue'
 import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -48,40 +47,55 @@ const router = createRouter({
       component: AddressView
     },
     {
-    path: '/create-address',
-    name: 'create-address',
-    component: CreateAddress
-  },
-  {
-    path: '/my-cart',
-    name: 'cart',
-    component: CartView
-  },
-  {
-    path: '/pay',
-    name: 'pay',
-    component: PayView
-  },
-  {
-    path: '/paid',
-    name: 'paid',
-    component: PaidView
-  },
-  {
-    path: '/my-order',
-    name: 'order',
-    component: OrderView
-  },
-  {
-    path: '/zzim',
-    name: 'zzim',
-    component: WishView
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: ProfileView
-  },
+      path: '/create-address',
+      name: 'create-address',
+      component: CreateAddress
+    },
+    {
+      path: '/my-cart',
+      name: 'cart',
+      component: CartView
+    },
+    {
+      path: '/pay',
+      name: 'pay',
+      component: PayView
+    },
+    {
+      path: '/paid',
+      name: 'paid',
+      component: PaidView
+    },
+    {
+      path: '/my-order',
+      name: 'order',
+      component: OrderView
+    },
+    {
+      path: '/zzim',
+      name: 'zzim',
+      component: WishView
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView
+    },
+    {
+      path: '/paypay',
+      name: 'paypay',
+      component: () => import('../views/CheckoutView.vue')
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: () => import('../views/SuccessView.vue')
+    },
+    {
+      path: '/fail',
+      name: 'fail',
+      component: () => import('../views/FailView.vue')
+    }
   ]
 })
 
