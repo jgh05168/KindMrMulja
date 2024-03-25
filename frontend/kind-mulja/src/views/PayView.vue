@@ -48,21 +48,20 @@
         <h3>결제 수단</h3>
         <v-btn icon="mdi-swap-horizontal" variant="plain"></v-btn>
       </div>
-
-      <div style="width: 360px; height: 70px; border: 1px solid red; margin: 2px auto"></div>
+      <CheckoutView />
     </div>
 
-    <div class="order-info">
+    <!-- <div class="order-info">
       <CartRecipt>
         <template #items-price>{{ item_price }}</template>
         <template #delivery-price>{{ delivery_price }}</template>
         <template #total-price>{{ total_price }}</template>
       </CartRecipt>
-    </div>
+    </div> -->
 
-    <BlackButton class="pay-button" button-width="380px" @click="orderCreate()">
+    <!-- <BlackButton class="pay-button" button-width="380px" @click="ordercreate()">
       <template #button-text>결제하기</template>
-    </BlackButton>
+    </BlackButton> -->
   </div>
 </template>
 
@@ -77,9 +76,9 @@ import { useAuthStore } from '@/stores/auth'
 import { ref, onMounted, computed } from 'vue'
 import Service from '@/api/api'
 import { useRouter } from 'vue-router'
+import CheckoutView from './CheckoutView.vue'
 
 const router = useRouter()
-
 const orderStore = useOrderStore()
 const authStore = useAuthStore()
 
