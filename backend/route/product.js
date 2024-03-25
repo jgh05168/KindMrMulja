@@ -83,11 +83,7 @@ product.get("/check-wish-product/:user_id/:product_id", async (req, res) => {
     // 해당 유저와 제품에 대한 위시리스트 항목이 이미 존재하는지 확인하는 쿼리
     const query = `SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?`;
     const result = await pool.query(query, [user_id, product_id]);
-    if (result[0].length > 0) {
-      return res.json({ result: true });
-    } else {
-      return res.json({ result: false });
-    }
+    return res.json({ result: result[0].length > 0 });
   } catch (error) {
     console.error("Error executing SQL query:", error);
     return res.status(500).json({ error: "Internal Server Error" });

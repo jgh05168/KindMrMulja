@@ -160,6 +160,6 @@ npm-debug.log
 yarn-error.log
 
 # front serviceworker
-dev-dist/sw.js
+frontend/kind-mulja/dev-dist/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,vue,vuejs
