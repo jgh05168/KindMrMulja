@@ -84,10 +84,13 @@ const GoDetail = (id) => {
 }
 
 const zzim = async (item, product_id) => {
+  if (authStore.user_id) {
   // 내 찜 목록에 추가거나 삭제
   // 추가하면 true, 삭제하면 false
   await Service.toggleWish(authStore.user_id, product_id)
   item.is_zzim = !item.is_zzim
+}
+  
 }
 
 const load = ({ side, done }) => {
