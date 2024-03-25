@@ -25,7 +25,7 @@
     </div>
 
     <div style="position: absolute; top: 10%; right: 5%">
-      <slot name="cancel-btn">X</slot>
+      <slot name="cancel-btn"></slot>
     </div>
   </v-card>
 </template>

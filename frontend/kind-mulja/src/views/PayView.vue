@@ -5,13 +5,15 @@
   <div class="cart-frame">
     <div class="set-address">
       <div style="display: flex; justify-content: space-between; align-items: center">
-        <h3>배송지 설정</h3>
-        <SelectDialog
-          @click="getAddressMore()"
-          @update:addressId="updateAddressId"
-          @update:selectedAddress="updateSelectedAddress"
-          :address-list="address_list"
-        />
+        <h3 v-if="orderStore.order_type == 0">배송지 설정</h3>
+        <h3 v-else>픽업 장소</h3>
+        <div v-if="orderStore.order_type == 0">
+          <SelectDialog
+            @click="getAddressMore()"
+            @update:addressId="updateAddressId"
+            @update:selectedAddress="updateSelectedAddress"
+          />
+        </div>
       </div>
       <AddressItem :width="'360px'">
         <template v-slot:address-title="slotProps">
@@ -72,7 +74,7 @@ import CartRecipt from '@/components/cart/CartRecipt.vue'
 import BlackButton from '@/components/BlackButton.vue'
 import { useOrderStore } from '@/stores/order'
 import { useAuthStore } from '@/stores/auth'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Service from '@/api/api'
 import { useRouter } from 'vue-router'
 
@@ -81,7 +83,6 @@ const router = useRouter()
 const orderStore = useOrderStore()
 const authStore = useAuthStore()
 
-const address_list = orderStore.address_list
 const item_price = orderStore.item_price
 const delivery_price = orderStore.delivery_price
 const total_price = orderStore.total_price
@@ -100,14 +101,33 @@ const updateSelectedAddress = (address) => {
   selected_address.value = address
 }
 
+const selected_cart_id = computed(() => {
+  if (orderStore.selected_item && orderStore.selected_item.length > 0) {
+    let res = orderStore.selected_item.map((item) => item.cart_id)
+    console.log(res)
+    return res
+  } else {
+    return null
+  }
+})
+
 const orderCreate = async () => {
+  console.log(
+    '보내는 주소지',
+    JSON.stringify(selected_address.value.address_normal) +
+      ',' +
+      JSON.stringify(selected_address.value.address_detail)
+  )
   const order_info = {
     user_id: authStore.user_id,
-    address_id: orderStore.address_id,
+    address_content:
+      JSON.stringify(selected_address.value.address_normal) +
+      ',' +
+      JSON.stringify(selected_address.value.address_detail),
     order_type: orderStore.order_type,
-    selected_cart_id: orderStore.selected_cart_id.value
+    selected_cart_id: selected_cart_id.value
   }
-
+  console.log(order_info)
   const pay_res = await Service.createOrder(order_info)
 
   if (pay_res) {
@@ -144,7 +164,7 @@ onMounted(() => {
 
 .order-info {
   position: fixed;
-  bottom: 20%;
+  bottom: 15%;
   margin: auto auto;
   width: 370px;
 }

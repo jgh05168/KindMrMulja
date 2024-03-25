@@ -82,9 +82,10 @@
       </CartRecipt>
     </div>
 
-    <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
-      <template #button-text>결제하기</template>
-    </BlackButton>
+      <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
+        <template #button-text>결제하기</template>
+      </BlackButton>
+      
   </div>
 </template>
 
@@ -157,6 +158,7 @@ const goToOrder = async () => {
   // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
   // 선택된 정보 저장
   await save_data()
+  console.log(orderStore.selected_item)
   orderStore.address_list = await Service.getAddress(authStore.user_id)
   // 결제하기 버튼 클릭 시 결제 페이지로 이동
   await router.push({ name: 'pay' })
@@ -205,5 +207,12 @@ onMounted(async () => {
   border-radius: 2px sloid #424242;
   background-color: antiquewhite;
   transition: ease-in-out 0.3s;
+}
+
+.modal-choice-btn {
+  width: 90%;
+  height: 55px;
+  margin: 15px auto;
+  border: solid 2px black;
 }
 </style>

@@ -10,6 +10,8 @@ import CartView from '@/views/CartView.vue'
 import PayView from '@/views/PayView.vue'
 import PaidView from '@/views/PaidView.vue'
 import OrderView from '@/views/OrderView.vue'
+import WishView from '@/views/WishView.vue'
+import ProfileView from '@/views/auth/ProfileView.vue'
 
 
 const router = createRouter({
@@ -69,6 +71,16 @@ const router = createRouter({
     path: '/my-order',
     name: 'order',
     component: OrderView
+  },
+  {
+    path: '/zzim',
+    name: 'zzim',
+    component: WishView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   ]
 })

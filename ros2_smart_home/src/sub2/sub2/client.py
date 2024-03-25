@@ -56,8 +56,8 @@ async def order(data):
     try:
         json_data=json.loads(data)
         #json 파싱 
-        local_num=json_data.get('local_num')
-        target_grid=json_data.get('target_grid')
+        local_num=json_data.get('num')
+        target_grid=json_data.get('grid')
         
         if local_num is not None and target_grid is not None:
             product_x = float(target_grid.get('x'))
@@ -102,4 +102,6 @@ if __name__ == '__main__':
 
 # 로직 4. 데이터 송신
 
-# sio.wait()
+
+sio.wait()
+sio.disconnect()

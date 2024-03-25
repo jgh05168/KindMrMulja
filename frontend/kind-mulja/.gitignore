@@ -30,4 +30,4 @@ coverage
 *.tsbuildinfo
 
 #
-dev-dist/
+dev-dist/sw.js
