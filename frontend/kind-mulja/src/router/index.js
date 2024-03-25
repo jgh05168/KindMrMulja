@@ -13,6 +13,9 @@ import OrderView from '@/views/OrderView.vue'
 import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
 
+import { useAuthStore } from '@/stores/auth'
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -24,7 +27,8 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      
     },
     {
       path: '/signup',
@@ -44,59 +48,141 @@ const router = createRouter({
     {
       path: '/my-address',
       name: 'address',
-      component: AddressView
+      component: AddressView,
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore()
+        if (authStore.user_id == null) {
+          // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+          console.log(from.fullPath)
+          authStore.redirectUrl = from.fullPath;
+          alert('로그인이 필요한 서비스 입니다.')
+          next('/login');
+        } else {
+          next();
+        }
+      }
     },
     {
-      path: '/create-address',
-      name: 'create-address',
-      component: CreateAddress
-    },
-    {
-      path: '/my-cart',
-      name: 'cart',
-      component: CartView
-    },
-    {
-      path: '/pay',
-      name: 'pay',
-      component: PayView
-    },
-    {
-      path: '/paid',
-      name: 'paid',
-      component: PaidView
-    },
-    {
-      path: '/my-order',
-      name: 'order',
-      component: OrderView
-    },
-    {
-      path: '/zzim',
-      name: 'zzim',
-      component: WishView
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: ProfileView
-    },
-    {
-      path: '/paypay',
-      name: 'paypay',
-      component: () => import('../views/CheckoutView.vue')
-    },
-    {
-      path: '/success',
-      name: 'success',
-      component: () => import('../views/SuccessView.vue')
-    },
-    {
-      path: '/fail',
-      name: 'fail',
-      component: () => import('../views/FailView.vue')
+    path: '/create-address',
+    name: 'create-address',
+    component: CreateAddress,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
     }
+  },
+  {
+    path: '/my-cart',
+    name: 'cart',
+    component: CartView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/pay',
+    name: 'pay',
+    component: PayView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/paid',
+    name: 'paid',
+    component: PaidView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/my-order',
+    name: 'order',
+    component: OrderView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/zzim',
+    name: 'zzim',
+    component: WishView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore()
+      if (authStore.user_id == null) {
+        // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
+        console.log(from.fullPath)
+        authStore.redirectUrl = from.fullPath;
+        alert('로그인이 필요한 서비스 입니다.')
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
   ]
 })
+
 
 export default router

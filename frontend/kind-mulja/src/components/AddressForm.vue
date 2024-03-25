@@ -1,6 +1,5 @@
 <template>
   <div class="address-form">
-    
     <!-- 도로명 주소 API 를 사용해 클릭하면 모달창, 선택 결과를 해당 value 값으로 사용 -->
     <v-text-field
       clearable
@@ -66,6 +65,9 @@ import { ref, watchEffect, watch } from 'vue'
 import BlackButton from '@/components/BlackButton.vue'
 import Service from '@/api/api.js'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 // 배송지 저장 버튼 가로길이 커스텀
 const width = ref('100%')
 const authStore = useAuthStore()
@@ -136,6 +138,7 @@ const createAddress = async () => {
     console.log(info)
     const results = await Service.addDelivery(info)
     console.log(results)
+    router.go(-1)
   } catch (error) {
     console.log(error)
   }

@@ -48,20 +48,16 @@
         <h3>결제 수단</h3>
         <v-btn icon="mdi-swap-horizontal" variant="plain"></v-btn>
       </div>
-      <CheckoutView />
+      <CheckoutView :order-create="orderCreate" :total-price="total_price"/>
     </div>
 
-    <!-- <div class="order-info">
+    <div class="order-info">
       <CartRecipt>
         <template #items-price>{{ item_price }}</template>
         <template #delivery-price>{{ delivery_price }}</template>
         <template #total-price>{{ total_price }}</template>
       </CartRecipt>
-    </div> -->
-
-    <!-- <BlackButton class="pay-button" button-width="380px" @click="ordercreate()">
-      <template #button-text>결제하기</template>
-    </BlackButton> -->
+    </div>
   </div>
 </template>
 
@@ -70,7 +66,7 @@ import AppHeader from '@/layouts/AppHeader.vue'
 import AddressItem from '@/components/AddressItem.vue'
 import SelectDialog from '@/components/SelectDialog.vue'
 import CartRecipt from '@/components/cart/CartRecipt.vue'
-import BlackButton from '@/components/BlackButton.vue'
+
 import { useOrderStore } from '@/stores/order'
 import { useAuthStore } from '@/stores/auth'
 import { ref, onMounted, computed } from 'vue'
@@ -127,11 +123,7 @@ const orderCreate = async () => {
     selected_cart_id: selected_cart_id.value
   }
   console.log(order_info)
-  const pay_res = await Service.createOrder(order_info)
-
-  if (pay_res) {
-    router.push({ name: 'paid' })
-  }
+  await Service.createOrder(order_info)
 }
 
 onMounted(() => {
