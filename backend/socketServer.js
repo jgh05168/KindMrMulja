@@ -13,28 +13,40 @@ const initializeSocket = (server) => {
       console.log("수신한 메시지:", data);
     });
 
-    setInterval(() => {
-      const query = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress FROM order_detail_list odl JOIN order_list ol ON odl.order_id = ol.order_id WHERE odl.is_progress = 0 LIMIT 1`;
+    const getRegion = (address) => {
+      // 각 도시의 대표값 설정
+      const cityMapping = {
+        서울: "서울",
+        대전: "대전",
+        광주: "광주",
+        구미: "구미",
+        부산: "부울경",
+      };
 
-      pool
-        .query(query)
-        .then((results) => {
-          console.log(results[0]);
+      const addressPrefix = address.substr(0, 2);
+      console.log(addressPrefix);
+      return cityMapping[addressPrefix];
+    };
 
-          // ros로 보내는 메세지 (msgName, data)
-          const jsonData = {
-            order_detail_id: results[0].order_detail_id,
-            grid: {
-              x: 12,
-              y: 13,
-            },
-          };
-          io.emit("order", JSON.stringify(jsonData));
-        })
-        .catch((error) => {
-          console.error("데이터베이스 쿼리 오류:", error);
-        });
-    }, 5000); // 5초마다 실행
+    const getDataAndEmit = async () => {
+      try {
+        const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, ol.address FROM order_detail_list odl JOIN order_list ol ON odl.order_id = ol.order_id WHERE odl.is_progress = 0 LIMIT 1`;
+        const results = await pool.query(query1);
+        const region = getRegion(results[0][0].address);
+        const jsonData = {
+          order_detail_id: results[0][0].order_detail_id,
+          order_quentity: results[0][0].order_quentity,
+          order_progress: results[0][0].order_progress,
+          order_region: region,
+        };
+        io.emit("order", JSON.stringify(jsonData));
+      } catch (error) {
+        console.error("데이터베이스 쿼리 오류:", error);
+      }
+    };
+
+    // 5초마다 데이터 조회 및 전송
+    setInterval(getDataAndEmit, 5000);
   });
 };
 
