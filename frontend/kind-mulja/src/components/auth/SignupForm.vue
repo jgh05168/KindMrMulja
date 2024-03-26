@@ -50,8 +50,9 @@
         color="secondary"
         label="I agree to site terms and conditions"
       ></v-checkbox> -->
-
-      <v-btn color="#212121" type="submit" variant="elevated"> 회원 가입 </v-btn>
+      <BlackButton type="submit" buttonWidth="80%">
+        <template #button-text>회원가입</template>
+      </BlackButton>
       <span>이미 계정이 있다면, <RouterLink :to="{ name: 'login' }">Login</RouterLink></span>
     </v-form>
   </div>
@@ -61,6 +62,7 @@
 import { ref, computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import Service from '@/api/api.js'
+import BlackButton from '../BlackButton.vue'
 
 const router = useRouter()
 

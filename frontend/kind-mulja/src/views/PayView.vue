@@ -44,18 +44,14 @@
     </div>
 
     <div class="set-pay">
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <h3>결제 수단</h3>
-        <v-btn icon="mdi-swap-horizontal" variant="plain"></v-btn>
-      </div>
-      <CheckoutView :order-create="orderCreate" :total-price="total_price"/>
+      <CheckoutView :order-create="orderCreate" :total-price="total_price" />
     </div>
 
     <div class="order-info">
       <CartRecipt>
-        <template #items-price>{{ item_price }}</template>
-        <template #delivery-price>{{ delivery_price }}</template>
-        <template #total-price>{{ total_price }}</template>
+        <template #items-price>{{ Utils.numberWithCommas(item_price) }}</template>
+        <template #delivery-price>{{ Utils.numberWithCommas(delivery_price) }}</template>
+        <template #total-price>{{ Utils.numberWithCommas(total_price) }}</template>
       </CartRecipt>
     </div>
   </div>
@@ -66,15 +62,12 @@ import AppHeader from '@/layouts/AppHeader.vue'
 import AddressItem from '@/components/AddressItem.vue'
 import SelectDialog from '@/components/SelectDialog.vue'
 import CartRecipt from '@/components/cart/CartRecipt.vue'
-
 import { useOrderStore } from '@/stores/order'
 import { useAuthStore } from '@/stores/auth'
 import { ref, onMounted, computed } from 'vue'
-import Service from '@/api/api'
-import { useRouter } from 'vue-router'
+import Utils from '@/utils/utils'
 import CheckoutView from './CheckoutView.vue'
 
-const router = useRouter()
 const orderStore = useOrderStore()
 const authStore = useAuthStore()
 
@@ -107,23 +100,21 @@ const selected_cart_id = computed(() => {
 })
 
 const orderCreate = async () => {
-  console.log(
-    '보내는 주소지',
-    JSON.stringify(selected_address.value.address_normal) +
-      ',' +
-      JSON.stringify(selected_address.value.address_detail)
-  )
+  // console.log(
+  //   '보내는 주소지',
+  //   JSON.stringify(selected_address.value.address_normal) +
+  //     ',' +
+  //     JSON.stringify(selected_address.value.address_detail)
+  // )
   const order_info = {
     user_id: authStore.user_id,
-    address_content:
-      JSON.stringify(selected_address.value.address_normal) +
-      ',' +
-      JSON.stringify(selected_address.value.address_detail),
+    address_content: JSON.stringify(
+      selected_address.value.address_normal + selected_address.value.address_detail
+    ),
     order_type: orderStore.order_type,
     selected_cart_id: selected_cart_id.value
   }
-  console.log(order_info)
-  await Service.createOrder(order_info)
+  return order_info
 }
 
 onMounted(() => {
@@ -142,6 +133,7 @@ onMounted(() => {
   width: 90%;
   margin: 0 auto;
   position: relative;
+  padding-bottom: 30%;
 }
 
 .set-address {
@@ -154,8 +146,6 @@ onMounted(() => {
 }
 
 .order-info {
-  position: fixed;
-  bottom: 15%;
   margin: auto auto;
   width: 370px;
 }

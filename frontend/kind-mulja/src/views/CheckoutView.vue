@@ -4,9 +4,7 @@
       <!-- 결제 UI -->
       <div id="payment-method"></div>
       <!-- 이용약관 UI -->
-      <div id="agreement"></div>
-      <!-- 쿠폰 체크박스 -->
-      <div style="padding-left: 25px"></div>
+      <div id="agreement" class="agreement"></div>
       <!-- 결제하기 버튼 -->
       <div class="result wrapper">
         <BlackButton class="pay-button" button-width="380px" @click="requestPayment">
@@ -22,6 +20,10 @@ import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk'
 import { nanoid } from 'nanoid'
 import { defineProps } from 'vue'
 import BlackButton from '@/components/BlackButton.vue'
+import { onMounted } from 'vue'
+import { useOrderStore } from '@/stores/order'
+
+const orderStore = useOrderStore()
 
 const props = defineProps({
   orderCreate: Function,
@@ -35,13 +37,13 @@ const amount = props.totalPrice
 
 const requestPayment = async () => {
   try {
-    await props.orderCreate()
+    orderStore.orderInfo = await props.orderCreate() // 주문지 생성
     if (paymentWidget) {
       await paymentWidget.requestPayment({
         orderId: nanoid(),
-        orderName: '토스 티셔츠 외 2건',
-        customerName: '김토스',
-        customerEmail: 'customer123@gmail.com',
+        orderName: '친절한 물자씨 상품 구매',
+        customerName: '이싸피',
+        customerEmail: 'ssafy@gmail.com',
         customerMobilePhone: '01012341234',
         successUrl: `${window.location.origin}/paid`,
         failUrl: `${window.location.origin}/paid`
@@ -52,8 +54,6 @@ const requestPayment = async () => {
   }
 }
 
-import { onMounted } from 'vue'
-import { useOrderStore } from '@/stores/order'
 onMounted(async () => {
   paymentWidget = await loadPaymentWidget(clientKey, ANONYMOUS)
   paymentMethodWidget = paymentWidget.renderPaymentMethods(
@@ -69,5 +69,10 @@ onMounted(async () => {
   position: fixed;
   bottom: 8%;
   margin: auto auto;
+}
+
+.agreement {
+  margin-top: -60px;
+  padding-bottom: 10px;
 }
 </style>

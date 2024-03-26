@@ -25,7 +25,6 @@
           </div>
         </template>
       </DeliveryChoice>
-      {{ selected_items }}
       <CartItem
         v-for="(item, idx) in cart_items"
         :value="item.product_id"
@@ -40,7 +39,7 @@
         <template #item-image>
           <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
         </template>
-        <template #item-name>{{ item.product_name }}</template>
+        <template #item-name>{{ item.product_name.slice(0, 10) }}</template>
         <template #item-price>{{ item.product_price }}</template>
         <template #item-cnt>
           <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
@@ -82,10 +81,9 @@
       </CartRecipt>
     </div>
 
-      <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
-        <template #button-text>결제하기</template>
-      </BlackButton>
-      
+    <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
+      <template #button-text>결제하기</template>
+    </BlackButton>
   </div>
 </template>
 
@@ -156,7 +154,6 @@ const save_data = () => {
 
 const goToOrder = async () => {
   // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
-  // 선택된 정보 저장
   await save_data()
   console.log(orderStore.selected_item)
   orderStore.address_list = await Service.getAddress(authStore.user_id)
