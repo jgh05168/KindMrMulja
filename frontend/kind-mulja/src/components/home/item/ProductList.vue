@@ -3,7 +3,6 @@
     <v-infinite-scroll height="900" side="end" @load="load">
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
-          {{ item.is_zzim }}
           <ProductItem>
             <template #item-img>
               <div @click="GoDetail(item.product_id)">
@@ -18,15 +17,20 @@
             </template>
 
             <template #item-title>
-              <v-card-subtitle>
+              <v-card-subtitle
+                @click="GoDetail(item.product_id)"
+                style="font-size: 16px; font-weight: bold"
+              >
                 {{ item.product_name }}
               </v-card-subtitle>
             </template>
 
             <template #item-price>
-              <v-card-title>
-                <v-icon size="xs">mdi-currency-krw</v-icon>
-                {{ item.product_price }}
+              <v-card-title style="display: flex; justify-content: space-between">
+                <p style="font-size: 20px">
+                  <v-icon class="me-1" size="15">mdi-currency-krw</v-icon
+                  >{{ Utils.numberWithCommas(item.product_price) }}
+                </p>
                 <v-btn size="xs" variant="plain" @click="zzim(item, item.product_id)">
                   <v-icon v-if="item.is_zzim == true" size="30" color="red-darken-1"
                     >mdi-heart</v-icon
@@ -49,6 +53,7 @@ import ProductItem from './ProductItem.vue'
 import Service from '@/api/api'
 import { useProductStore } from '@/stores/product'
 import { useAuthStore } from '@/stores/auth'
+import Utils from '@/utils/utils'
 
 const props = defineProps({
   items: Array

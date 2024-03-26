@@ -1,5 +1,9 @@
 <template>
   <div>
+    <AppHeader>
+      <template #header-bar>친절한 물자씨</template>
+    </AppHeader>
+
     <CategoryList></CategoryList>
 
     <ProductList :items="items"></ProductList>
@@ -10,6 +14,7 @@
 import { computed, onUpdated, onMounted } from 'vue'
 import CategoryList from '@/components/home/CategoryList.vue'
 import ProductList from '@/components/home/item/ProductList.vue'
+import AppHeader from '@/layouts/AppHeader.vue'
 import { useProductStore } from '@/stores/product'
 import { useAuthStore } from '@/stores/auth'
 import Service from '@/api/api'

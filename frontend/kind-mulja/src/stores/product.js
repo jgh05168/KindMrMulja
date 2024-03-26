@@ -3,12 +3,12 @@ import { defineStore } from 'pinia'
 
 export const useProductStore = defineStore('product', () => {
   const category = ref([
-    {id:'popular',title:'인기', icon:'mdi-star'},
+    {id:'popular',title:'인기', icon:'mdi-star-outline'},
     {id:'desk',title:'책상', icon:'mdi-desk'},
     {id:'drawer',title:'서랍장', icon:'mdi-inbox-multiple-outline'},
     {id:'mattress',title:'매트리스', icon:'mdi-bed-outline'},
     {id:'closet',title:'옷장', icon:'mdi-wardrobe-outline'},
-    {id:'sofa',title:'소파', icon:'mdi-wardrobe-outline'},
+    {id:'sofa',title:'소파', icon:'mdi-sofa-single-outline'},
   ])
   
   const now_category = ref('popular')

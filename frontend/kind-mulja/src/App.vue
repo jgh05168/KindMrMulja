@@ -19,13 +19,16 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView} from 'vue-router'
 // import AppHeader from '@/layouts/AppHeader.vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
 import Service from '@/api/api.js'
 
+
 const productStore = useProductStore()
+
+
 
 onMounted(async () => {
   const productList_res = await Service.getProductList()

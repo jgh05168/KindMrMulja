@@ -10,7 +10,8 @@ export const useOrderStore = defineStore(
     const delivery_price = ref(0)
     const total_price = ref(0)
     const address_list = ref([])
+    const orderInfo = ref(null)
 
   return { selected_item, order_type,
-  item_price,delivery_price,total_price, address_list,}
+  item_price,delivery_price,total_price, address_list,orderInfo}
 }, { persist: true })

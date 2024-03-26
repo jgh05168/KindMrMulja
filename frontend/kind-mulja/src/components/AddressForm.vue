@@ -179,6 +179,7 @@ function sample6_execDaumPostcode() {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 50px;
 }
 
 /* 폼 안의 모든 요소들의 넓이와 레이아웃 설정 */
