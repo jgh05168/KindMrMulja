@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'kind-mulja'
+package_name = 'kind_mulja'
 
 setup(
     name=package_name,
@@ -20,6 +20,15 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'a_star = kind_mulja.a_star:main',
+            'a_star_local_path = kind_mulja.a_star_local_path:main',
+            'load_map = kind_mulja.load_map:main',
+            'odom = kind_mulja.odom:main',
+            'path_tracking = kind_mulja.path_tracking:main',
+            'lidar_trans = kind_mulja.lidar_trans:main',
+            'auto_handcontrol =kind_mulja.auto_handcontrol:main',            
+            'request_handcontrol=kind_mulja.request_handcontrol:main',
+            'client_node= kind_mulja.client_node:main', 
         ],
     },
 )

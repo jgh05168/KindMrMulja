@@ -30,15 +30,23 @@ import time
 # 12. 맵 저장
 
 params_map = {
-    "MAP_RESOLUTION": 0.05,
+    "MAP_RESOLUTION": 0.2,
     "OCCUPANCY_UP": 0.02,
     "OCCUPANCY_DOWN": 0.01,
-    "MAP_CENTER": (-8.0, -4.0),
-    "MAP_SIZE": (17.5, 17.5),
+    "MAP_CENTER": (-50.0, -50.0),
+    "MAP_SIZE": (50.0, 50.0),
     "MAP_FILENAME": 'test.png',
-    "MAPVIS_RESIZE_SCALE": 2.0
+    "MAPVIS_RESIZE_SCALE": 1.0
 }
-
+'''
+"MAP_RESOLUTION": 맵의 해상도를 나타내는 변수. 단위는 미터 당 픽셀 수입니다.
+"OCCUPANCY_UP": 맵에서 점유된 공간의 상승 정도를 나타내는 변수. 즉, 로봇이 이동한 경로에서 높은 신뢰도를 가지는 영역에 대해 올리는 값입니다.
+"OCCUPANCY_DOWN": 맵에서 비점유된 공간의 하강 정도를 나타내는 변수. 로봇이 이동한 경로에서 낮은 신뢰도를 가지는 영역에 대해 내리는 값입니다.
+"MAP_CENTER": 맵의 중심 좌표를 나타내는 변수. (x, y) 형식으로 지정됩니다.
+"MAP_SIZE": 맵의 크기를 나타내는 변수. 맵의 가로와 세로 길이를 나타냅니다. 단위는 미터입니다.
+"MAP_FILENAME": 맵 이미지 파일의 이름을 나타내는 변수. 이미지 파일의 확장자를 포함한 전체 파일 이름입니다.
+"MAPVIS_RESIZE_SCALE": 맵 이미지를 표시할 때 사용되는 크기 조절 비율을 나타내는 변수입니다. 기본값은 1.0으로, 실제 크기와 동일한 크기로 이미지를 표시합니다.
+'''
 
 def createLineIterator(P1, P2, img):
     """
@@ -231,8 +239,8 @@ class Mapper(Node):
         m.height = int(params_map["MAP_SIZE"][1]/params_map["MAP_RESOLUTION"])
         quat = np.array([0, 0, 0, 1])
         m.origin = Pose()
-        m.origin.position.x = params_map["MAP_CENTER"][0]-8.75
-        m.origin.position.y = params_map["MAP_CENTER"][1]-8.75
+        m.origin.position.x = params_map["MAP_CENTER"][0]-25
+        m.origin.position.y = params_map["MAP_CENTER"][1]-25
         self.map_meta_data = m
 
         self.map_msg.info=self.map_meta_data

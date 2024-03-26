@@ -4,8 +4,9 @@ from rclpy.node import Node
 from geometry_msgs.msg import Pose, PoseStamped
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry, OccupancyGrid, Path
-from math import pi, cos, sin
+from math import pi, cos, sin, sqrt
 from collections import deque
+import heapq
 
 class a_star(Node):
 
@@ -13,7 +14,7 @@ class a_star(Node):
         super().__init__('a_Star')
         self.map_sub = self.create_subscription(OccupancyGrid, 'map', self.map_callback, 1)
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.odom_callback, 1)
-        self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 1)
+        self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_callback, 10)
         self.a_star_pub = self.create_publisher(Path, 'global_path', 1)
         
         self.map_msg = OccupancyGrid()
@@ -24,21 +25,22 @@ class a_star(Node):
         self.is_grid_update = False
 
         self.goal = [184, 224]
-        self.map_size_x = 350
-        self.map_size_y = 350
-        self.map_resolution = 0.05
-        self.map_offset_x = -8-8.75
-        self.map_offset_y = -4-8.75
-        self.GRIDSIZE = 350 
+        self.map_size_x = 250
+        self.map_size_y = 250
+        self.map_resolution = 0.2
+        self.map_offset_x = -50-25.0
+        self.map_offset_y = -50-25.0
+        self.GRIDSIZE = 250 
 
         self.dx = [-1, 0, 0, 1, -1, -1, 1, 1]
         self.dy = [0, 1, -1, 0, -1, 1, -1, 1]
-        self.dCost = [1, 1, 1, 1, 1.414, 1.414, 1.414, 1.414]
+        self.dCost = [10, 10, 10, 10, 14, 14, 14, 14]
 
     def grid_update(self):
         self.is_grid_update = True
         map_to_grid = self.map_msg.data
-        self.grid = np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y))
+        rotated_grid = np.rot90(np.array(map_to_grid).reshape((self.map_size_x, self.map_size_y)), 1)
+        self.grid = np.flipud(rotated_grid)  # 좌우반전과 상하반전을 수행합니다.
 
     def pose_to_grid_cell(self, x, y):
         map_point_x = (x - self.map_offset_x) / self.map_resolution
@@ -63,9 +65,6 @@ class a_star(Node):
             goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
             goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
             self.goal = goal_cell
-            self.get_logger().info("Goal pose: {}, {}".format(goal_x, goal_y))
-            self.get_logger().info(f"{msg}")  # 수정된 부분
-
             if self.is_map and self.is_odom:
                 if not self.is_grid_update:
                     self.grid_update()
@@ -74,13 +73,15 @@ class a_star(Node):
 
                 x, y = self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y
                 start_grid_cell = self.pose_to_grid_cell(x, y)
-                start_grid_cell = (int(start_grid_cell[0]), int(start_grid_cell[1]))
 
                 self.path = [[0] * self.GRIDSIZE for _ in range(self.GRIDSIZE)]
                 self.cost = np.full((self.GRIDSIZE, self.GRIDSIZE), self.GRIDSIZE * self.GRIDSIZE)
+                self.f_func = np.full((self.GRIDSIZE, self.GRIDSIZE), self.GRIDSIZE * self.GRIDSIZE)
+                
 
-                if 0 <= start_grid_cell[0] < self.GRIDSIZE and 0 <= start_grid_cell[1] < self.GRIDSIZE and 0 <= self.goal[0] < self.GRIDSIZE and 0 <= self.goal[1] < self.GRIDSIZE and self.grid[start_grid_cell[0]][start_grid_cell[1]] == 0 and self.grid[int(self.goal[0])][int(self.goal[1])] == 0 and start_grid_cell != self.goal:
+                if 0 <= start_grid_cell[0] < self.GRIDSIZE and 0 <= start_grid_cell[1] < self.GRIDSIZE and 0 <= self.goal[0] < self.GRIDSIZE and 0 <= self.goal[1] < self.GRIDSIZE and start_grid_cell != self.goal:
                     self.dijkstra(start_grid_cell)
+                    self.get_logger().info(f"path: {self.final_path}")
 
                 self.global_path_msg = Path()
                 self.global_path_msg.header.frame_id = 'map'
@@ -92,43 +93,67 @@ class a_star(Node):
                     tmp_pose.pose.orientation.w = 1.0
                     self.global_path_msg.poses.append(tmp_pose)
 
+                
                 if len(self.final_path) != 0:
+                    
                     self.a_star_pub.publish(self.global_path_msg)
 
+    def heuristic(self, a, b):
+        #유클리디안 거리 함수
+        return sqrt((b[0] - a[0])**2 + (b[1] - a[1])**2)
+
     def dijkstra(self, start):
-        Q = deque()
-        Q.append(start)
+        pq = []
+        heapq.heappush(pq,(0, start))
         self.cost[start[0]][start[1]] = 1
+        self.f_func[start[0]][start[1]] = 1
         found = False
 
-        while Q:
+
+        while pq:
             if found:
+                self.get_logger().info(f"found")
                 break
 
-            current = Q.popleft()
+            current = heapq.heappop(pq)[1]
+            
 
             for i in range(8):
+                #self.get_logger().info(f"             ")
                 next_node = (current[0] + self.dx[i], current[1] + self.dy[i])
+                # if self.grid[next_node[0]][next_node[1]] >= 50:
+                #     continue
+
+                # 다음 노드가 맵 범위 내에 있는지 확인
                 if 0 <= next_node[0] < self.GRIDSIZE and 0 <= next_node[1] < self.GRIDSIZE:
-                    if self.grid[next_node[0]][next_node[1]] < 51:
-                        if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next_node[0]][next_node[1]]:
-                            Q.append(next_node)
+                    if self.grid[next_node[0]][next_node[1]] < 50:
+                        new_cost = self.cost[current[0]][current[1]] + self.dCost[i]
+                        f_func = new_cost + self.heuristic(next_node, self.goal)
+
+                        # 다음 노드의 현재까지의 최소 비용보다 작은 경우 업데이트
+                        if f_func < self.f_func[next_node[0]][next_node[1]]:
+                            self.cost[next_node[0]][next_node[1]] = new_cost
+                            self.f_func[next_node[0]][next_node[1]] = f_func
+
+                            heapq.heappush(pq, (f_func, next_node))
                             self.path[next_node[0]][next_node[1]] = current
-                            self.cost[next_node[0]][next_node[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
 
                             if next_node == self.goal:
+                                self.get_logger().info(f"goal!!!!!!!!!!")
                                 found = True
                                 break
+
 
         node = self.goal
         while node != start:
             if isinstance(node, int):
                 break
             self.final_path.append(node)
+            #self.get_logger().info(f"endpath: {self.path[node[0]][node[1]]}")
             node = self.path[node[0]][node[1]]
 
         if not isinstance(node, int):
-            self.final_path.append((int(node[0]), int(node[1])))
+            self.final_path.append(node)
 
 def main(args=None):
     rclpy.init(args=args)

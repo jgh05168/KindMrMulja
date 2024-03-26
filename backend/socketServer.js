@@ -15,11 +15,11 @@ const initializeSocket = (server) => {
 
     // ros로 보내는 메세지 (msgName, data)
     const jsonData = {
-      num: 123,
-      grid: {
-        x: 12,
-        y: 13,
-      },
+        local_num: 1,
+        target_grid: {
+            x: -44.0,
+            y: -39.0
+        }
     };
     io.emit("order", JSON.stringify(jsonData));
   });
