@@ -98,19 +98,18 @@ class client(Node):
         await self.sio.connect('http://localhost:12001/')
         await self.sio.wait()
 
-async def main():
-    
+def main():
     rclpy.init()
     
     socket_to_location_publisher = client()  
-    await socket_to_location_publisher.start_socketio()
+    asyncio.get_event_loop().run_until_complete(socket_to_location_publisher.start_socketio())
     rclpy.spin(socket_to_location_publisher)
     socket_to_location_publisher.destroy_node()
     rclpy.shutdown()
     
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
 
 
 # 로직 3. 서버 연결

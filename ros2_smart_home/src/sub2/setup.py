@@ -34,7 +34,7 @@ setup(
             'auto_handcontrol =sub2.auto_handcontrol:main',            
             'request_handcontrol=sub2.request_handcontrol:main',
             'test_request_handcontrol= sub2.test_request_handcontrol:main',
-            'client_node= sub2.client:main',
+            'client_node= sub2.client_node:main',
 
         ],
     },

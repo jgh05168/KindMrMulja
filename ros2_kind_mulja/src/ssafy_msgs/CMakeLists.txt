@@ -20,6 +20,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+# find_package(<dependency> REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Num.msg"
@@ -29,10 +32,13 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ObjectInfo.msg"
   "msg/HandControl.msg"
   "msg/CustomObjectInfo.msg"
+  "msg/RequestHandControl.msg"
+  "msg/TargetGrid.msg"
   DEPENDENCIES std_msgs geometry_msgs
  )
-
+ 
  ament_export_dependencies(rosidl_default_runtime)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
