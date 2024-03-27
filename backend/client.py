@@ -21,7 +21,6 @@ class ClientSocket:
                 order_detail_id = json_data.get('order_detail_id')
                 #target_grid = json_data.get('target_grid')
                 
-                print(order_detail_id)
             except json.JSONDecodeError:
                 print('Invalid JSON format:', data)
             
