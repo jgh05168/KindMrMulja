@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-infinite-scroll height="900" side="end" @load="load">
+    <v-infinite-scroll height="900" side="end">
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
           <ProductItem>
@@ -95,20 +95,6 @@ const zzim = async (item, product_id) => {
     const res = await Service.toggleWish(authStore.user_id, product_id)
     item.is_zzim = res.result
   }
-}
-
-const load = ({ side, done }) => {
-  setTimeout(() => {
-    if (side === 'start') {
-      const arr = Array.from({ length: 10 }, (k, v) => props.items[0] - (10 - v))
-      this.items = [...arr, ...this.items]
-    } else if (side === 'end') {
-      const arr = Array.from({ length: 10 }, (k, v) => this.items.at(-1) + 1 + v)
-      this.items = [...this.items, ...arr]
-    }
-
-    done('ok')
-  }, 1000)
 }
 </script>
 

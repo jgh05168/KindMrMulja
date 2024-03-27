@@ -1,13 +1,13 @@
 <template>
   <slot name="app-footer">
-    <v-layout class="overflow-visible" style="height: 56px">
-      <v-bottom-navigation v-model="value" color="teal" grow>
+    <v-layout class="overflow-visible" style="height: 56px;position: fixed;">
+      <v-bottom-navigation v-model="value" grow>
         <v-btn @click="router.push({ name: 'home' })">
           <v-icon>mdi-home</v-icon>
         </v-btn>
 
         <v-btn @click="router.push({ name: 'zzim' })">
-          <v-icon>mdi-bookmark-outline</v-icon>
+          <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
 
         <v-btn @click="router.push({ name: 'cart' })">
