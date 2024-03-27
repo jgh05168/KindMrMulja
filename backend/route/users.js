@@ -72,4 +72,7 @@ user.post("/signin", async (req, res) => {
   }
 });
 
+// 로그아웃 api
+
+
 module.exports = user;
