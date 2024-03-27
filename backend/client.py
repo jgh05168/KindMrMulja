@@ -10,8 +10,14 @@ class ClientSocket:
     def setup_sio(self):
         @self.sio.event
         async def connect():
+            data = {
+                "turtle_id": 1,
+                "order_detail_id": 93,
+                "work_status": "start"
+            }
+            jsonData = json.dumps(data)
             print('connection established')
-            await self.sio.emit('sendTime', 'TEST메세지 입니다. 안녕하세요')
+            await self.sio.emit('turtleStatus', jsonData)
 
         @self.sio.event
         async def order(data):
