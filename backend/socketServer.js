@@ -7,8 +7,19 @@ const initializeSocket = (server) => {
     console.log("새로운 사용자가 연결되었습니다.");
 
     // ros에서 받은 메세지
-    socket.on("sendTime", (data) => {
-      console.log("수신한 메시지:", data);
+    socket.on("turtleStatus", async (data) => {
+      const parsedData = JSON.parse(data);
+      const turtle_id = parsedData.turtle_id;
+      const order_detail_id = parsedData.order_detail_id;
+      const work_status = parsedData.work_status;
+      //console.log(turtle_id, order_detail_id, work_status);
+      const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
+      const query2 = `UPDATE turtlebot SET turtlebot_status = 2 WHERE turtle_id = ?`;
+      if (work_status === "start") {
+        const results = await pool.query(query1, [order_detail_id]);
+        await pool.query(query2, [turtle_id]);
+        console.log(results);
+      }
     });
 
     const getRegion = (address) => {
@@ -72,7 +83,7 @@ const initializeSocket = (server) => {
         const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, odl.product_id, ol.address 
         FROM order_detail_list odl 
         JOIN order_list ol ON odl.order_id = ol.order_id 
-        WHERE odl.is_progress = 0 
+        WHERE odl.order_quentity > odl.order_progress
         ORDER BY ol.order_type DESC 
         LIMIT 1;`;
         const results = await pool.query(query1);
@@ -88,7 +99,10 @@ const initializeSocket = (server) => {
           product_y: position[0][0].pos_y,
           moving_zone: region,
         };
-
+        await pool.query(
+          `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
+          [turtle[0][0].turtle_id]
+        );
         io.emit("order", JSON.stringify(jsonData));
       } catch (error) {
         console.error("데이터베이스 쿼리 오류:", error);
