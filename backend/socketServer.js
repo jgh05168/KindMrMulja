@@ -21,9 +21,23 @@ const initializeSocket = (server) => {
         부울경: "부울경",
       };
 
+      // 픽업 주소의 대표값 설정
+      const pickupMapping = {
+        픽업A: 6,
+        픽업B: 7,
+        픽업C: 8,
+      };
+
       // 주소의 첫 두 글자를 추출
       const addressPrefix = address.substr(1, 2);
-      console.log(addressPrefix);
+      // 픽업 주소인지 확인
+      if (addressPrefix === "픽업") {
+        const pickupKey = address.substr(1, 3); // 픽업 문자열과 뒤에 오는 글자 추출
+        if (pickupMapping[pickupKey]) {
+          return pickupMapping[pickupKey];
+        }
+      }
+
       // cityMapping에 있는지 확인하고 있다면 해당 값 반환
       if (cityMapping[addressPrefix]) {
         return cityMapping[addressPrefix];
@@ -32,21 +46,22 @@ const initializeSocket = (server) => {
       // 추가 규칙 적용
       switch (addressPrefix) {
         case "경기":
-        case "인천":
         case "강원":
-          return "서울"; // 경기, 인천, 강원은 서울로 분류
+          return 1; // 경기, 인천, 강원은 서울(1)로 분류
         case "충남":
         case "충북":
         case "세종":
-          return "대전"; // 충남, 충북, 세종은 대전으로 분류
+          return 2; // 충남, 충북, 세종은 대전(2)으로 분류
         case "전북":
         case "전남":
-          return "광주"; // 전북, 전남은 광주로 분류
+          return 3; // 전북, 전남은 광주(3)로 분류
         case "경북":
-          return "구미"; // 경북은 구미로 분류
+          return 4; // 경북은 구미(4)로 분류
         case "경남":
         case "제주":
-          return "부울경"; // 경남, 제주는 부울경으로 분류
+        case "부산":
+        case "울산":
+          return 5; // 경남, 제주, 부산, 울산은 부울경(5)으로 분류
         default:
           return "기타"; // 그 외 지역은 기타로 분류
       }
@@ -54,20 +69,24 @@ const initializeSocket = (server) => {
 
     const getDataAndEmit = async () => {
       try {
-        const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, ol.address 
+        const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, odl.product_id, ol.address 
         FROM order_detail_list odl 
         JOIN order_list ol ON odl.order_id = ol.order_id 
         WHERE odl.is_progress = 0 
         ORDER BY ol.order_type DESC 
         LIMIT 1;`;
         const results = await pool.query(query1);
-        console.log(results);
+        const turtlequery = `SELECT turtle_id, turtlebot_status FROM turtlebot WHERE turtlebot_status = ? LIMIT 1`;
+        const query2 = `SELECT pos_x, pos_y FROM product_list WHERE product_id = ? `;
+        const turtle = await pool.query(turtlequery, 0);
+        const position = await pool.query(query2, [results[0][0].product_id]);
         const region = getRegion(results[0][0].address);
         const jsonData = {
+          turtle_id: turtle[0][0].turtle_id,
           order_detail_id: results[0][0].order_detail_id,
-          order_quentity: results[0][0].order_quentity,
-          order_progress: results[0][0].order_progress,
-          order_region: region,
+          product_x: position[0][0].pos_x,
+          product_y: position[0][0].pos_y,
+          moving_zone: region,
         };
 
         io.emit("order", JSON.stringify(jsonData));
