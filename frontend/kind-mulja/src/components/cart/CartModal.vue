@@ -2,14 +2,7 @@
   <div class="modal-frame">
     <slot name="modal-button" :sheet="sheet" :modalOpen="modalOpen"> </slot>
 
-    <v-bottom-sheet
-      class="modal-sheet"
-      v-model="sheet"
-      inset
-      :elevation="20"
-      :width="415"
-      color="success"
-    >
+    <v-bottom-sheet class="modal-sheet" v-model="sheet" inset :elevation="20" color="success">
       <div class="modal-card">
         <v-btn class="close-modal" size="xs" variant="plain" @click="modalClose"
           ><v-icon>mdi-close-circle-outline</v-icon></v-btn

@@ -4,7 +4,9 @@
       <template #header-bar>친절한 물자씨</template>
     </AppHeader>
 
-    <CategoryList style="position: sticky; top: 5%; z-index: 999; padding-top: 5%"></CategoryList>
+    <CategoryList
+      style="position: sticky; top: 10%; padding-bottom: 2%; z-index: 999; background-color: white"
+    ></CategoryList>
 
     <ProductList :items="category_items()"></ProductList>
   </div>
