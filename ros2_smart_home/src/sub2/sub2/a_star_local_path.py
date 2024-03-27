@@ -39,7 +39,7 @@ class astarLocalpath(Node):
         self.timer = self.create_timer(time_period, self.timer_callback)
         
         # local 탐색 개수 
-        self.local_path_size=30 
+        self.local_path_size=20 
         self.count=0
 
 

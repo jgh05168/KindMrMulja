@@ -2,7 +2,7 @@
   <AppHeader>
     <template #header-bar>배송지 생성</template>
   </AppHeader>
-  <AddressForm></AddressForm>
+  <AddressForm :now-view="'from-addressview'"></AddressForm>
 </template>
 
 <script setup>

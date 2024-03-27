@@ -15,7 +15,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const GoToNext = () => {
-  router.push({ name: 'login' })
+  router.push({ name: 'home' })
 }
 </script>
 

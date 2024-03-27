@@ -25,7 +25,6 @@
           </div>
         </template>
       </DeliveryChoice>
-      {{ selected_items }}
       <CartItem
         v-for="(item, idx) in cart_items"
         :value="item.product_id"
@@ -40,7 +39,7 @@
         <template #item-image>
           <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
         </template>
-        <template #item-name>{{ item.product_name }}</template>
+        <template #item-name>{{ item.product_name.slice(0, 10) }}</template>
         <template #item-price>{{ item.product_price }}</template>
         <template #item-cnt>
           <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
@@ -74,18 +73,36 @@
           ></v-btn>
         </template>
       </CartItem>
-
-      <CartRecipt>
-        <template #items-price>{{ items_price }}</template>
-        <template #delivery-price>{{ delivery_price }}</template>
-        <template #total-price>{{ total_price }}</template>
-      </CartRecipt>
     </div>
 
-      <BlackButton class="pay-button" button-width="380px" @click="goToOrder()">
+    <div class="pay-button">
+      <div style="position: relative">
+        <v-btn
+          v-if="expand"
+          style="position: absolute; top: 5%; right: 5%; z-index: 9999"
+          variant="plain"
+          size="xs"
+          @click="change_expand()"
+          ><v-icon size="30">mdi-close</v-icon></v-btn
+        >
+        <v-slide-y-transition>
+          <v-card v-show="expand" class="mx-auto" style="width: 100%">
+            <CartRecipt style="padding-top: 7%; margin-bottom: 5%">
+              <template #items-price>{{ items_price }}</template>
+              <template #delivery-price>{{ delivery_price }}</template>
+              <template #total-price>{{ total_price }}</template>
+            </CartRecipt>
+          </v-card>
+        </v-slide-y-transition>
+      </div>
+
+      <BlackButton v-if="expand" button-width="100%" @click="goToOrder()">
         <template #button-text>결제하기</template>
       </BlackButton>
-      
+      <BlackButton v-else button-width="100%" @click="expand = !expand">
+        <template #button-text>결제하기</template>
+      </BlackButton>
+    </div>
   </div>
 </template>
 
@@ -109,6 +126,12 @@ const selectedOption = ref(0) // 선택된 옵션을 저장할 변수
 
 const select = (option) => {
   selectedOption.value = option
+}
+
+const expand = ref(false)
+
+const change_expand = () => {
+  expand.value = !expand.value
 }
 
 const cart_items = ref([])
@@ -156,7 +179,6 @@ const save_data = () => {
 
 const goToOrder = async () => {
   // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
-  // 선택된 정보 저장
   await save_data()
   console.log(orderStore.selected_item)
   orderStore.address_list = await Service.getAddress(authStore.user_id)
@@ -173,16 +195,19 @@ onMounted(async () => {
 <style scoped>
 .cart-frame {
   width: 90%;
+  height: 120%;
   margin: 0 auto;
   position: relative;
 }
 
 .cart-main-frame {
   width: 100%;
+  height: fit-content;
   margin: 0 auto;
 }
 
 .pay-button {
+  width: 90%;
   position: fixed;
   bottom: 8%;
   margin: auto auto;

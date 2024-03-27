@@ -1,5 +1,7 @@
 const express = require("express");
 const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 const order = express.Router();
 const pool = require("../DB.js");
 
@@ -31,11 +33,12 @@ order.post("", async (req, res) => {
       const query2 = `SELECT product_id, product_quentity FROM shopping_cart WHERE cart_id = ?`;
       const results = await pool.query(query2, selected_cart_id[i]);
       console.log(results);
-      const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone) VALUES (?,?,?,?,?)`;
+      const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone, is_progress) VALUES (?,?,?,?,?,?)`;
       await pool.query(query3, [
         order_id[0][0].order_id,
         results[0][0].product_id,
         results[0][0].product_quentity,
+        0,
         0,
         0,
       ]);
