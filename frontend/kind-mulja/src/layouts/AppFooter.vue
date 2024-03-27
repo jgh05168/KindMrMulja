@@ -1,7 +1,7 @@
 <template>
   <slot name="app-footer">
-    <v-layout class="overflow-visible" style="height: 56px;position: fixed;">
-      <v-bottom-navigation v-model="value" grow>
+    <v-layout class="overflow-visible" style="height: 56px; position: fixed">
+      <v-bottom-navigation v-model="viewStore.now_value" grow>
         <v-btn @click="router.push({ name: 'home' })">
           <v-icon>mdi-home</v-icon>
         </v-btn>
@@ -23,12 +23,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useViewStore } from '@/stores/view'
 
+const viewStore = useViewStore()
 const router = useRouter()
 
-const value = ref(1)
+// const now_value = viewStore.now_value
 </script>
 
 <style scoped></style>

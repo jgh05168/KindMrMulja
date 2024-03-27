@@ -15,6 +15,7 @@ import ProfileView from '@/views/auth/ProfileView.vue'
 
 import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
+import { useViewStore } from '@/stores/view'
 
 
 const router = createRouter({
@@ -181,5 +182,21 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  const viewStore = useViewStore()
+
+  console.log(`이동: ${from.name} -> ${to.name}`);
+  // 현재 가는 곳이 탭에 있는 곳이면 탭 value에 맞게 수정
+  if (to.name == 'home') {
+    viewStore.now_value = 0
+  } else if (to.name == 'zzim') {
+    viewStore.now_value = 1
+  } else if (to.name == 'cart') {
+    viewStore.now_value = 2
+  } else if (to.name == 'profile') {
+    viewStore.now_value = 3
+  }
+  next();
+});
 
 export default router

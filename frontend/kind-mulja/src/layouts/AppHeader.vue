@@ -11,8 +11,8 @@
       top: 0;
       z-index: 99;
       background-color: white;
-      padding-top: 3%;
-      padding-bottom: 5%;
+      padding-top: 10%;
+      padding-bottom: 12%;
     "
   >
     <v-btn size="50" @click="router.go(-1)" variant="plain"

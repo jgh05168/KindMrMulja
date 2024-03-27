@@ -8,6 +8,7 @@
       :key="item.order_detail_id"
       :value="item.product_id"
       :item-quentity="item.order_quentity"
+      @click="router.push({ name: 'detail', params: { id: item.product_id } })"
     >
       <template #item-image>
         <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
@@ -31,9 +32,10 @@ import CartItem from '@/components/cart/CartItem.vue'
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import Service from '@/api/api'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
-
+const router = useRouter()
 const wish_list = ref([])
 
 const getWishlist = async () => {
