@@ -14,6 +14,7 @@ import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
 
 import { useAuthStore } from '@/stores/auth'
+import { useOrderStore } from '@/stores/order'
 
 
 const router = createRouter({
@@ -102,14 +103,18 @@ const router = createRouter({
     component: PayView,
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore()
+      const orderStore = useOrderStore()
       if (authStore.user_id == null) {
         // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
         console.log(from.fullPath)
         authStore.redirectUrl = from.fullPath;
         alert('로그인이 필요한 서비스 입니다.')
         next('/login');
+      } else if (orderStore.selected_item.length < 1) {
+        alert('선택한 상품이 없습니다.')
+        next('/my-cart');
       } else {
-        next();
+        next()
       }
     }
   },
@@ -119,12 +124,16 @@ const router = createRouter({
     component: PaidView,
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore()
+      const orderStore = useOrderStore()
       if (authStore.user_id == null) {
         // 로그인되어 있지 않으면 로그인 페이지로 이동하기 전에 이전 URL 저장
         console.log(from.fullPath)
         authStore.redirectUrl = from.fullPath;
         alert('로그인이 필요한 서비스 입니다.')
         next('/login');
+      } else if ( orderStore.orderInfo == null ) { // 주문지가 생성되지 않았으면
+        alert('주문한 상품이 없습니다.')
+        next('/my-cart')
       } else {
         next();
       }

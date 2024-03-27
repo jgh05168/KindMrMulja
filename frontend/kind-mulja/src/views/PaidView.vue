@@ -26,9 +26,12 @@ import BlackButton from '@/components/BlackButton.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { confirmPayment } from '@/confirmPayments'
 import { ref, onMounted } from 'vue'
+import Service from '@/api/api'
+import { useOrderStore } from '@/stores/order'
 
 const router = useRouter()
 const route = useRoute()
+const orderStore = useOrderStore()
 
 const confirmed = ref(false)
 
@@ -54,6 +57,8 @@ onMounted(async () => {
   }
 
   await confirm()
+  await Service.createOrder(orderStore.orderInfo)
+  orderStore.orderInfo = null
 })
 </script>
 

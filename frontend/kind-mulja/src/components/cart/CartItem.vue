@@ -1,27 +1,25 @@
 <template>
-  <v-card class="mb-auto" style="position: relative; display: flex; flex-direction: row">
-    <div class="d-flex flex-no-wrap">
-      <slot name="item-check"> </slot>
-      <v-avatar class="ma-3" rounded="0" size="95">
-        <slot name="item-image">
-          <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
-        </slot>
-      </v-avatar>
+  <v-card class="mb-auto cart-item">
+    <slot name="item-check" style="width: 10%"> </slot>
+    <v-avatar class="me-3 ms-3 mt-6" rounded="0" size="90" style="width: 25%">
+      <slot name="item-image">
+        <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
+      </slot>
+    </v-avatar>
 
-      <div>
-        <v-card-title class="ps-0" style="font-size: 20px">
-          <slot name="item-name">상품 이름</slot>
-        </v-card-title>
+    <div class="item-info">
+      <v-card-title class="ps-0" style="font-size: 15px">
+        <slot name="item-name">상품 이름</slot>
+      </v-card-title>
 
-        <v-card-subtitle class="ps-0" style="font-size: 15px">
-          <v-icon size="xs" icon="mdi-currency-krw"></v-icon>
-          <slot name="item-price">상품 가격</slot>
-        </v-card-subtitle>
+      <v-card-subtitle class="ps-0" style="font-size: 18px; display: flex; align-items: center">
+        <v-icon class="me-1" size="xs" icon="mdi-currency-krw"></v-icon>
+        <slot name="item-price">상품 가격</slot>
+      </v-card-subtitle>
 
-        <v-card-actions class="ps-0 mt-5">
-          <slot name="item-cnt">수량 조절 버튼</slot>
-        </v-card-actions>
-      </div>
+      <v-card-actions class="ps-0 mt-5">
+        <slot name="item-cnt">수량 조절 버튼</slot>
+      </v-card-actions>
     </div>
 
     <div style="position: absolute; top: 10%; right: 5%">
@@ -50,4 +48,14 @@ watch(
 )
 </script>
 
-<style scoped></style>
+<style scoped>
+.cart-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.item_info {
+  overflow: hidden;
+}
+</style>
