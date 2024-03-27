@@ -42,7 +42,7 @@ class loadMap(Node):
 
         self.map_msg.header.frame_id="map"
 
-   
+        #int((robot_pose_y - self.map_offset_y) / self.map_resolution)
 
         m = MapMetaData()
         m.resolution = self.map_resolution
@@ -86,11 +86,17 @@ class loadMap(Node):
                     '''
                     로직 3. 점유영역 근처 필터처리
                     '''
-                    for box_x in range(-2,3):
-                        for box_y in range(-2,3):
+                    for box_x in range(-10,10):
+                        for box_y in range(-10,10):
                             if  0< x+box_x < 250 and 0 < y+box_y <250 and grid[x+box_x][y+box_y]<80 :
                                 grid[x+box_x][y+box_y]=127
-
+        
+        for i in range(9):
+            grid[150+i][81]=0
+            grid[122-i][143]=0
+            grid[182-i][106]=0
+            grid[196][225+i]=0
+            grid[182-i][157]=0
 
         np_map_data=grid.reshape(1,250*250) 
         list_map_data=np_map_data.tolist()
@@ -118,9 +124,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
-
-
-
-       
-   

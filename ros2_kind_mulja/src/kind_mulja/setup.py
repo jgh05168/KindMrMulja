@@ -29,6 +29,7 @@ setup(
             'auto_handcontrol =kind_mulja.auto_handcontrol:main',            
             'request_handcontrol=kind_mulja.request_handcontrol:main',
             'client_node= kind_mulja.client_node:main', 
+            'test_request_handcontrol= kind_mulja.test_request_handcontrol:main',
         ],
     },
 )
