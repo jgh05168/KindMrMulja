@@ -11,14 +11,15 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tosspayments/payment-widget-sdk": "^0.10.0",
     "axios": "^1.6.7",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
-    "@tosspayments/payment-widget-sdk": "^0.10.0",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5",
+    "socket.io-client": "^4.7.5",
     "vite": "^5.0.11",
-    "vite-plugin-pwa": "^0.19.2"
+    "vite-plugin-pwa": "^0.19.2",
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
