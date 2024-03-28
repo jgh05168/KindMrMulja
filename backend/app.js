@@ -13,6 +13,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const initializeSocket = require("./socketServer.js");
 const payRouter = require("./route/payments.router.js");
+const initializeSocketLoc = require("./socketServerLoc.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +31,12 @@ app.use("/order", orderRouter);
 app.use("/delivery", deliveryRouter);
 app.use("/sandbox-dev/api/v1/payments", payRouter);
 
-const socketServerPort = process.env.SOCKET_SERVER_PORT || 12001;
-initializeSocket(socketServerPort);
+// 물류 목적지 좌표 통신
+const socketServerPort1 = process.env.SOCKET_SERVER_PORT || 12001;
+initializeSocket(socketServerPort1);
+
+// 로봇 좌표 받기
+const socketServerPort2 = process.env.SOCKET_SERVER_PORT || 12002;
+initializeSocketLoc(socketServerPort2);
+
 app.listen(PORT, () => console.log(`${PORT} 서버 기동중`));
