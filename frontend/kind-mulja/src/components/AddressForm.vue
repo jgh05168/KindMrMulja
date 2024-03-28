@@ -136,6 +136,8 @@ const toggle = () => {
     is_default.value = 1
   }
 }
+
+
 function sample6_execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function (data) {
