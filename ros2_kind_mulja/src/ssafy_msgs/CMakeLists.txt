@@ -34,6 +34,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CustomObjectInfo.msg"
   "msg/RequestHandControl.msg"
   "msg/TargetGrid.msg"
+  "msg/WorkStatus.msg"
   DEPENDENCIES std_msgs geometry_msgs
  )
  

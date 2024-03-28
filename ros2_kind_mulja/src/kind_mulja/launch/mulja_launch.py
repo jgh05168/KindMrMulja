@@ -48,8 +48,8 @@ def generate_launch_description():
         ),
         Node(
             package='kind_mulja',
-            node_executable='client_node',
-            node_name='client_node'
+            node_executable='client',
+            node_name='client'
         ),
       
     ])
