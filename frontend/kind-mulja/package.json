@@ -16,6 +16,10 @@
     "leaflet": "^1.9.4",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+<<<<<<< HEAD
+=======
+    "socket.io-client": "^4.7.5",
+>>>>>>> 1e279cf224794ffa3896fb06170a4f1c5cad6c37
     "vite": "^5.0.11",
     "vite-plugin-pwa": "^0.19.2",
     "vue": "^3.4.15",

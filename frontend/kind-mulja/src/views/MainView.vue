@@ -10,13 +10,35 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { io } from 'socket.io-client'
 
 const router = useRouter()
 
 const GoToNext = () => {
   router.push({ name: 'home' })
 }
+
+onMounted(() => {
+  console.log('메인입니다.')
+  // 서버 연결
+  const socket = io('http://localhost:12002/')
+
+  // 연결이 수립되었을 때의 처리
+  socket.on('connect', () => {
+    console.log('웹소켓 연결이 열렸습니다.')
+    // 데이터를 수신 받았을 때의 처리
+  })
+  socket.on('sendToFront', (data) => {
+    console.log(data)
+  })
+
+  // 에러가 발생했을 때의 처리
+  socket.on('error', (error) => {
+    console.error('웹소켓 에러:', error)
+  })
+})
 </script>
 
 <style scoped>
