@@ -29,9 +29,9 @@ onMounted(() => {
 
   // 데이터를 수신하여 마커 위치를 조정
   socket.on("sendToFront", (data) => {
-    console.log(data);
-    const adjustedX = Math.abs(data.x) * 5;
-    const adjustedY = Math.abs(data.y) * 5;
+    const parsedData = JSON.parse(data); // 문자열을 JSON 객체로 변환
+    const adjustedX = Math.abs(parsedData.x+25) * 5;
+    const adjustedY = Math.abs(parsedData.y+25) * 5;
     adjustMarkerPosition(adjustedX, adjustedY);
   })
 
@@ -53,8 +53,8 @@ function adjustMarkerPosition(x, y) {
   // 마커 위치를 조정
   marker.value.style.left = `${markerX}px`;
   marker.value.style.top = `${markerY}px`;
-  console.log(marker.value.style.left, marker.value.style.top)
 }
+
 </script>
 
 <style>
