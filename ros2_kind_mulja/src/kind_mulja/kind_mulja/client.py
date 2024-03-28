@@ -21,7 +21,7 @@ class Client(Node):
         self.order_detail_id=-99
         
     def work_status_cb(self,msg):
-        print("3: ",msg)
+        print("hihih")
         self.work_status_msg=msg
         print(self.work_status_msg.is_start)
         
@@ -40,9 +40,9 @@ class Client(Node):
                 product_x=json_data.get('product_x')  
                 product_y=json_data.get('product_y')    
                 self.order_detail_id=json_data.get('order_detail_id')    
-                                                                       
+                turtle_id = json_data.get('turtle_id')
                 
-                if local_num is not None and product_y is not None and product_x is not None:
+                if local_num is not None and product_y is not None and product_x is not None and turtle_id is tutle_id:
                     product_x = float(product_x)
                     product_y = float(product_y)
                     
@@ -64,7 +64,7 @@ class Client(Node):
                     print('not found num and grid')
                     
                 print("2: ",self.work_status_msg)
-                
+            
                 if self.work_status_msg.is_start:
                     print("is_start")
                     
