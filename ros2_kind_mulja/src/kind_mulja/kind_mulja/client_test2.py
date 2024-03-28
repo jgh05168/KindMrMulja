@@ -1,4 +1,5 @@
 import asyncio,socketio,json
+import threading
 import rclpy
 from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
@@ -15,8 +16,8 @@ class Client(Node):
 
         self.work_status_msg=WorkStatus()
         
-        self.sio = socketio.AsyncClient()
-        self.setup_sio()
+        # self.sio = socketio.AsyncClient()
+        # self.setup_sio()
         
         self.order_detail_id=-99
         
@@ -25,13 +26,22 @@ class Client(Node):
         self.work_status_msg=msg
         print(self.work_status_msg.is_start)
         
-    def setup_sio(self):
-        @self.sio.event
+    def start_socketio(self,loop):
+        asyncio.set_event_loop(loop)
+        sio = socketio.AsyncClient()
+        self.setup_sio(sio)
+        loop.run_until_complete(sio.connect('http://localhost:12001/'))
+        # sio.wait()
+        loop.run_forever()
+        
+        
+    def setup_sio(self,sio):
+        @sio.event
         async def connect():
             print('connection established')
-            await self.sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
+            await sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
         
-        @self.sio.event
+        @sio.event
         async def order(data):
             try:
                 json_data=json.loads(data)
@@ -71,36 +81,67 @@ class Client(Node):
             except json.JSONDecodeError:
                 status_data={"tutle_id":tutle_id,"order_detail_id":self.order_detail_id,"value":1}
                 json_status=json.dumps(status_data)
-                await self.sio.emit('socketStatus',json_status)
+                await sio.emit('socketStatus',json_status)
                 print('Invalid JSON format:', data)   
 
-        @self.sio.event
+        @sio.event
         async def disconnect():
             await print('disconnected from server')     
     
 
         
-    async def start_socketio(self):
-        await self.sio.connect('http://localhost:12001/')
-        await self.sio.wait()
+    # async def start_socketio(self):
+    #     await self.sio.connect('http://localhost:12001/')
+    #     await self.sio.wait()
         
-    
-
-async def main():
+def main():
     rclpy.init()
     client_node=Client()
     
-    await client_node.start_socketio()
+    loop=asyncio.get_event_loop()
     
-    while rclpy.ok():
-        rclpy.spin_once(client_node)
+    # await client_node.start_socketio()
+    # socket_thread=threading.Thread(target=client_node.start_socketio, args=(loop,))
+    # socket_thread.start()
     
-    rclpy.spin(client_node)
+    client_node.start_socketio(loop)
+    
+    try:
+        while rclpy.ok():
+            rclpy.spin_once(client_node)
+            
+    except KeyboardInterrupt:
+        pass
+    
+    # rclpy.spin(client_node)
     client_node.destroy_node()
     rclpy.shutdown()
     
     
+if __name__ == "__main__":
+    main()
 
-loop=asyncio.get_event_loop()
-loop.run_until_complete(main())
-loop.close()
+# loop.run_until_complete(main())
+# loop.close()
+    
+
+# async def main():
+#     rclpy.init()
+#     client_node=Client()
+    
+#     # await client_node.start_socketio()
+#     socket_thread=threading.Thread(target=client_node.start_socketio)
+#     socket_thread.start()
+    
+#     while rclpy.ok():
+#         rclpy.spin_once(client_node)
+    
+#     rclpy.spin(client_node)
+#     client_node.destroy_node()
+#     rclpy.shutdown()
+    
+    
+
+# loop=asyncio.get_event_loop()
+# loop.run_until_complete(main())
+# loop.close()
