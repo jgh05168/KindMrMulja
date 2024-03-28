@@ -51,5 +51,9 @@ def generate_launch_description():
         #     node_executable='client',
         #     node_name='client'
         # ),
-      
+        Node(
+            package='kind_mulja',
+            node_executable='local_grid_map',
+            node_name='local_grid_map'
+        ),
     ])
