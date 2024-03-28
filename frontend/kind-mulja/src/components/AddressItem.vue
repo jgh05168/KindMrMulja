@@ -1,9 +1,9 @@
 <template>
-  <v-card :width="props.width" class="mx-auto mt-5 mb-5">
+  <v-card elevation="5" rounded="xl" :width="props.width" class="mx-auto mt-5 mb-5 address-item">
     <v-card-title>
       <slot name="address-title" :editAddress="editAddress"> </slot>
     </v-card-title>
-    <v-divider class="border-opacity-50" color="success"></v-divider>
+    <v-divider class="border-opacity-50" color="#757575"></v-divider>
     <v-card-text>
       <slot name="address-detail"></slot>
     </v-card-text>
@@ -23,4 +23,8 @@ const props = defineProps({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.address-item {
+  border: 1px solid #757575;
+}
+</style>

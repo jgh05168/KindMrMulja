@@ -9,7 +9,6 @@
         <h3 v-else>픽업 장소</h3>
         <div v-if="orderStore.order_type == 0">
           <SelectDialog
-            @click="getAddressMore()"
             @update:addressId="updateAddressId"
             @update:selectedAddress="updateSelectedAddress"
           />
@@ -78,8 +77,6 @@ const total_price = orderStore.total_price
 const address_id = ref(null)
 // 선택된 id 로 선택된 배송지 저장
 const selected_address = ref(null)
-
-const getAddressMore = () => {}
 
 const updateAddressId = (id) => {
   address_id.value = id
