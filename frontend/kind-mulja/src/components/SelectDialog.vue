@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="400px" scrollable>
+  <v-dialog v-model="dialog" width="80%" scrollable>
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         icon="mdi-home-switch-outline"
@@ -22,7 +22,7 @@
 
       <v-card-text class="px-4" style="height: 500px">
         <AddressItem
-          :width="'300px'"
+          :width="'90%'"
           @click="clickAddress(address)"
           :class="{ 'selected-address': address.address_id == selected_Address }"
           v-for="(address, idx) in address_list"

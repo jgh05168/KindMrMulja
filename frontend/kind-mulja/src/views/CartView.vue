@@ -25,6 +25,15 @@
           </div>
         </template>
       </DeliveryChoice>
+      <div style="height: 40px; display: flex; align-items: center">
+        <v-btn variant="plain" @click="all_select" label="전체 상품 선택하기">
+          <v-icon size="20" v-if="selected_items.length !== cart_items.length"
+            >mdi-checkbox-blank-outline</v-icon
+          >
+          <v-icon size="20" v-else>mdi-checkbox-intermediate</v-icon>
+          <p class="ms-3" style="font-size: 20px">전체 상품 선택하기</p>
+        </v-btn>
+      </div>
       <CartItem
         v-for="(item, idx) in cart_items"
         :value="item.product_id"
@@ -88,16 +97,16 @@
         <v-slide-y-transition>
           <v-card v-show="expand" class="mx-auto" style="width: 100%">
             <CartRecipt style="padding-top: 7%; margin-bottom: 5%">
-              <template #items-price>{{ items_price }}</template>
-              <template #delivery-price>{{ delivery_price }}</template>
-              <template #total-price>{{ total_price }}</template>
+              <template #items-price>{{ Utils.numberWithCommas(items_price) }}</template>
+              <template #delivery-price>{{ Utils.numberWithCommas(delivery_price) }}</template>
+              <template #total-price>{{ Utils.numberWithCommas(total_price) }}</template>
             </CartRecipt>
           </v-card>
         </v-slide-y-transition>
       </div>
 
       <BlackButton v-if="expand" button-width="100%" @click="goToOrder()">
-        <template #button-text>결제하기</template>
+        <template #button-text> 결제하기 </template>
       </BlackButton>
       <BlackButton v-else button-width="100%" @click="expand = !expand">
         <template #button-text>결제하기</template>
@@ -117,7 +126,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
+import Utils from '@/utils/utils'
 const router = useRouter()
 const authStore = useAuthStore()
 const orderStore = useOrderStore()
@@ -136,6 +145,14 @@ const change_expand = () => {
 
 const cart_items = ref([])
 const selected_items = ref([])
+
+const all_select = () => {
+  if (selected_items.value.length == 0 || selected_items.value.length < cart_items.value.length) {
+    selected_items.value = cart_items.value
+  } else {
+    selected_items.value = []
+  }
+}
 
 const items_price = computed(() => {
   let item_total_price = 0

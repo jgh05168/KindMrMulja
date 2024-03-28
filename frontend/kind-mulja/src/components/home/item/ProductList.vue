@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-infinite-scroll height="900" side="end">
+    <v-infinite-scroll height="900" side="end" >
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
           <ProductItem>

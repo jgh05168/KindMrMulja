@@ -7,7 +7,7 @@
       <div id="agreement" class="agreement"></div>
       <!-- 결제하기 버튼 -->
       <div class="result wrapper">
-        <BlackButton class="pay-button" button-width="380px" @click="requestPayment">
+        <BlackButton class="pay-button" button-width="90%" @click="requestPayment">
           <template #button-text>결제하기</template>
         </BlackButton>
       </div>
@@ -46,7 +46,7 @@ const requestPayment = async () => {
         customerEmail: 'ssafy@gmail.com',
         customerMobilePhone: '01012341234',
         successUrl: `${window.location.origin}/paid`,
-        failUrl: `${window.location.origin}/paid`
+        failUrl: `${window.location.origin}/pay`
       })
     }
   } catch (error) {

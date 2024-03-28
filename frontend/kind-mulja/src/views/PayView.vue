@@ -15,7 +15,7 @@
           />
         </div>
       </div>
-      <AddressItem :width="'360px'">
+      <AddressItem :width="'100%'">
         <template v-slot:address-title="slotProps">
           <div
             style="
@@ -147,7 +147,7 @@ onMounted(() => {
 
 .order-info {
   margin: auto auto;
-  width: 370px;
+  width: 100%;
 }
 
 .pay-button {

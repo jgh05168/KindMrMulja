@@ -28,8 +28,9 @@ setup(
             'lidar_trans = kind_mulja.lidar_trans:main',
             'auto_handcontrol =kind_mulja.auto_handcontrol:main',            
             'request_handcontrol=kind_mulja.request_handcontrol:main',
-            'client= kind_mulja.client:main', 
+            'client= kind_mulja.client_test3:main', 
             'test_request_handcontrol= kind_mulja.test_request_handcontrol:main',
+            'local_grid_map = kind_mulja.local_grid_map:main',
         ],
     },
 )

@@ -14,22 +14,24 @@ const initializeSocket = (server) => {
       const work_status = parsedData.work_status;
       //console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
-      const query2 = `UPDATE turtlebot SET turtlebot_status = 2 WHERE turtle_id = ?`;
+      const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
       if (work_status === "start") {
-        const results = await pool.query(query1, [order_detail_id]);
-        await pool.query(query2, [turtle_id]);
-        console.log(results);
+        await pool.query(query1, [order_detail_id]);
+        await pool.query(query2, [2, turtle_id]);
+      } else if (work_status === "done") {
+        // await pool.query(query1, [order_detail_id]);
+        await pool.query(query2, [0, turtle_id]);
       }
     });
 
     const getRegion = (address) => {
       // 각 도시의 대표값 설정
       const cityMapping = {
-        서울: "서울",
-        대전: "대전",
-        광주: "광주",
-        구미: "구미",
-        부울경: "부울경",
+        서울: 1,
+        대전: 2,
+        광주: 3,
+        구미: 4,
+        부울경: 5,
       };
 
       // 픽업 주소의 대표값 설정
@@ -58,6 +60,7 @@ const initializeSocket = (server) => {
       switch (addressPrefix) {
         case "경기":
         case "강원":
+        case "인천":
           return 1; // 경기, 인천, 강원은 서울(1)로 분류
         case "충남":
         case "충북":
@@ -67,6 +70,7 @@ const initializeSocket = (server) => {
         case "전남":
           return 3; // 전북, 전남은 광주(3)로 분류
         case "경북":
+        case "대구":
           return 4; // 경북은 구미(4)로 분류
         case "경남":
         case "제주":
@@ -84,7 +88,7 @@ const initializeSocket = (server) => {
         FROM order_detail_list odl 
         JOIN order_list ol ON odl.order_id = ol.order_id 
         WHERE odl.order_quentity > odl.order_progress
-        ORDER BY ol.order_type DESC 
+        ORDER BY ol.order_type DESC , odl.order_detail_id ASC
         LIMIT 1;`;
         const results = await pool.query(query1);
         const turtlequery = `SELECT turtle_id, turtlebot_status FROM turtlebot WHERE turtlebot_status = ? LIMIT 1`;
