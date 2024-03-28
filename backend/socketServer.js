@@ -13,13 +13,22 @@ const initializeSocket = (server) => {
       console.log("수신한 메시지:", data);
     });
 
+    socket.on("tutleStatus", (data) => {
+      console.log("수신한 메시지:", data);
+    });
+
+    
+    socket.on("socketStatus", (data) => {
+      console.log("수신한 메시지:", data);
+    });
+
     // ros로 보내는 메세지 (msgName, data)
     const jsonData = {
-        local_num: 3,
-        target_grid: {
-            x: -43.591,
-            y: -38.4146
-        }
+        tutle_id:1,
+        order_detail_id:1,
+        product_x: -43.591,
+        product_y:-38.4146,
+        moving_zone: 3,
     };
     io.emit("order", JSON.stringify(jsonData));
   });

@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
-from ssafy_msgs.msg import RequestHandControl,TurtlebotStatus,TargetGrid
+from ssafy_msgs.msg import RequestHandControl,TurtlebotStatus,TargetGrid,WorkStatus
 
 # 위치에 따른 물건 들고 내리기 로직 
 # 1. 로봇 위치를 받아온다. 
@@ -32,6 +32,7 @@ class RequestMsgHandControl(Node):
         # request 요청 publisher 생성
         self.request_handcontrol_publisher=self.create_publisher(RequestHandControl,'/request_handcontrol',10)
         self.target_publisher=self.create_publisher(PoseStamped,'goal_pose',10)
+        self.work_status_publisher=self.create_publisher(WorkStatus,'/work_status',10)
         
         ## 제어 메시지 변수 생성 
         #subscriber
@@ -46,6 +47,7 @@ class RequestMsgHandControl(Node):
         #publisher
         self.request_hand_control_msg=RequestHandControl()
         self.request_target_msg=PoseStamped()
+        self.work_status_msg=WorkStatus()
         
         self.product_is_done=False
         self.truct_is_done=False
@@ -77,9 +79,7 @@ class RequestMsgHandControl(Node):
         print("msg: ",msg)
         
         self.timer = self.create_timer(2, self.timer_callback)
-        
-        
-        
+          
         
     def timer_callback(self):  
         turtle_x=self.odom_msg.pose.pose.position.x
@@ -95,6 +95,10 @@ class RequestMsgHandControl(Node):
             self.request_target_msg.pose.position.y=self.product_y
             self.target_publisher.publish(self.request_target_msg)
             print(self.request_target_msg)
+            
+            self.work_status_msg.is_start=True
+            self.work_status_publisher.publish(self.work_status_msg)
+            
             self.product_is_done=True
         else: 
             print("request_target is None")
@@ -137,6 +141,9 @@ class RequestMsgHandControl(Node):
             if self.turtlebot_status_msg.can_put:
                 self.request_hand_control_msg.control_mode=3        
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
+                
+                self.work_status_msg.is_done=True
+                self.work_status_publisher.publish(self.work_status_msg)
  
             
     #         # 목적지 주소를 전달한다.
@@ -144,6 +151,7 @@ class RequestMsgHandControl(Node):
     #         # self.request_target_msg.pose.position.x=self.charge_x
     #         # self.request_target_msg.pose.position.y=self.charge_y
     #         # self.target_publisher.publish(self.request_target_msg)
+
             
 
         
