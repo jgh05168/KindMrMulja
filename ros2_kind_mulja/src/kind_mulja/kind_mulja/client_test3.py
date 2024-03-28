@@ -6,7 +6,8 @@ from rclpy.node import Node
 
 truct_x=[-61.6042,-53.5767,-45.5926,-37.5455,-37.5455]
 truct_y=[-59.33,-59.33,-59.33,-59.33,-59.33]
-tutle_id=1
+
+turtle_id_about_me=1
 
 class Client(Node):
     def __init__(self):
@@ -35,34 +36,35 @@ class Client(Node):
                 local_num=json_data.get('moving_zone')
                 product_x=json_data.get('product_x')  
                 product_y=json_data.get('product_y')    
-                self.order_detail_id=json_data.get('order_detail_id')    
-                                                                        
-                    
-                if local_num is not None and product_y is not None and product_x is not None:
-                        product_x = float(product_x)
-                        product_y = float(product_y)
-                        
-                        #target_grid msg 작성 및 publish
-                        moving_zone_x=truct_x[int(local_num)-1]
-                        moving_zone_y=truct_y[int(local_num)-1]
-                        
-                        location_msg=TargetGrid()
-                        location_msg.product_x=product_x
-                        location_msg.product_y=product_y
-                        location_msg.moving_zone_x=moving_zone_x
-                        location_msg.moving_zone_y=moving_zone_y
-                        # location_msg.is_done=False
-                        self.location_publisher.publish(location_msg)
-                        print(location_msg)
-                        # print("1: ",self.work_status_msg)
-        
+                self.order_detail_id=json_data.get('order_detail_id')   
+                order_turtle_id=json_data.get('turtle_id')
+                
+                if order_turtle_id==turtle_id_about_me:                                                                      
+                    if local_num is not None and product_y is not None and product_x is not None:
+                            product_x = float(product_x)
+                            product_y = float(product_y)
+                            
+                            #target_grid msg 작성 및 publish
+                            moving_zone_x=truct_x[int(local_num)-1]
+                            moving_zone_y=truct_y[int(local_num)-1]
+                            
+                            location_msg=TargetGrid()
+                            location_msg.product_x=product_x
+                            location_msg.product_y=product_y
+                            location_msg.moving_zone_x=moving_zone_x
+                            location_msg.moving_zone_y=moving_zone_y
+                            # location_msg.is_done=False
+                            self.location_publisher.publish(location_msg)
+                            print(location_msg)
+                            # print("1: ",self.work_status_msg)
+            
+                    else:
+                        print('not found num and grid')
                 else:
-                    print('not found num and grid')
-                    
-                # print("2: ",self.work_status_msg)
+                    print("It's not my work") 
                         
             except json.JSONDecodeError:
-                status_data={"tutle_id":tutle_id,"order_detail_id":self.order_detail_id,"value":1}
+                status_data={"turtle_id":order_turtle_id,"order_detail_id":self.order_detail_id,"value":1}
                 json_status=json.dumps(status_data)
                 self.sio.emit('socketStatus',json_status)
                 print('Invalid JSON format:', data)
@@ -77,16 +79,16 @@ class Client(Node):
         print(self.work_status_msg.is_start)
         
         if self.work_status_msg.is_start:
-            self.send_work_tutle_status("start")
+            self.send_work_turtle_status("start")
         else:
-            self.send_work_tutle_status("done")
+            self.send_work_turtle_status("done")
 
             
-    def send_work_tutle_status(self,str):
-        status_data={"tutle_id":tutle_id,"order_detail_id":self.order_detail_id,"work_status":str}
+    def send_work_turtle_status(self,str):
+        status_data={"turtle_id":turtle_id_about_me,"order_detail_id":self.order_detail_id,"work_status":str}
         json_status=json.dumps(status_data)
         print("status data: ", json_status)
-        self.sio.emit('tutleStatus',json_status)
+        self.sio.emit('turtleStatus',json_status)
         
     
     def start_socketio(self):
