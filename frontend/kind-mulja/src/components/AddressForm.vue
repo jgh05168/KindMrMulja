@@ -2,6 +2,7 @@
   <div class="address-form">
     <v-form class="signup" v-model="form" @submit.prevent="createAddress()">
       <!-- 도로명 주소 API 를 사용해 클릭하면 모달창, 선택 결과를 해당 value 값으로 사용 -->
+      <h3>배송 주소</h3>
       <v-text-field
         clearable
         :label="address_label"
@@ -114,7 +115,7 @@ const createAddress = async () => {
         phone_number: phone_number.value,
         is_default: is_default.value
       }
-      console.log(info)
+      // console.log(info)
       const results = await Service.addDelivery(info)
       console.log(results)
       if (props.nowView == 'from-addressview') {
@@ -136,6 +137,7 @@ const toggle = () => {
     is_default.value = 1
   }
 }
+
 function sample6_execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function (data) {
@@ -184,7 +186,7 @@ function sample6_execDaumPostcode() {
 
 /* 폼 안의 모든 요소들의 넓이와 레이아웃 설정 */
 .address-form * {
-  width: 80%;
+  width: 90%;
   margin: 8px auto;
 }
 
