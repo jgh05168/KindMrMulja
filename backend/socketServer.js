@@ -14,11 +14,13 @@ const initializeSocket = (server) => {
       const work_status = parsedData.work_status;
       //console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
-      const query2 = `UPDATE turtlebot SET turtlebot_status = 2 WHERE turtle_id = ?`;
+      const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
       if (work_status === "start") {
-        const results = await pool.query(query1, [order_detail_id]);
-        await pool.query(query2, [turtle_id]);
-        console.log(results);
+        await pool.query(query1, [order_detail_id]);
+        await pool.query(query2, [2, turtle_id]);
+      } else if (work_status === "done") {
+        await pool.query(query1, [order_detail_id]);
+        await pool.query(query2, [0, turtle_id]);
       }
     });
 
@@ -84,7 +86,7 @@ const initializeSocket = (server) => {
         FROM order_detail_list odl 
         JOIN order_list ol ON odl.order_id = ol.order_id 
         WHERE odl.order_quentity > odl.order_progress
-        ORDER BY ol.order_type DESC 
+        ORDER BY ol.order_type DESC , odl.order_detail_id ASC
         LIMIT 1;`;
         const results = await pool.query(query1);
         const turtlequery = `SELECT turtle_id, turtlebot_status FROM turtlebot WHERE turtlebot_status = ? LIMIT 1`;
