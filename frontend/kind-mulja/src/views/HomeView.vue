@@ -4,14 +4,16 @@
       <template #header-bar>친절한 물자씨</template>
     </AppHeader>
 
-    <CategoryList style="position: sticky; top: 5%; z-index: 999; padding-top: 5%"></CategoryList>
+    <CategoryList
+      style="position: sticky; top: 10%; padding-bottom: 2%; z-index: 999; background-color: white"
+    ></CategoryList>
 
-    <ProductList :items="items"></ProductList>
+    <ProductList :items="category_items()"></ProductList>
   </div>
 </template>
 
 <script setup>
-import { computed, onUpdated, onMounted } from 'vue'
+import { onUpdated, onMounted } from 'vue'
 import CategoryList from '@/components/home/CategoryList.vue'
 import ProductList from '@/components/home/item/ProductList.vue'
 import AppHeader from '@/layouts/AppHeader.vue'
@@ -23,11 +25,11 @@ import {} from 'vue'
 const productStore = useProductStore()
 const authStore = useAuthStore()
 
-const items = computed(() => {
+const category_items = () => {
   // 전체 상품 리스트에서 현재 선택된 카테고리 기준으로 필터링 해주기
   if (productStore.now_category === 'popular') {
     // 인기순으로 정렬하여 반환
-    return productStore.product_list
+    return productStore.product_list.sort((a, b) => b.wish_count - a.wish_count)
   } else {
     const category_product = []
     // product_list 배열을 순회하면서 조건을 만족하는 상품들을 찾음
@@ -40,7 +42,7 @@ const items = computed(() => {
     })
     return category_product
   }
-})
+}
 
 const zzim_check = () => {
   // 만약 로컬 환경에 로그인 되어 있으면
