@@ -1,7 +1,8 @@
 import axios from 'axios'
 //여기 사이트에 json 데이터 파일 있음
-const api_url = 'http://localhost:3000'
-// const api_url = 'http://j10c109.p.ssafy.io:3000'
+
+// const api_url = 'http://localhost:3000'
+const api_url = 'https://j10c109.p.ssafy.io/api'
 export class Service {
   static SignIn(email, password) {
     return new Promise((resolve, reject) => {
@@ -107,73 +108,73 @@ export class Service {
 
   static checkProductWish(user_id, product_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'get',
-      url: api_url + `/product/check-wish-product/${user_id}/${product_id}`
-    })
-      .then((res) => {
-        const data = res.data
-        // console.log('상품 찜 여부 : ', data)
-        resolve(data)
+      axios({
+        method: 'get',
+        url: api_url + `/product/check-wish-product/${user_id}/${product_id}`
       })
-      .catch((error) => {
-        reject(new Error(`상품 찜 여부 확인: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          // console.log('상품 찜 여부 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`상품 찜 여부 확인: ${error.message}`))
+        })
     })
-    }
+  }
 
   static toggleWish(user_id, product_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'post',
-      url: api_url + `/product/wishlist-toggle`,
-      data: {
-        user_id: user_id,
-        product_id: product_id
-      }
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('상품 찜 토글 : ', data)
-        resolve(data)
+      axios({
+        method: 'post',
+        url: api_url + `/product/wishlist-toggle`,
+        data: {
+          user_id: user_id,
+          product_id: product_id
+        }
       })
-      .catch((error) => {
-        reject(new Error(`상품 찜 토글 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('상품 찜 토글 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`상품 찜 토글 실패: ${error.message}`))
+        })
     })
   }
 
   static getWishList(user_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'get',
-      url: api_url + `/wishlist/${user_id}`
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('상품 찜 목록 조회 : ', data)
-        resolve(data)
+      axios({
+        method: 'get',
+        url: api_url + `/wishlist/${user_id}`
       })
-      .catch((error) => {
-        reject(new Error(`상품 목록 조회 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('상품 찜 목록 조회 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`상품 목록 조회 실패: ${error.message}`))
+        })
     })
   }
 
   static deleteWish(wishlist_id) {
     return new Promise((resolve, reject) => {
-    axios({
-      method: 'delete',
-      url: api_url + `/wishlist/${wishlist_id}`
-    })
-      .then((res) => {
-        const data = res.data
-        console.log('위시리스트에서 삭제 여부 : ', data)
-        resolve(data)
+      axios({
+        method: 'delete',
+        url: api_url + `/wishlist/${wishlist_id}`
       })
-      .catch((error) => {
-        reject(new Error(`위시리스트에서 삭제 실패: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          console.log('위시리스트에서 삭제 여부 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`위시리스트에서 삭제 실패: ${error.message}`))
+        })
     })
   }
 

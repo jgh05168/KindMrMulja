@@ -31,6 +31,7 @@ class a_star(Node):
         self.map_offset_x = -50-25.0
         self.map_offset_y = -50-25.0
         self.GRIDSIZE = 250 
+        self.grid_time = 0.2857142857
 
         self.dx = [-1, 0, 0, 1, -1, -1, 1, 1]
         self.dy = [0, 1, -1, 0, -1, 1, -1, 1]
@@ -61,6 +62,7 @@ class a_star(Node):
         self.map_msg = msg
 
     def goal_callback(self, msg):
+        print("HI")
         if msg.header.frame_id == 'map':
             goal_x, goal_y = msg.pose.position.x, msg.pose.position.y
             goal_cell = self.pose_to_grid_cell(goal_x, goal_y)
@@ -80,7 +82,10 @@ class a_star(Node):
                 
 
                 if 0 <= start_grid_cell[0] < self.GRIDSIZE and 0 <= start_grid_cell[1] < self.GRIDSIZE and 0 <= self.goal[0] < self.GRIDSIZE and 0 <= self.goal[1] < self.GRIDSIZE and start_grid_cell != self.goal:
+                    print(self.grid)
                     self.dijkstra(start_grid_cell)
+                    print(self.final_path)
+                    print(int(len(self.final_path)*self.grid_time), "s")
 
                 self.global_path_msg = Path()
                 self.global_path_msg.header.frame_id = 'map'
@@ -118,7 +123,7 @@ class a_star(Node):
 
             
 
-            for i in range(8):
+            for i in range(4):
                 next_node = (current[0] + self.dx[i], current[1] + self.dy[i])
                 # if self.grid[next_node[0]][next_node[1]] >= 50:
                 #     continue

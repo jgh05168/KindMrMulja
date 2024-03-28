@@ -73,7 +73,7 @@ import AddressItem from '@/components/AddressItem.vue'
 import CreateDialog from '@/components/CreateDialog.vue'
 import { useAuthStore } from '@/stores/auth'
 import { defineEmits } from 'vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
 const emit = defineEmits(['update:addressId', 'update:selectedAddress'])
 const authStore = useAuthStore()
@@ -94,6 +94,11 @@ const saveChange = () => {
   emit('update:addressId', selected_Address.value.address_id)
   emit('update:selectedAddress', selected_Address.value)
 }
+
+onUpdated(async () => {
+  console.log(useAuthStore.user_id)
+  address_list.value = await Service.getAddress(authStore.user_id)
+})
 
 onMounted(async () => {
   console.log(useAuthStore.user_id)

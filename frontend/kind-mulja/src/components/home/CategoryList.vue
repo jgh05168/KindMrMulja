@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="" max-width="415px">
     <!-- 다중선택 multiple 옵션 -->
-    <v-slide-group show-arrows>
+    <v-slide-group style="width: 80%; margin: 0 auto">
       <v-slide-group-item v-for="(item, idx) in productStore.category" :key="idx">
         <CategoryItem>
           <!-- CategoryItem 이라는 하위 컴포넌트의 img-btn slot 에 표시할 버튼을 정의 -->

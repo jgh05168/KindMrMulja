@@ -1,9 +1,6 @@
 <template>
-   <div class="pa-4 text-center">
-    <v-dialog
-      v-model="dialog"
-      max-width="600"
-    >
+  <div class="pa-4 text-center">
+    <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
           size="xs"
@@ -11,30 +8,18 @@
           variant="flat"
           class="text-none font-weight-regular"
           v-bind="activatorProps"
-
         ></v-btn>
       </template>
 
       <v-card>
-        <AddressForm></AddressForm>
+        <AddressForm :now-view="'from-payview'" :dialog="dialog"></AddressForm>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            text="Close"
-            variant="plain"
-            @click="dialog = false"
-          ></v-btn>
-
-          <v-btn
-            color="primary"
-            text="Save"
-            variant="tonal"
-            @click="dialog = false"
-          ></v-btn>
+          <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,12 +29,9 @@
 <script setup>
 import AddressForm from '@/components/AddressForm.vue'
 
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const dialog = ref(false)
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
