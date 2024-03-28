@@ -128,7 +128,8 @@ class RequestMsgHandControl(Node):
     #     x=self.odom_msg.pose.pose.position.x
     #     y=self.odom_msg.pose.pose.position.y
     #   터틀봇의 위치가 트럭의 위치랑 가까워졌을 때
-        if abs(turtle_x-self.moving_x)<=1 and abs(turtle_y-self.moving_y)<=1:
+            
+        if self.truct_is_done==False and abs(turtle_x-self.moving_x)<=1 and abs(turtle_y-self.moving_y)<=1:
     #     if abs(self.moving_x-x)<=1 and abs(self.moving_y-y)<=1:
             
             # 8. 물건 preview
@@ -142,8 +143,10 @@ class RequestMsgHandControl(Node):
                 self.request_hand_control_msg.control_mode=3        
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
                 
-                self.work_status_msg.is_done=True
+                self.work_status_msg.is_start=False
                 self.work_status_publisher.publish(self.work_status_msg)
+                
+                self.truct_is_done==True
  
             
     #         # 목적지 주소를 전달한다.

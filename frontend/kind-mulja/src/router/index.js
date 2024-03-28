@@ -117,6 +117,9 @@ const router = createRouter({
       } else {
         next()
       }
+      if (!from.name && to.name == 'pay') {
+        alert('결제를 실패하였습니다.')
+      }
     }
   },
   {

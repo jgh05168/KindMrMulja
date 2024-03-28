@@ -11,6 +11,7 @@
     <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
     <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> /
   </div>
+  -->
   <div class="galaxy_24">
     <RouterView />
     <AppFooter />
@@ -43,7 +44,12 @@ onMounted(async () => {
 
 <style scoped>
 .galaxy_24 {
-  width: 415px;
-  height: 900px;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.app-footer {
+  position: fixed;
 }
 </style>

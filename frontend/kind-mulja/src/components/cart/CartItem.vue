@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-auto cart-item">
+  <v-card class="mb-2 cart-item" elevation="3">
     <slot name="item-check" style="width: 10%"> </slot>
     <v-avatar class="me-3 ms-3 mt-6" rounded="0" size="90" style="width: 25%">
       <slot name="item-image">
@@ -8,11 +8,11 @@
     </v-avatar>
 
     <div class="item-info">
-      <v-card-title class="ps-0" style="font-size: 15px">
+      <v-card-title class="ps-0" style="font-size: 20px">
         <slot name="item-name">상품 이름</slot>
       </v-card-title>
 
-      <v-card-subtitle class="ps-0" style="font-size: 18px; display: flex; align-items: center">
+      <v-card-subtitle class="ps-0" style="font-size: 23px; display: flex; align-items: center">
         <v-icon class="me-1" size="xs" icon="mdi-currency-krw"></v-icon>
         <slot name="item-price">상품 가격</slot>
       </v-card-subtitle>
@@ -22,7 +22,7 @@
       </v-card-actions>
     </div>
 
-    <div style="position: absolute; top: 10%; right: 5%">
+    <div style="position: absolute; top: 35%; right: 1%">
       <slot name="cancel-btn"></slot>
     </div>
   </v-card>
@@ -52,7 +52,9 @@ watch(
 .cart-item {
   position: relative;
   display: flex;
-  width: 100%;
+  width: 95%;
+  margin: 5px auto;
+  align-items: center;
 }
 
 .item_info {
