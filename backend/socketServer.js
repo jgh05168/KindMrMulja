@@ -89,7 +89,7 @@ const initializeSocket = (server) => {
           moving_zone: region,
         };
 
-        io.emit("order", JSON.stringify(jsonData));
+        ioemit("order", JSON.stringify(jsonData));
       } catch (error) {
         console.error("데이터베이스 쿼리 오류:", error);
       }
