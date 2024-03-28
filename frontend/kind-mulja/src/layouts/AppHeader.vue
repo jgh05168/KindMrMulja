@@ -1,8 +1,8 @@
 <template>
   <div
     style="
-      width: 415px;
-      height: 50px;
+      width: 100%;
+      height: 100px;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -11,8 +11,6 @@
       top: 0;
       z-index: 99;
       background-color: white;
-      padding-top: 10%;
-      padding-bottom: 12%;
     "
   >
     <v-btn size="50" @click="router.go(-1)" variant="plain"
