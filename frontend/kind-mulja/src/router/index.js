@@ -12,7 +12,7 @@ import PaidView from '@/views/PaidView.vue'
 import OrderView from '@/views/OrderView.vue'
 import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
-
+import mapView from '@/views/mapView.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
 import { useViewStore } from '@/stores/view'
@@ -181,6 +181,11 @@ const router = createRouter({
     path: '/profile',
     name: 'profile',
     component: ProfileView,
+  },
+  {
+    path: '/map',
+    name: 'map',
+    component: mapView,
   },
   ]
 })

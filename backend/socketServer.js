@@ -103,11 +103,8 @@ const initializeSocket = (server) => {
           product_y: position[0][0].pos_y,
           moving_zone: region,
         };
-        await pool.query(
-          `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
-          [turtle[0][0].turtle_id]
-        );
-        io.emit("order", JSON.stringify(jsonData));
+
+        ioemit("order", JSON.stringify(jsonData));
       } catch (error) {
         console.error("데이터베이스 쿼리 오류:", error);
       }
