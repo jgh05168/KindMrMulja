@@ -25,7 +25,7 @@ const initializeSocketLoc = (server) => {
       io.emit("sendToFront", raw_data);
     };
 
-    setInterval(sendDataToClient, 1);
+    setInterval(sendDataToClient, 1000);
   });
 };
 

@@ -36,7 +36,7 @@ const socketServerPort1 = process.env.SOCKET_SERVER_PORT || 12001;
 initializeSocket(socketServerPort1);
 
 // 로봇 좌표 받기
-const socketServerPort2 = process.env.SOCKET_SERVER_PORT || 12002;
+const socketServerPort2 = process.env.SOCKET_SERVER_PORT_LOC || 12002;
 initializeSocketLoc(socketServerPort2);
 
 app.listen(PORT, () => console.log(`${PORT} 서버 기동중`));

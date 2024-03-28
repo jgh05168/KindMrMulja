@@ -12,7 +12,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { io } from 'socket.io-client'
+import io from 'socket.io-client';
 
 const router = useRouter()
 
@@ -30,7 +30,8 @@ onMounted(() => {
     console.log('웹소켓 연결이 열렸습니다.')
     // 데이터를 수신 받았을 때의 처리
   })
-  socket.on('sendToFront', (data) => {
+  
+  socket.on("sendToFront", (data) => {
     console.log(data)
   })
 

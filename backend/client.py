@@ -38,6 +38,10 @@ class ClientSocket:
         await self.sio.connect('http://localhost:12001/')
         await self.sio.wait()
 
+    # async def start_socketio(self):
+    #     await self.sio.connect('http://localhost:12002/')
+    #     await self.sio.wait()
+
 def main():
     client_socket = ClientSocket()  
     asyncio.get_event_loop().run_until_complete(client_socket.start_socketio())
