@@ -1,9 +1,8 @@
 <template>
   <v-container>
-    <v-infinite-scroll height="900" side="end" @load="load">
+    <v-infinite-scroll height="900" side="end">
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
-          {{ item.is_zzim }}
           <ProductItem>
             <template #item-img>
               <div @click="GoDetail(item.product_id)">
@@ -18,15 +17,20 @@
             </template>
 
             <template #item-title>
-              <v-card-subtitle>
+              <v-card-subtitle
+                @click="GoDetail(item.product_id)"
+                style="font-size: 16px; font-weight: bold"
+              >
                 {{ item.product_name }}
               </v-card-subtitle>
             </template>
 
             <template #item-price>
-              <v-card-title>
-                <v-icon size="xs">mdi-currency-krw</v-icon>
-                {{ item.product_price }}
+              <v-card-title style="display: flex; justify-content: space-between">
+                <p style="font-size: 20px">
+                  <v-icon class="me-1" size="15">mdi-currency-krw</v-icon
+                  >{{ Utils.numberWithCommas(item.product_price) }}
+                </p>
                 <v-btn size="xs" variant="plain" @click="zzim(item, item.product_id)">
                   <v-icon v-if="item.is_zzim == true" size="30" color="red-darken-1"
                     >mdi-heart</v-icon
@@ -49,6 +53,7 @@ import ProductItem from './ProductItem.vue'
 import Service from '@/api/api'
 import { useProductStore } from '@/stores/product'
 import { useAuthStore } from '@/stores/auth'
+import Utils from '@/utils/utils'
 
 const props = defineProps({
   items: Array
@@ -75,33 +80,21 @@ const getItemDetail = async (id) => {
 // API 응답을 기다립니다. 이때 로딩 인디케이터를 표시하여 사용자에게 진행 중임을 알립니다.
 // API 응답이 도착하면 응답 데이터를 사용하여 상세 정보 페이지를 렌더링합니다.
 // 페이지를 표시하고 사용자에게 상세 정보를 제공합니다.
-const GoDetail = (id) => {
+const GoDetail = async (id) => {
   // 디테일 페이지로 이동
   // 1. api 함수 모음집에서 함수 가져와서 상품 상세정보 요청
-  getItemDetail(id)
+  await getItemDetail(id)
   // 2. 응답 데이터가 온 다음에 데이터를 저장하거나 가지고 이동
   router.push({ name: 'detail', params: { id: id } })
 }
 
 const zzim = async (item, product_id) => {
-  // 내 찜 목록에 추가거나 삭제
-  // 추가하면 true, 삭제하면 false
-  await Service.toggleWish(authStore.user_id, product_id)
-  item.is_zzim = !item.is_zzim
-}
-
-const load = ({ side, done }) => {
-  setTimeout(() => {
-    if (side === 'start') {
-      const arr = Array.from({ length: 10 }, (k, v) => props.items[0] - (10 - v))
-      this.items = [...arr, ...this.items]
-    } else if (side === 'end') {
-      const arr = Array.from({ length: 10 }, (k, v) => this.items.at(-1) + 1 + v)
-      this.items = [...this.items, ...arr]
-    }
-
-    done('ok')
-  }, 1000)
+  if (authStore.user_id) {
+    // 내 찜 목록에 추가거나 삭제
+    // 추가하면 true, 삭제하면 false
+    const res = await Service.toggleWish(authStore.user_id, product_id)
+    item.is_zzim = res.result
+  }
 }
 </script>
 

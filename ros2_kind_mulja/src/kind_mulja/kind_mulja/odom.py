@@ -44,12 +44,15 @@ class odom(Node):
         self.is_imu=False
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.
-        self.x=-50.0
-        self.y=-50.0
+        self.x=-50
+        self.y=-50
+        self.map_resolution=0.2
+        self.map_offset_x=-50-25.0
+        self.map_offset_y=-50-25.0
                 
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
-        self.imu_offset= -0.5*pi
+        self.imu_offset= -0.5 * pi
         self.prev_time=0
 
         
@@ -140,6 +143,11 @@ class odom(Node):
                 self.broadcaster.sendTransform(self.laser_transform)
                 self.odom_publisher.publish(self.odom_msg)
                 self.prev_time=self.current_time
+
+                check_robot_pose_x = int((self.x - self.map_offset_x) / self.map_resolution)
+                check_robot_pose_y = int((self.y - self.map_offset_y) / self.map_resolution)
+
+                print(check_robot_pose_x, check_robot_pose_y)
 
         
 def main(args=None):

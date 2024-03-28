@@ -24,8 +24,9 @@
       ></v-text-field>
 
       <!-- <span>비밀번호 찾기</span> -->
-
-      <v-btn color="#212121" type="submit" variant="elevated"> 로그인 </v-btn>
+      <BlackButton type="submit" buttonWidth="80%">
+        <template #button-text>로그인</template>
+      </BlackButton>
 
       <span><RouterLink :to="{ name: 'signup' }">회원가입 하기</RouterLink></span>
     </v-form>
@@ -39,6 +40,7 @@ import Service from '@/api/api.js'
 import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
 import { useProductStore } from '@/stores/product'
+import BlackButton from '../BlackButton.vue'
 
 const productStore = useProductStore()
 const orderStore = useOrderStore()

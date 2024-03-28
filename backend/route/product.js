@@ -104,11 +104,19 @@ product.post("/wishlist-toggle", async (req, res) => {
       // 이미 위시리스트에 해당 제품이 있으면 삭제하는 쿼리
       const deleteQuery = `DELETE FROM wishlist WHERE user_id = ? AND product_id = ?`;
       await pool.query(deleteQuery, [user_id, product_id]);
+
+      const decreaseWishcountQuery = `UPDATE product_list SET wishcount = wishcount - 1 WHERE product_id = ?`;
+      await pool.query(decreaseWishcountQuery, [product_id]);
+
       return res.json({ result: false });
     } else {
       // 위시리스트에 해당 제품이 없으면 새로운 row를 추가하는 쿼리
       const insertQuery = `INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)`;
       await pool.query(insertQuery, [user_id, product_id]);
+
+      const increaseWishcountQuery = `UPDATE product_list SET wishcount = wishcount + 1 WHERE product_id = ?`;
+      await pool.query(increaseWishcountQuery, [product_id]);
+
       return res.json({ result: true });
     }
   } catch (error) {

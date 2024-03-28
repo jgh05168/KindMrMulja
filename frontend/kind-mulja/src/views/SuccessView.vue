@@ -58,7 +58,9 @@ export default {
           } else {
             confirmed.value = true
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log(error)
+        }
       }
 
       confirm()
