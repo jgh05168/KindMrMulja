@@ -27,9 +27,11 @@ delivery.post("/delivery-address/add", async (req, res) => {
     ]);
 
     if (result[0].affectedRows > 0) {
-      const query2 = `UPDATE address_information SET is_default = 0 WHERE address_id = ?`;
-      if (is_default === true) {
-        await pool.query(query2, result2[0][0].address_id);
+      if (result2[0].affectedRows > 0) {
+        const query2 = `UPDATE address_information SET is_default = 0 WHERE address_id = ?`;
+        if (is_default === true) {
+          await pool.query(query2, result2[0][0].address_id);
+        }
       }
       return res.json({ result: true });
     } else {
