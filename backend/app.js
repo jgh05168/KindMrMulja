@@ -15,6 +15,8 @@ const payRouter = require("./route/payments.router.js");
 const initializeSocketLoc = require("./socketServerLoc.js");
 const initializeSocketLoc2 = require("./socketServerLoc2.js");
 
+//
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
