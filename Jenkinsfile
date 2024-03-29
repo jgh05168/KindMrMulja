@@ -60,9 +60,9 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: 'docker ps -a | grep ${FRONT_CONTAINER_NAME}', returnStdout: true).trim().split('\n').size()
+                            def frontContainerExists = sh(script: 'docker ps -a | grep ${FRONT_CONTAINER_NAME}', returnStatus: true)
                             echo "${frontContainerExists}"
-                            if (frontContainerExists==1) {
+                            if (frontContainerExists) {
                                 echo "${frontContainerExists}"
                                 sh "docker stop ${FRONT_CONTAINER_NAME}"
                                 sh "docker rm ${FRONT_CONTAINER_NAME}"
