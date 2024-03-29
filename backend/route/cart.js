@@ -1,7 +1,7 @@
 const express = require("express");
 const moment = require("moment");
 const cart = express.Router();
-const pool = require("./DB.js");
+const pool = require("../DB.js");
 // 사용자 장바구니 목록 불러오기
 cart.get("/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
