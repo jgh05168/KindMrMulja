@@ -47,6 +47,7 @@ onMounted(async () => {
   position: relative;
   width: 100%;
   height: 100vh;
+  font-family: 'pretendard';
 }
 
 .app-footer {

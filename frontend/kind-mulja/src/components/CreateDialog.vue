@@ -11,13 +11,16 @@
         ></v-btn>
       </template>
 
-      <v-card>
-        <v-card-title style="text-align: center; font-size: 30px; font-weight: bold; height: 60px">
+      <v-card rounded="xl">
+        <v-card-title
+          class="mt-2"
+          style="text-align: center; font-size: 30px; font-weight: bold; height: 60px"
+        >
           배송지 작성하기
         </v-card-title>
 
         <v-divider></v-divider>
-        <AddressForm :now-view="'from-payview'" :dialog="dialog"></AddressForm>
+        <AddressForm :now-view="'from-payview'" :dialog="dialog" @address-created="handleAddressCreated"></AddressForm>
 
         <v-divider></v-divider>
 
@@ -37,6 +40,11 @@ import AddressForm from '@/components/AddressForm.vue'
 import { ref } from 'vue'
 
 const dialog = ref(false)
+
+const handleAddressCreated = () => {
+  dialog.value = false // 배송지가 생성되면 다이얼로그를 닫음
+}
+
 </script>
 
 <style scoped></style>

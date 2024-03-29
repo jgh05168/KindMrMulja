@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="80%" scrollable>
+  <v-dialog v-model="dialog" width="85%" scrollable>
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         icon="mdi-home-switch-outline"
@@ -10,7 +10,7 @@
       ></v-btn>
     </template>
 
-    <v-card>
+    <v-card rounded="xl">
       <v-card-title style="display: flex; justify-content: space-between">
         <div style="display: flex; align-items: center">
           <v-icon icon="mdi-truck-delivery-outline" class="me-3"></v-icon>
@@ -24,8 +24,8 @@
         <AddressItem
           :width="'90%'"
           @click="clickAddress(address)"
-          :class="{ 'selected-address': address.address_id == selected_Address }"
-          v-for="(address, idx) in address_list"
+          :class="{ 'selected-address': address == selected_Address }"
+          v-for="(address, idx) in addressStore.state.address_list"
           :value="address.address_id"
           :key="idx"
         >
@@ -62,25 +62,31 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="surface-variant" text="Save" variant="flat" @click="saveChange"></v-btn>
+        <v-btn
+          color="surface-variant"
+          rounded="xl"
+          text="Save"
+          variant="flat"
+          @click="saveChange"
+        ></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script setup>
-import Service from '@/api/api'
+// import Service from '@/api/api'
 import AddressItem from '@/components/AddressItem.vue'
 import CreateDialog from '@/components/CreateDialog.vue'
-import { useAuthStore } from '@/stores/auth'
+// import { useAuthStore } from '@/stores/auth'
+import { useAddressStore } from '@/stores/address'
 import { defineEmits } from 'vue'
 import { ref, onMounted, onUpdated } from 'vue'
 
 const emit = defineEmits(['update:addressId', 'update:selectedAddress'])
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
+const addressStore = useAddressStore()
 
 const dialog = ref(false)
-
-const address_list = ref([])
 
 const selected_Address = ref('')
 
@@ -96,18 +102,18 @@ const saveChange = () => {
 }
 
 onUpdated(async () => {
-  console.log(useAuthStore.user_id)
-  address_list.value = await Service.getAddress(authStore.user_id)
+  await addressStore.getAddress()
 })
 
 onMounted(async () => {
-  console.log(useAuthStore.user_id)
-  address_list.value = await Service.getAddress(authStore.user_id)
+  await addressStore.getAddress()
 })
 </script>
 
 <style scoped>
 .selected-address {
-  border: 2px solid greenyellow;
+  scale: 1.08;
+  transition: 0.1s ease-in-out;
+  border: 2px solid #757575;
 }
 </style>
