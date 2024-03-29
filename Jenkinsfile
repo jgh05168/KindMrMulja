@@ -60,7 +60,7 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: '''docker ps -a | grep ${FRONT_CONTAINER_NAME}''', returnStdout: true).trim().split('\n').size()
+                            def frontContainerExists = sh(script: 'docker ps -a | grep ${FRONT_CONTAINER_NAME}', returnStdout: true).trim().split('\n').size()
                             echo "${frontContainerExists}"
                             if (frontContainerExists==1) {
                                 echo "${frontContainerExists}"
@@ -75,7 +75,7 @@ pipeline {
                 stage('Delete Previous Back Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: "docker ps -a | grep ${BACK_CONTAINER_NAME}", returnStdout: true).trim().split('\n').size()
+                            def frontContainerExists = sh(script: 'docker ps -a | grep ${BACK_CONTAINER_NAME}', returnStdout: true).trim().split('\n').size()
                             echo "${frontContainerExists}"
                             if (frontContainerExists==1) {
                                 echo "${frontContainerExists}"
