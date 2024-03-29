@@ -28,12 +28,15 @@ class CameraSubscriber(Node):
     def send_image_to_server(self, image_data):
         try:
             self.sio.emit('sendImage', image_data)
+            # print(image_data)
             print('Image data sent to server')
         except Exception as e:
             print('Failed to send image data to server:', str(e))
 
     def start_socketio(self):
-        self.sio.connect('http://192.168.100.173:12003/')
+        self.sio.connect('http://localhost:12003/')
+        # self.sio.connect('https://j10c109.p.ssafy.io:12003/')
+        print("연결 완")
         self.sio.wait()
 
 def main():
