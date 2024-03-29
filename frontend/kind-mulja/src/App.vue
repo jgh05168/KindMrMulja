@@ -10,8 +10,9 @@
     <RouterLink :to="{ name: 'paid' }">Paid</RouterLink> /
     <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
     <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> /
-  </div> -->
-  <div class="phone">
+  </div>
+
+  <div class="galaxy_24">
     <RouterView />
     <AppFooter />
   </div>
@@ -42,8 +43,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+<<<<<<<<< Temporary merge branch 1
+.galaxy_24 {
+  width: 415px;
+  height: 900px;
+=========
 .phone {
   position: relative;
+  width: 100%;
   height: 100vh;
 }
 
