@@ -9,6 +9,7 @@ pipeline {
         FRONT_CONTAINER_NAME='vuejs-client'
 
         DATABASE_NAME='mariadb'
+        SEPERATE_CHAR='|'
 
     }
 
@@ -60,7 +61,7 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: 'docker ps -a | grep ${FRONT_CONTAINER_NAME}', returnStatus: true)
+                            def frontContainerExists = sh(script: 'docker ps -a ${SEPERATE_CHAR} grep ${FRONT_CONTAINER_NAME}', returnStatus: true)
                             echo "${frontContainerExists}"
                             if (frontContainerExists) {
                                 echo "${frontContainerExists}"
