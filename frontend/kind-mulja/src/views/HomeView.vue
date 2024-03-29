@@ -6,13 +6,13 @@
     <v-tabs
       v-model="tab"
       align-tabs="center"
-      center-active="true"
+      :center-active="true"
       show-arrows
       height="70px"
       density="comfortable"
       color="black"
     >
-      <v-tab
+      <v-tabs
         v-for="(item, idx) in productStore.category"
         :key="idx"
         :value="item.id"
@@ -28,7 +28,7 @@
             <span>{{ item.title }}</span>
           </template>
         </CategoryItem>
-      </v-tab>
+      </v-tabs>
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item v-for="(item, idx) in productStore.category" :key="idx" :value="item.id">

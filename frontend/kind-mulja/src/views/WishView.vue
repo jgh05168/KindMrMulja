@@ -2,41 +2,51 @@
   <AppHeader>
     <template #header-bar> ZZIM </template>
   </AppHeader>
-  <v-container>
-    <v-row>
-      <v-col
-        v-for="item in wish_list"
-        :key="item.order_detail_id"
-        :value="item.product_id"
-        cols="12"
-        style="padding: 0 0"
-        ><CartItem :item-quentity="item.order_quentity">
-          <template #item-image>
-            <v-img
-              aspect-ratio="1"
-              @click="router.push({ name: 'detail', params: { id: item.product_id } })"
-              :src="`/product/${item.product_id}.jpg`"
-            ></v-img>
-          </template>
-          <template #item-name
-            ><div @click="router.push({ name: 'detail', params: { id: item.product_id } })">
-              {{ item.product_name.slice(10) }}
-            </div></template
+  <div class="wish-frame">
+    <v-container>
+        <v-row v-if="wish_list.length > 0">
+          <v-col
+            v-for="item in wish_list"
+            :key="item.order_detail_id"
+            :value="item.product_id"
+            cols="12"
+            style="padding: 0 0;"
+            
           >
-          <template #item-price>{{ item.product_price }}</template>
-          <template #item-cnt>
-            <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
-            <span>{{ item.order_quentity }}</span>
-          </template>
-          <template #cancel-btn>
-            <v-btn variant="plain" @click="deleteZzim(item.wishlist_id)"
-              ><v-icon size="35">mdi-close-circle-outline</v-icon></v-btn
+            <CartItem :item-quentity="item.order_quentity">
+              <template #item-image>
+                <v-img
+                  aspect-ratio="1"
+                  @click="router.push({ name: 'detail', params: { id: item.product_id } })"
+                  :src="`/product/${item.product_id}.jpg`"
+                ></v-img>
+              </template>
+              <template #item-name
+                ><div @click="router.push({ name: 'detail', params: { id: item.product_id } })">
+                  {{ item.product_name }}
+                </div></template
+              >
+              <template #item-price>{{ item.product_price }}</template>
+
+              <template #cancel-btn>
+                <v-btn variant="plain" @click="deleteZzim(item.wishlist_id)"
+                  ><v-icon size="35">mdi-close-circle-outline</v-icon></v-btn
+                >
+              </template>
+            </CartItem>
+            </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12" style="text-align: center; height: fit-content">
+            <p>아직 좋아요를 누른 상품이 없습니다.</p>
+            <v-icon @click="router.push({ name: 'home' })" color="grey" size="100"
+              >mdi-cart-arrow-down</v-icon
             >
-          </template>
-        </CartItem></v-col
-      >
-    </v-row>
-  </v-container>
+            <p>담으러 가기</p>
+          </v-col>
+        </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script setup>

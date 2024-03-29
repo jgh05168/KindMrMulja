@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-infinite-scroll height="900" side="end" >
+    <v-infinite-scroll height="900" side="end">
       <v-row style="margin: 0 0">
         <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
           <ProductItem>
@@ -31,7 +31,12 @@
                   <v-icon class="me-1" size="15">mdi-currency-krw</v-icon
                   >{{ Utils.numberWithCommas(item.product_price) }}
                 </p>
-                <v-btn size="xs" variant="plain" @click="zzim(item, item.product_id)">
+                <v-btn
+                  class="zzim-btn"
+                  size="xs"
+                  variant="plain"
+                  @click="zzim(item, item.product_id)"
+                >
                   <v-icon v-if="item.is_zzim == true" size="30" color="red-darken-1"
                     >mdi-heart</v-icon
                   >
@@ -89,6 +94,26 @@ const GoDetail = async (id) => {
 }
 
 const zzim = async (item, product_id) => {
+  const buttons = document.querySelectorAll('.zzim-btn')
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', function () {
+      // 다른 버튼의 bounce 클래스 제거
+      buttons.forEach((otherButton) => {
+        if (otherButton !== button) {
+          otherButton.classList.remove('bounce')
+        }
+      })
+
+      // 현재 클릭한 버튼에 bounce 클래스 추가
+      button.classList.add('bounce')
+
+      // 1초 후에 bounce 클래스 제거
+      setTimeout(() => {
+        button.classList.remove('bounce')
+      }, 1000)
+    })
+  })
   if (authStore.user_id) {
     // 내 찜 목록에 추가거나 삭제
     // 추가하면 true, 삭제하면 false
@@ -98,4 +123,52 @@ const zzim = async (item, product_id) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.zzim-btn {
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5%);
+  }
+  40% {
+    transform: translateX(5%);
+  }
+  60% {
+    transform: translateX(-5%);
+  }
+  80% {
+    transform: translateX(5%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.2s ease-in-out infinite;
+}
+
+.bounce {
+  animation-duration: 1s;
+  animation-name: bounce;
+}
+</style>

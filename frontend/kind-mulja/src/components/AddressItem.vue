@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="5" rounded="xl" :width="props.width" class="mx-auto mt-5 mb-5 address-item">
+  <v-card  :width="props.width" class="mx-auto mt-5 mb-5 address-item">
     <v-card-title>
       <slot name="address-title" :editAddress="editAddress"> </slot>
     </v-card-title>

@@ -44,6 +44,7 @@ onMounted(async () => {
 .phone {
   position: relative;
   height: 100vh;
+  font-family: 'pretendard';
 }
 
 .app-footer {

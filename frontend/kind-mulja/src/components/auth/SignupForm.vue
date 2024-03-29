@@ -45,11 +45,13 @@
         @click:append="show2 = !show2"
       ></v-text-field>
 
-      <!-- <v-checkbox
-        v-model="terms"
+      <v-checkbox
+        style="margin: 0 auto; display: flex; justify-content: center"
+        v-model="allowAlarm"
+        label="푸쉬 알림 권한 동의"
         color="secondary"
-        label="I agree to site terms and conditions"
-      ></v-checkbox> -->
+      ></v-checkbox>
+
       <BlackButton type="submit" buttonWidth="80%">
         <template #button-text>회원가입</template>
       </BlackButton>
@@ -140,7 +142,8 @@ const password = ref(null)
 const password_check = ref(null)
 // const terms = ref(false)
 const email_duplicate = ref(null)
-// ---
+// 알림 권한
+const allowAlarm = ref(false)
 
 const email_icon = computed(() => {
   if (email_duplicate.value == null) {
@@ -178,7 +181,8 @@ const CreateAccount = async () => {
       const res = await Service.SignUp({
         name: name.value,
         email: email.value,
-        password: password.value
+        password: password.value,
+        alarm: allowAlarm.value
       })
       // 만약 회원가입이 성공적으로 되었다면
       if (res.result) {
