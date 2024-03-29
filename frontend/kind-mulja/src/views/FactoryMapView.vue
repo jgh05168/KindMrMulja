@@ -24,7 +24,7 @@ const marker = ref(null)
 const imageCoords = { x: 600, y: 600 }
 
 onMounted(() => {
-  const socket = io('http://localhost:12002/')
+  const socket = io('192.168.100.173:12002/')
 
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {

@@ -21,7 +21,7 @@ const initializeSocketLoc = (server) => {
     });
 
     const sendDataToClient = async () => {
-      console.log(raw_data);
+      // console.log(raw_data);
       io.emit("sendToFront", raw_data);
     };
 
