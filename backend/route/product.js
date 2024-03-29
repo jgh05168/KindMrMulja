@@ -1,7 +1,7 @@
 const express = require("express");
 const moment = require("moment");
 const product = express.Router();
-const pool = require("./DB.js");
+const pool = require("../DB.js");
 product.get("/hihi", (req, res) => {
   res.send("hello");
 });
@@ -61,19 +61,11 @@ product.post("/add-shopping-cart", async (req, res) => {
     if (checkResult[0].length > 0) {
       // 이미 장바구니에 해당 제품이 있으면 product_quentity를 증가시키는 쿼리
       const updateQuery = `UPDATE shopping_cart SET product_quentity = product_quentity + ? WHERE user_id = ? AND product_id = ?`;
-      await pool.query(updateQuery, [
-        product_quentity,
-        user_id,
-        product_id,
-      ]);
+      await pool.query(updateQuery, [product_quentity, user_id, product_id]);
     } else {
       // 장바구니에 해당 제품이 없으면 새로운 row를 추가하는 쿼리
       const insertQuery = `INSERT INTO shopping_cart (user_id, product_id, product_quentity) VALUES (?,?,?)`;
-      await pool.query(insertQuery, [
-        user_id,
-        product_id,
-        product_quentity,
-      ]);
+      await pool.query(insertQuery, [user_id, product_id, product_quentity]);
     }
     return res.json({ result: true });
   } catch (error) {
@@ -106,10 +98,7 @@ product.post("/wishlist-toggle", async (req, res) => {
   try {
     // 해당 유저와 제품에 대한 위시리스트 항목이 이미 존재하는지 확인하는 쿼리
     const checkQuery = `SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?`;
-    const checkResult = await pool.query(checkQuery, [
-      user_id,
-      product_id,
-    ]);
+    const checkResult = await pool.query(checkQuery, [user_id, product_id]);
     console.log(checkResult[0]);
     if (checkResult[0].length > 0) {
       // 이미 위시리스트에 해당 제품이 있으면 삭제하는 쿼리

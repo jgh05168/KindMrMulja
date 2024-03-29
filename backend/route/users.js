@@ -1,7 +1,7 @@
 const express = require("express");
 const moment = require("moment");
 const user = express.Router();
-const pool = require("./DB.js");
+const pool = require("../DB.js");
 
 user.get("/hihi", (req, res) => {
   res.send("hello");
