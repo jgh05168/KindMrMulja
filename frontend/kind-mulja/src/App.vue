@@ -12,6 +12,15 @@
     <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> /
   </div>
 
+  <!-- <div class="admin">
+    
+    <div>
+      <laftr></laftr>    
+      <RouterView />
+    </div>
+
+  </div> -->
+
   <div class="galaxy_24">
     <RouterView />
     <AppFooter />
