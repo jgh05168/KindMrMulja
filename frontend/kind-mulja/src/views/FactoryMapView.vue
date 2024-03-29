@@ -61,7 +61,7 @@ const navigateTo = (page) => {
 const imageCoords = { x: 498, y: 498 }
 
 onMounted(() => {
-  const socket = io('http://localhost:12002/')
+  const socket = io('192.168.100.173:12002/')
 
   socket.on('connect', () => {
     console.log('웹소켓 연결이 열렸습니다.')

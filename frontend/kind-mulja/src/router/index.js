@@ -12,7 +12,7 @@ import PaidView from '@/views/PaidView.vue'
 import OrderView from '@/views/OrderView.vue'
 import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
-import MapView from '@/views/MapView.vue'
+import FactoryMapView from '@/views/FactoryMapView.vue'
 import RobotStatusView from '@/views/RobotStatusView.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
@@ -185,7 +185,7 @@ const router = createRouter({
     {
       path: '/factory_map',
       name: 'factory_map',
-      component: MapView
+      component: FactoryMapView
     },
     {
       path: '/robots_status',
