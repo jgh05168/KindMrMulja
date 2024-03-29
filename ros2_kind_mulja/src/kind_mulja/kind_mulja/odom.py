@@ -147,6 +147,7 @@ class odom(Node):
                 check_robot_pose_x = int((self.x - self.map_offset_x) / self.map_resolution)
                 check_robot_pose_y = int((self.y - self.map_offset_y) / self.map_resolution)
 
+
                 # print(check_robot_pose_x, check_robot_pose_y)
                 print(self.x,self.y)
 

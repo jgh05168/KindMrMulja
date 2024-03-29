@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto my-8" elevation="5" max-width="344">
+  <v-card class="mx-auto my-8" elevation="5" max-width="90%">
     <v-card-title style="display: flex; flex-direction: row; justify-content: space-between">
       <span>No.{{ props.orderBundle.order_id }}</span>
       <span>주문일자 : {{ props.orderBundle.order_date.slice(0, 10) }}</span>

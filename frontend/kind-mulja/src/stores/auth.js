@@ -21,6 +21,8 @@ export const useAuthStore = defineStore('auth', () => {
         })
 
         productStore.product_list = productList
+         // 앱을 새로고침
+        window.location.reload();
         router.push({name:'home'})
 
       }

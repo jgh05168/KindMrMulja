@@ -11,18 +11,18 @@ export class Service {
         url: api_url + '/user/signin',
         data: {
           email: email,
-          password: password
+          password: password,
         }
       })
-        .then((res) => {
-          const data = res.data
-          // 만약 로그인이 완료 되면 회원 정보 local 에 저장
-          console.log('회원 로그인 성공 여부 : ', data)
-          resolve(data)
-        })
-        .catch((error) => {
-          reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
-        })
+      .then((res) => {
+        const data = res.data
+        // 만약 로그인이 완료 되면 회원 정보 local 에 저장
+        console.log('회원 로그인 성공 여부 : ', data)
+        resolve(data)
+      })
+      .catch((error) => {
+        reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
+      })
     })
   }
 

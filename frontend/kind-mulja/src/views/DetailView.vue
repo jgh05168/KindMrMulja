@@ -36,6 +36,7 @@
             </div>
             <h3>총 가격 : {{ productStore.item.product_price * cnt }}</h3>
           </v-card>
+          
         </div>
       </v-slide-y-transition>
       <div class="buy-button">

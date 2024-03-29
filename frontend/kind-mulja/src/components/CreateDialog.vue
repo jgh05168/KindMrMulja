@@ -12,6 +12,11 @@
       </template>
 
       <v-card>
+        <v-card-title style="text-align: center; font-size: 30px; font-weight: bold; height: 60px">
+          배송지 작성하기
+        </v-card-title>
+
+        <v-divider></v-divider>
         <AddressForm :now-view="'from-payview'" :dialog="dialog"></AddressForm>
 
         <v-divider></v-divider>

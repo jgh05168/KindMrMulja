@@ -5,10 +5,10 @@
   <div class="oreder-frame">
     <div class="state">
       <div>
-        <v-tabs v-model="tab" align-tabs="center" color="#424242">
-          <v-tab :value="0">상품 준비</v-tab>
-          <v-tab :value="1">배송 상태</v-tab>
-          <v-tab :value="2">취소된 상품</v-tab>
+        <v-tabs v-model="tab" align-tabs="center" density="comfortable" color="#424242">
+          <v-tab class="state-tab" :value="0">상품 준비</v-tab>
+          <v-tab class="state-tab" :value="1">배송 상태</v-tab>
+          <v-tab class="state-tab" :value="2">취소된 상품</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="(state, idx) in states" :key="idx" :value="idx">
@@ -56,7 +56,7 @@ onMounted(async () => {
     if (order.order_state <= 1) {
       state_list.value['processing'].push(order)
     } // 값이 3 이면 배송완료
-    else if (order.order_state >= 2 && order.order_state <= 3 ) {
+    else if (order.order_state >= 2 && order.order_state <= 3) {
       state_list.value['delivered'].push(order)
     } // 값이 4 이면 취소된 상품
     else if (order.order_state == 4) {
@@ -74,4 +74,9 @@ onMounted(async () => {
 const tab = ref('')
 </script>
 
-<style scoped></style>
+<style scoped>
+.state-tab {
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
