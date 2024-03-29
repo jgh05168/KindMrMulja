@@ -12,7 +12,7 @@
       density="comfortable"
       color="black"
     >
-      <v-tabs
+      <v-tab
         v-for="(item, idx) in productStore.category"
         :key="idx"
         :value="item.id"
@@ -28,7 +28,7 @@
             <span>{{ item.title }}</span>
           </template>
         </CategoryItem>
-      </v-tabs>
+      </v-tab>
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item v-for="(item, idx) in productStore.category" :key="idx" :value="item.id">

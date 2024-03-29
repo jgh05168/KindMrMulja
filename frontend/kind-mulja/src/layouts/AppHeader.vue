@@ -2,7 +2,7 @@
   <div
     style="
       width: 100%;
-      height: 100px;
+      height: 90px;
       display: flex;
       flex-direction: row;
       align-items: center;
