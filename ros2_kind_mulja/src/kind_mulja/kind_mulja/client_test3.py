@@ -4,10 +4,12 @@ import rclpy
 from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
-truct_x=[-61.6042,-53.5767,-45.5926,-37.5455,-37.5455]
-truct_y=[-59.33,-59.33,-59.33,-59.33,-59.33]
+truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336]
+truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231]
 
-turtle_id_about_me=1
+turtle_id_about_me=3
+turtle_charge_x= -58.8931
+turtle_charge_y= -58.1479
 
 class Client(Node):
     def __init__(self):
@@ -53,9 +55,12 @@ class Client(Node):
                             location_msg.product_y=product_y
                             location_msg.moving_zone_x=moving_zone_x
                             location_msg.moving_zone_y=moving_zone_y
+                            location_msg.charge_x=turtle_charge_x
+                            location_msg.charge_y=turtle_charge_y
+                            
                             # location_msg.is_done=False
                             self.location_publisher.publish(location_msg)
-                            print(location_msg)
+                            # print(location_msg)
                             # print("1: ",self.work_status_msg)
             
                     else:
@@ -74,9 +79,9 @@ class Client(Node):
             print('disconnected from server')
         
     def work_status_cb(self,msg):
-        print("3: ",msg)
+        # print("3: ",msg)
         self.work_status_msg=msg
-        print(self.work_status_msg.is_start)
+        # print(self.work_status_msg.is_start)
         
         if self.work_status_msg.is_start:
             self.send_work_turtle_status("start")
@@ -92,7 +97,7 @@ class Client(Node):
         
     
     def start_socketio(self):
-        self.sio.connect('http://localhost:12001/')
+        self.sio.connect('http://192.168.201.94:12001/')
         self.sio.wait()
 
     
