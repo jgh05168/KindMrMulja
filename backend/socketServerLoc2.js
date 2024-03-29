@@ -6,7 +6,6 @@ const initializeSocketLoc2 = (server) => {
   const io = socketIO(server);
 
   io.on("connection", (socket) => {
-    console.log("새로운 사용자가 연결되었습니다 hi.");
 
     // ros에서 받은 메세지
     socket.on("sendTime", (data) => {
@@ -21,11 +20,10 @@ const initializeSocketLoc2 = (server) => {
     });
 
     const sendDataToClientImage = async () => {
-      console.log(raw_data);
       io.emit("sendToFrontImage", raw_data);
     };
 
-    setInterval(sendDataToClientImage, 1000);
+    setInterval(sendDataToClientImage, 200);
   });
 };
 
