@@ -1,5 +1,6 @@
 const socketIO = require("socket.io");
 const pool = require("./DB.js");
+
 const initializeSocket = (server) => {
   const io = socketIO(server);
 

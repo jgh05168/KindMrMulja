@@ -4,12 +4,12 @@ import rclpy
 from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
-truct_x=[-61.6042,-53.5767,-45.5926,-37.5455,-37.5455]
-truct_y=[-59.33,-59.33,-59.33,-59.33,-59.33]
+truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336]
+truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231]
 
 turtle_id_about_me=2
-turtle_charge_x= -61.3560
-turtle_charge_y= -52.9009
+turtle_charge_x= -64.8373
+turtle_charge_y= -58.1479
 
 class Client(Node):
     def __init__(self):
