@@ -2,7 +2,7 @@ const socketIO = require("socket.io");
 
 var raw_data = null;
 
-const initializeSocketLoc = (server) => {
+const initializeSocketLoc2 = (server) => {
   const io = socketIO(server);
 
   io.on("connection", (socket) => {
@@ -14,19 +14,19 @@ const initializeSocketLoc = (server) => {
     });
 
     // ros에서 받은 위치 정보
-    socket.on("sendLocation", (data) => {
-      // console.log("수신한 메시지:", data);
+    socket.on('sendImage', (data) => {
+    //   console.log("수신한 메시지:", data);
       raw_data = data;
       // console.log(raw_data["x"]);
     });
 
-    const sendDataToClient = async () => {
-      // console.log(raw_data);
-      io.emit("sendToFront", raw_data);
+    const sendDataToClientImage = async () => {
+      console.log(raw_data);
+      io.emit("sendToFrontImage", raw_data);
     };
 
-    setInterval(sendDataToClient, 1000);
+    setInterval(sendDataToClientImage, 1000);
   });
 };
 
-module.exports = initializeSocketLoc;
+module.exports = initializeSocketLoc2;
