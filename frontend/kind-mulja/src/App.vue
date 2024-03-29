@@ -43,11 +43,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-<<<<<<<<< Temporary merge branch 1
 .galaxy_24 {
   width: 415px;
   height: 900px;
-=========
+}
+
 .phone {
   position: relative;
   width: 100%;

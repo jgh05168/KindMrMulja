@@ -1,22 +1,30 @@
 <template>
   <div>
-    <div ref="mapContainer" style="position: relative; width: 250px; height: 250px; border: 1px solid black;">
-      <img ref="image" src="/map/image.jpg" alt="Map Image" style="width: 100%; height: auto;">
+    <div
+      ref="mapContainer"
+      style="position: relative; width: 250px; height: 250px; border: 1px solid black"
+    >
+      <img
+        ref="image"
+        src="/map/image.jpg"
+        alt="Map Image"
+        style="width: 100%; height: auto; transform: scaleX(-1)"
+      />
       <div ref="marker" class="marker"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import io from 'socket.io-client';
+import { ref, onMounted } from 'vue'
+import io from 'socket.io-client'
 
-const mapContainer = ref(null);
-const image = ref(null);
-const marker = ref(null);
+const mapContainer = ref(null)
+const image = ref(null)
+const marker = ref(null)
 
 // 이미지 좌표
-const imageCoords = { x: 250, y: 250 };
+const imageCoords = { x: 250, y: 250 }
 
 onMounted(() => {
   const socket = io('http://localhost:12002/')
@@ -28,33 +36,33 @@ onMounted(() => {
   })
 
   // 데이터를 수신하여 마커 위치를 조정
-  socket.on("sendToFront", (data) => {
-    const parsedData = JSON.parse(data); // 문자열을 JSON 객체로 변환
-    const adjustedX = Math.abs(parsedData.x+25) * 5;
-    const adjustedY = Math.abs(parsedData.y+25) * 5;
-    adjustMarkerPosition(adjustedX, adjustedY);
+  socket.on('sendToFront', (data) => {
+    const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
+    // 시뮬레이터의 위치와 맵 상의 위치를 맞춰주기
+    const adjustedX = Math.abs(-parsedData.x - 50) * 10 - 5
+    const adjustedY = Math.abs(-parsedData.y - 50) * 10 - 5
+    adjustMarkerPosition(adjustedX, adjustedY)
   })
 
   // 에러가 발생했을 때의 처리
   socket.on('error', (error) => {
     console.error('웹소켓 에러:', error)
   })
-});
+})
 
 function adjustMarkerPosition(x, y) {
   // 이미지 컨테이너의 크기
-  const containerWidth = mapContainer.value.clientWidth;
-  const containerHeight = mapContainer.value.clientHeight;
+  const containerWidth = mapContainer.value.clientWidth
+  const containerHeight = mapContainer.value.clientHeight
 
   // 이미지 내에서의 마커 위치 계산
-  const markerX = (x / imageCoords.x) * containerWidth;
-  const markerY = (y / imageCoords.y) * containerHeight;
+  const markerX = (x / imageCoords.x) * containerWidth
+  const markerY = (y / imageCoords.y) * containerHeight
 
   // 마커 위치를 조정
-  marker.value.style.left = `${markerX}px`;
-  marker.value.style.top = `${markerY}px`;
+  marker.value.style.left = `${markerX}px`
+  marker.value.style.top = `${markerY}px`
 }
-
 </script>
 
 <style>
