@@ -1,6 +1,0 @@
-source;share\kind_mulja\hook\pythonpath.ps1
-source;share\kind_mulja\hook\pythonpath.bat
-source;share\kind_mulja\hook\pythonpath.dsv
-source;share\kind_mulja\hook\ament_prefix_path.ps1
-source;share\kind_mulja\hook\ament_prefix_path.bat
-source;share\kind_mulja\hook\ament_prefix_path.dsv
