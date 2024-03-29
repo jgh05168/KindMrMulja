@@ -16,8 +16,10 @@ const initializeSocket = (server) => {
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
       if (work_status === "start") {
-        await pool.query(query1, [order_detail_id]);
-        await pool.query(query2, [2, turtle_id]);
+        await Promise.all([
+          pool.query(query1, [order_detail_id]),
+          pool.query(query2, [1, turtle_id]),
+        ]);
       } else if (work_status === "done") {
         // await pool.query(query1, [order_detail_id]);
         await pool.query(query2, [0, turtle_id]);
@@ -97,24 +99,25 @@ const initializeSocket = (server) => {
         const position = await pool.query(query2, [results[0][0].product_id]);
         const region = getRegion(results[0][0].address);
         const jsonData = {
-          turtle_id: turtle[0][0].turtle_id,
+          turtle_id: 1,
           order_detail_id: results[0][0].order_detail_id,
           product_x: position[0][0].pos_x,
           product_y: position[0][0].pos_y,
           moving_zone: region,
         };
-        await pool.query(
-          `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
-          [turtle[0][0].turtle_id]
-        );
         io.emit("order", JSON.stringify(jsonData));
+
+        // await pool.query(
+        //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
+        //   [turtle[0][0].turtle_id]
+        // );
       } catch (error) {
         console.error("데이터베이스 쿼리 오류:", error);
       }
     };
 
     // 5초마다 데이터 조회 및 전송
-    setInterval(getDataAndEmit, 5000);
+    setInterval(getDataAndEmit, 10000);
   });
 };
 
