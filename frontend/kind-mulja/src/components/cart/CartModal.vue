@@ -17,16 +17,16 @@
   </div>
 </template>
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref } from 'vue'
 
-const props = defineProps({
-  addCart: Function
-})
+// const props = defineProps({
+//   addCart: Function
+// })
 
 const sheet = ref(false)
 
 const modalOpen = () => {
-  props.addCart()
+  // props.addCart()
   sheet.value = true
 }
 const modalClose = () => {
@@ -51,7 +51,6 @@ const modalClose = () => {
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-top: 50px;
 }
 
 .close-modal {

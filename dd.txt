@@ -1,0 +1,40 @@
+Server Start
+Port bind success = 13001
+Server Ip = 192.168.100.131
+ChannelActive ctx = 54c6dd2f
+Request channelInfo ctx = 54c6dd2f
+channelInfo writeAndFlush msg = {"name":"channel_info","result":1,"channel_list":[]}
+channel Unregistered ctx = 54c6dd2f
+ChannelActive ctx = 77aa58ba
+Request channelInfo ctx = 77aa58ba
+channelInfo writeAndFlush msg = {"name":"channel_info","result":1,"channel_list":[]}
+channel Unregistered ctx = 77aa58ba
+ChannelActive ctx = 1d1151be
+Request channelInfo ctx = 1d1151be
+channelInfo writeAndFlush msg = {"name":"channel_info","result":1,"channel_list":[]}
+Request Channel Make = 1d1151be, channelName = c109, Nickanem = hi
+setChannelToCtx ctx = 1d1151be, channelName = c109, nickname = 1.hi
+ctx address = ChannelHandlerContext(handler, [id: 0x1d1151be, L:/192.168.100.131:13001 - R:/192.168.100.131:59914])
+Response Channel Make msg = {"name":"channel_make","result":1,"state":"wating","nickname":"1.hi","initInfo":{"spawnpointList":[{"pos":{"x":"-53.29999923706055","y":"-51.5989990234375","z":"0.0","_x":"-53.300","_y":"-51.599","_z":"0.000"},"DataID":"0","UNIQUEID":"3","m_eobstacleObjType":"8"},{"pos":{"x":"-59.16600036621094","y":"-51.83000183105469","z":"0.0","_x":"-59.166","_y":"-51.830","_z":"0.000"},"DataID":"0","UNIQUEID":"4","m_eobstacleObjType":"8"},{"pos":{"x":"-69.06800079345703","y":"-51.71900177001953","z":"0.0","_x":"-69.068","_y":"-51.719","_z":"0.000"},"DataID":"0","UNIQUEID":"5","m_eobstacleObjType":"8"}],"textureURL":["C:\\Users\\SSAFY\\Desktop\\map_floor.png","","","",""],"objectList":[],"extraObjectList":[{"objectInfo":{"pos":{"x":"-70.40499877929688","y":"-72.83000183105469","z":"0.019999999552965164","_x":"-70.405","_y":"-72.830","_z":"0.020"},"rot":{"pitch":"0.000","yaw":"0.000","roll":"180.000"},"scale":{"x":"0.5","y":"0.5","z":"0.5","_x":"0.500","_y":"0.500","_z":"0.500"},"DataID":"0","UNIQUEID":"-1","m_eobstacleObjType":"4"},"extraInfo":{"bundleName":"map.obstacle","isKinematic":"false","isDeliveryStuff":"false"},"objectUniqueID":"1","occupiedUserNickname":""}],"movingobjectList":[]}}
+ChannelActive ctx = 69d6936f
+Request channelInfo ctx = 69d6936f
+check channel RoomList : channelName = c109
+channelInfo writeAndFlush msg = {"name":"channel_info","result":1,"channel_list":["c109"]}
+ChannelActive ctx = 71c0b11a
+Request channelInfo ctx = 71c0b11a
+check channel RoomList : channelName = c109
+channelInfo writeAndFlush msg = {"name":"channel_info","result":1,"channel_list":["c109"]}
+Request Join Channel ctx = 71c0b11a
+setChannelToCtx ctx = 71c0b11a, channelName = c109, nickname = 2.my
+ctx address = ChannelHandlerContext(handler, [id: 0x71c0b11a, L:/192.168.100.131:13001 - R:/192.168.100.172:62724])
+Response Join Channel msg = {"name":"channel_join","result":1,"nickname":"2.my","state":"wating","user_list":["1.hi","2.my"],"initInfo":{"spawnpointList":[{"pos":{"x":"-53.29999923706055","y":"-51.5989990234375","z":"0.0","_x":"-53.300","_y":"-51.599","_z":"0.000"},"DataID":"0","UNIQUEID":"3","m_eobstacleObjType":"8"},{"pos":{"x":"-59.16600036621094","y":"-51.83000183105469","z":"0.0","_x":"-59.166","_y":"-51.830","_z":"0.000"},"DataID":"0","UNIQUEID":"4","m_eobstacleObjType":"8"},{"pos":{"x":"-69.06800079345703","y":"-51.71900177001953","z":"0.0","_x":"-69.068","_y":"-51.719","_z":"0.000"},"DataID":"0","UNIQUEID":"5","m_eobstacleObjType":"8"}],"textureURL":["C:\\Users\\SSAFY\\Desktop\\map_floor.png","","","",""],"objectList":[],"extraObjectList":[{"objectInfo":{"pos":{"x":"-70.40499877929688","y":"-72.83000183105469","z":"0.019999999552965164","_x":"-70.405","_y":"-72.830","_z":"0.020"},"rot":{"pitch":"0.000","yaw":"0.000","roll":"180.000"},"scale":{"x":"0.5","y":"0.5","z":"0.5","_x":"0.500","_y":"0.500","_z":"0.500"},"DataID":"0","UNIQUEID":"-1","m_eobstacleObjType":"4"},"extraInfo":{"bundleName":"map.obstacle","isKinematic":"false","isDeliveryStuff":"false"},"objectUniqueID":"1","occupiedUserNickname":""}],"movingobjectList":[]}}
+Response JoinChannel channelName = c109, Nickname = 2.my
+Request Join Channel ctx = 69d6936f
+setChannelToCtx ctx = 69d6936f, channelName = c109, nickname = 3.kwang
+ctx address = ChannelHandlerContext(handler, [id: 0x69d6936f, L:/192.168.100.131:13001 - R:/192.168.100.76:53203])
+Response Join Channel msg = {"name":"channel_join","result":1,"nickname":"3.kwang","state":"wating","user_list":["1.hi","3.kwang","2.my"],"initInfo":{"spawnpointList":[{"pos":{"x":"-53.29999923706055","y":"-51.5989990234375","z":"0.0","_x":"-53.300","_y":"-51.599","_z":"0.000"},"DataID":"0","UNIQUEID":"3","m_eobstacleObjType":"8"},{"pos":{"x":"-59.16600036621094","y":"-51.83000183105469","z":"0.0","_x":"-59.166","_y":"-51.830","_z":"0.000"},"DataID":"0","UNIQUEID":"4","m_eobstacleObjType":"8"},{"pos":{"x":"-69.06800079345703","y":"-51.71900177001953","z":"0.0","_x":"-69.068","_y":"-51.719","_z":"0.000"},"DataID":"0","UNIQUEID":"5","m_eobstacleObjType":"8"}],"textureURL":["C:\\Users\\SSAFY\\Desktop\\map_floor.png","","","",""],"objectList":[],"extraObjectList":[{"objectInfo":{"pos":{"x":"-70.40499877929688","y":"-72.83000183105469","z":"0.019999999552965164","_x":"-70.405","_y":"-72.830","_z":"0.020"},"rot":{"pitch":"0.000","yaw":"0.000","roll":"180.000"},"scale":{"x":"0.5","y":"0.5","z":"0.5","_x":"0.500","_y":"0.500","_z":"0.500"},"DataID":"0","UNIQUEID":"-1","m_eobstacleObjType":"4"},"extraInfo":{"bundleName":"map.obstacle","isKinematic":"false","isDeliveryStuff":"false"},"objectUniqueID":"1","occupiedUserNickname":""}],"movingobjectList":[]}}
+Response JoinChannel channelName = c109, Nickname = 3.kwang
+Request Loading Start ctx = 1d1151be
+channel Unregistered ctx = 69d6936f
+channel Unregistered ctx = 71c0b11a
+channel Unregistered ctx = 1d1151be

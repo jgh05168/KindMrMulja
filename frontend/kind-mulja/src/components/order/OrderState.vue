@@ -21,6 +21,11 @@ const props = defineProps({
 })
 
 console.log(props.orderList)
+// props.orderList.order_type == 1 이면 픽업
+// 이때 props.orderList.order_state 에 따라 푸쉬 알림?
+
+
+
 </script>
 
 <style scoped>
