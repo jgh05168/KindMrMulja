@@ -13,11 +13,11 @@ user.post("/signup", async (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
-
+  const alarm = req.body.alarm;
   try {
     const query = `
-      INSERT INTO user (user_name, user_email, user_password) VALUES (?, ?, ?);`;
-    const results = await pool.query(query, [name, email, password]);
+      INSERT INTO user (user_name, user_email, user_password, alarm) VALUES (?, ?, ?, ?);`;
+    const results = await pool.query(query, [name, email, password, alarm]);
     return res.json({ result: true });
     // console.log(result);
   } catch (error) {
@@ -73,6 +73,5 @@ user.post("/signin", async (req, res) => {
 });
 
 // 로그아웃 api
-
 
 module.exports = user;
