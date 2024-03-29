@@ -3,7 +3,7 @@ const moment = require("moment");
 require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
 const order = express.Router();
-//const pool = require("../DB.js");
+const pool = require("../DB.js");
 
 // 주문 내역 업로드 api
 order.post("", async (req, res) => {
@@ -15,7 +15,7 @@ order.post("", async (req, res) => {
     const order_datetime = `${order_date} ${order_time}`;
 
     const query = `INSERT INTO order_list (user_id, address, order_type, order_date, order_state) VALUES (?,?,?,?,?)`;
-    await global.pool.query(query, [
+    await pool.query(query, [
       user_id,
       address_content,
       order_type,
@@ -23,7 +23,7 @@ order.post("", async (req, res) => {
       0,
     ]);
 
-    const order_id = await global.pool.query("SELECT LAST_INSERT_ID() AS order_id");
+    const order_id = await pool.query("SELECT LAST_INSERT_ID() AS order_id");
 
     let total_price = 0;
     let total_quentity = 0;
@@ -31,10 +31,10 @@ order.post("", async (req, res) => {
 
     for (let i = 0; i < selected_cart_id.length; i++) {
       const query2 = `SELECT product_id, product_quentity FROM shopping_cart WHERE cart_id = ?`;
-      const results = await global.pool.query(query2, selected_cart_id[i]);
+      const results = await pool.query(query2, selected_cart_id[i]);
       console.log(results);
       const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone, is_progress) VALUES (?,?,?,?,?,?)`;
-      await global.pool.query(query3, [
+      await pool.query(query3, [
         order_id[0][0].order_id,
         results[0][0].product_id,
         results[0][0].product_quentity,
@@ -44,7 +44,7 @@ order.post("", async (req, res) => {
       ]);
 
       const query4 = `SELECT product_price FROM product_list WHERE product_id = ?`;
-      const price_result = await global.pool.query(query4, [
+      const price_result = await pool.query(query4, [
         results[0][0].product_id,
       ]);
       console.log(price_result[0]);
@@ -57,7 +57,7 @@ order.post("", async (req, res) => {
     }
     console.log(order_id);
     const query5 = `UPDATE order_list SET total_price = ?, total_quentity = ? WHERE order_id = ?`;
-    await global.pool.query(query5, [
+    await pool.query(query5, [
       total_price,
       total_quentity,
       order_id[0][0].order_id,
@@ -65,7 +65,7 @@ order.post("", async (req, res) => {
 
     for (let i = 0; i < selected_cart_id.length; i++) {
       const query = `DELETE FROM shopping_cart WHERE cart_id = ?`;
-      await global.pool.query(query, [selected_cart_id[i]]);
+      await pool.query(query, [selected_cart_id[i]]);
     }
 
     return res.json({ result: true }); // 성공적인 응답을 반환
@@ -82,7 +82,7 @@ order.get("/order-list/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   try {
     const query = `SELECT * FROM order_list WHERE user_id = ?`;
-    const results = await global.pool.query(query, [user_id]);
+    const results = await pool.query(query, [user_id]);
     console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {

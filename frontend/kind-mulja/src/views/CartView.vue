@@ -25,63 +25,72 @@
           </div>
         </template>
       </DeliveryChoice>
-      <div style="height: 40px; display: flex; align-items: center">
-        <v-btn variant="plain" @click="all_select" label="전체 상품 선택하기">
-          <v-icon size="20" v-if="selected_items.length !== cart_items.length"
-            >mdi-checkbox-blank-outline</v-icon
-          >
-          <v-icon size="20" v-else>mdi-checkbox-intermediate</v-icon>
-          <p class="ms-3" style="font-size: 20px">전체 상품 선택하기</p>
-        </v-btn>
+      <div v-if="cart_items.length > 0">
+        <div style="height: 40px; display: flex; align-items: center">
+          <v-btn variant="plain" @click="all_select" label="전체 상품 선택하기">
+            <v-icon size="20" v-if="selected_items.length !== cart_items.length"
+              >mdi-checkbox-blank-outline</v-icon
+            >
+            <v-icon size="20" v-else>mdi-checkbox-intermediate</v-icon>
+            <p class="ms-3" style="font-size: 20px">전체 상품 선택하기</p>
+          </v-btn>
+        </div>
+        <CartItem
+          v-for="(item, idx) in cart_items"
+          :value="item.product_id"
+          :key="idx"
+          :cart-id="item.cart_id"
+          :item-quentity="item.product_quentity"
+        >
+          <template #item-check>
+            <v-checkbox hide-details v-model="selected_items" :value="item"></v-checkbox>
+          </template>
+
+          <template #item-image>
+            <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
+          </template>
+          <template #item-name>{{ item.product_name.slice(0, 10) }}</template>
+          <template #item-price>{{ Utils.numberWithCommas(item.product_price) }}</template>
+          <template #item-cnt>
+            <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
+            <v-btn
+              size="xs"
+              icon="mdi-minus"
+              varient="tonal"
+              :disabled="item.product_quentity <= 1"
+              @click="item.product_quentity--"
+            ></v-btn>
+            <input
+              style="width: 20px; text-align: center"
+              type="number"
+              :value="item.product_quentity"
+            />
+            <v-btn
+              class="ps-0"
+              size="xs"
+              icon="mdi-plus"
+              varient="tonal"
+              @click="item.product_quentity++"
+            ></v-btn>
+          </template>
+
+          <template #cancel-btn>
+            <v-btn
+              @click="removeItem(item.product_id, item.cart_id)"
+              size="xs"
+              icon="mdi-close-circle-outline"
+              variant="plain"
+            ></v-btn>
+          </template>
+        </CartItem>
       </div>
-      <CartItem
-        v-for="(item, idx) in cart_items"
-        :value="item.product_id"
-        :key="idx"
-        :cart-id="item.cart_id"
-        :item-quentity="item.product_quentity"
-      >
-        <template #item-check>
-          <v-checkbox v-model="selected_items" :value="item"></v-checkbox>
-        </template>
-
-        <template #item-image>
-          <v-img :src="`/product/${item.product_id}.jpg`"></v-img>
-        </template>
-        <template #item-name>{{ item.product_name.slice(0, 10) }}</template>
-        <template #item-price>{{ item.product_price }}</template>
-        <template #item-cnt>
-          <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
-          <v-btn
-            size="xs"
-            icon="mdi-minus"
-            varient="tonal"
-            :disabled="item.product_quentity <= 1"
-            @click="item.product_quentity--"
-          ></v-btn>
-          <input
-            style="width: 20px; text-align: center"
-            type="number"
-            :value="item.product_quentity"
-          />
-          <v-btn
-            class="ps-0"
-            size="xs"
-            icon="mdi-plus"
-            varient="tonal"
-            @click="item.product_quentity++"
-          ></v-btn>
-        </template>
-
-        <template #cancel-btn>
-          <v-btn
-            @click="removeItem(item.product_id, item.cart_id)"
-            size="xs"
-            icon="mdi-close-circle-outline"
-            variant="plain"
-          ></v-btn>
-        </template>
-      </CartItem>
+      <v-card style="width: 100%; height: 300px; text-align: center" v-else>
+        <p>장바구니에 담긴 상품이 없습니다.</p>
+        <v-icon @click="router.push({ name: 'home' })" color="grey" size="100"
+          >mdi-cart-arrow-down</v-icon
+        >
+        <p>담으러 가기</p>
+      </v-card>
     </div>
 
     <div class="pay-button">
@@ -104,7 +113,6 @@
           </v-card>
         </v-slide-y-transition>
       </div>
-
       <BlackButton v-if="expand" button-width="100%" @click="goToOrder()">
         <template #button-text> 결제하기 </template>
       </BlackButton>

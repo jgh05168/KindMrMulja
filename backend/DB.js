@@ -9,4 +9,6 @@ const dbConfig = {
   database: process.env.DB_DATABASE,
 };
 
-global.pool = mysql.createPool(dbConfig);
+const pool = mysql.createPool(dbConfig);
+
+module.exports = pool;
