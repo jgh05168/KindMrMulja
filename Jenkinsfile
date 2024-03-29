@@ -60,19 +60,30 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            sh'''
-                                docker stop ${FRONT_CONTAINER_NAME} || true && docker rm -f {FRONT_CONTAINER_NAME} || true
-                            '''
-
+                            def frontContainerExists = sh(script: "docker ps -a | grep ${FRONT_CONTAINER_NAME}", returnStdout: true).trim().split('\n').size()
+                            echo "${frontContainerExists}"
+                            if (frontContainerExists==1) {
+                                echo "${frontContainerExists}"
+                                sh "docker stop ${FRONT_CONTAINER_NAME}"
+                                sh "docker rm ${FRONT_CONTAINER_NAME}"
+                            } else {
+                                echo "Frontend container does not exist. Skipping deletion."
+                            }
                         }
                     }
                 }
                 stage('Delete Previous Back Docker Container'){
                     steps {
                         script {
-                            sh'''
-                                docker stop ${BACK_CONTAINER_NAME} || true && docker rm -f {BACK_CONTAINER_NAME} || true
-                            '''
+                            def frontContainerExists = sh(script: "docker ps -a | grep ${BACK_CONTAINER_NAME}", returnStdout: true).trim().split('\n').size()
+                            echo "${frontContainerExists}"
+                            if (frontContainerExists==1) {
+                                echo "${frontContainerExists}"
+                                sh "docker stop ${BACK_CONTAINER_NAME}"
+                                sh "docker rm ${BACK_CONTAINER_NAME}"
+                            } else {
+                                echo "Frontend container does not exist. Skipping deletion."
+                            }
                         }
                     }
                 }
