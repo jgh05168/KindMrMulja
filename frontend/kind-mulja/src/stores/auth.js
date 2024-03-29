@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', () => {
   const productStore = useProductStore()
   const user_id = ref(null)
   const redirectUrl = ref(null)
+  const is_admin = ref(false)
 
 
   const logout = async () => {
@@ -30,5 +31,5 @@ export const useAuthStore = defineStore('auth', () => {
     
 
 
-  return { user_id , redirectUrl, logout }
+  return { user_id , redirectUrl, logout, is_admin }
 }, { persist: true })
