@@ -1,7 +1,7 @@
 <template>
-  <v-sheet class="" max-width="415px">
+  <v-sheet class="" max-width="100%">
     <!-- 다중선택 multiple 옵션 -->
-    <v-slide-group show-arrows>
+    <v-slide-group style="width: 90%; margin: 0 auto">
       <v-slide-group-item v-for="(item, idx) in productStore.category" :key="idx">
         <CategoryItem>
           <!-- CategoryItem 이라는 하위 컴포넌트의 img-btn slot 에 표시할 버튼을 정의 -->
@@ -42,6 +42,11 @@ const toggle = (id) => {
 </script>
 
 <style scoped>
+.v-slide-group__content {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .selected-category {
   border: 2px solid red;
 }

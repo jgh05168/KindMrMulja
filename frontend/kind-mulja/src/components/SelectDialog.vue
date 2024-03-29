@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="400px" scrollable>
+  <v-dialog v-model="dialog" width="80%" scrollable>
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         icon="mdi-home-switch-outline"
@@ -22,10 +22,10 @@
 
       <v-card-text class="px-4" style="height: 500px">
         <AddressItem
-          :width="'300px'"
+          :width="'90%'"
           @click="clickAddress(address)"
           :class="{ 'selected-address': address.address_id == selected_Address }"
-          v-for="(address, idx) in props.addressList"
+          v-for="(address, idx) in address_list"
           :value="address.address_id"
           :key="idx"
         >
@@ -68,24 +68,24 @@
   </v-dialog>
 </template>
 <script setup>
+import Service from '@/api/api'
 import AddressItem from '@/components/AddressItem.vue'
 import CreateDialog from '@/components/CreateDialog.vue'
-import { defineProps, defineEmits } from 'vue'
-import { ref } from 'vue'
-
-const props = defineProps({
-  addressList: Array
-})
+import { useAuthStore } from '@/stores/auth'
+import { defineEmits } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
 const emit = defineEmits(['update:addressId', 'update:selectedAddress'])
+const authStore = useAuthStore()
 
 const dialog = ref(false)
+
+const address_list = ref([])
 
 const selected_Address = ref('')
 
 const clickAddress = (address) => {
   selected_Address.value = address
-
 }
 
 const saveChange = () => {
@@ -94,6 +94,16 @@ const saveChange = () => {
   emit('update:addressId', selected_Address.value.address_id)
   emit('update:selectedAddress', selected_Address.value)
 }
+
+onUpdated(async () => {
+  console.log(useAuthStore.user_id)
+  address_list.value = await Service.getAddress(authStore.user_id)
+})
+
+onMounted(async () => {
+  console.log(useAuthStore.user_id)
+  address_list.value = await Service.getAddress(authStore.user_id)
+})
 </script>
 
 <style scoped>

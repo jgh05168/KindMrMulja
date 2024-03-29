@@ -21,9 +21,9 @@ params_map = {
     "MAP_RESOLUTION": 0.05,
     "OCCUPANCY_UP": 0.02,
     "OCCUPANCY_DOWN": 0.01,
-    "MAP_CENTER": (-8.0, -4.0),
+    "MAP_CENTER": (-50.0, -50.0),
     "MAP_SIZE": (17.5, 17.5),
-    "MAPVIS_RESIZE_SCALE": 2.0
+    "MAPVIS_RESIZE_SCALE": 1.0
 }
 
 
@@ -344,17 +344,20 @@ class Localization:
             score_basline += self.particles[3, i]
             particle_scores[i] = score_basline
 
-        # print('highest particle score', np.max(self.particles[3,:]))
+        # score_basline이 비양수인 경우 1.0으로 설정
+        if score_basline <= 0.0:
+            print("유효하지 않은 score_basline. 1.0으로 재설정합니다.")
+            score_basline = 1.0
 
-        # print(score_basline)
-    
         for i in range(n_particles):
-            darted_score = np.random.uniform(0, score_basline, 1)
-            darted_idx = np.abs(particle_scores-darted_score).argmin().astype(np.int)
+            # 범위를 0과 score_basline 사이로 설정
+            darted_score = np.random.uniform(0, score_basline if score_basline > 0 else 1.0, 1)
+            darted_idx = np.abs(particle_scores - darted_score).argmin().astype(np.int)
             
             selected_particles[:, i] = self.particles[:, darted_idx]
 
         self.particles = selected_particles.copy()
+
 
     def update(self, pose, laser):
 

@@ -10,19 +10,29 @@ delivery.post("/delivery-address/add", async (req, res) => {
   const user_name = req.body.user_name;
   const address_normal = req.body.address_normal;
   const address_detail = req.body.address_detail;
-
+  const phone_number = req.body.phone_number;
+  const is_default = req.body.is_default;
   try {
-    const query = `INSERT INTO address_information (user_id, address_name, user_name, address_normal, address_detail, is_default) VALUES (?,?,?,?,?,?)`;
+    const query3 = `SELECT address_id FROM address_information WHERE is_default = 1 and user_id = ?`;
+    const result2 = await pool.query(query3, user_id);
+    const query = `INSERT INTO address_information (user_id, address_name, user_name, address_normal, address_detail, phone_number, is_default) VALUES (?,?,?,?,?,?,?)`;
     const result = await pool.query(query, [
       user_id,
       address_name,
       user_name,
       address_normal,
       address_detail,
-      0,
+      phone_number,
+      is_default,
     ]);
 
     if (result[0].affectedRows > 0) {
+      if (result2[0].affectedRows > 0) {
+        const query2 = `UPDATE address_information SET is_default = 0 WHERE address_id = ?`;
+        if (is_default === true) {
+          await pool.query(query2, result2[0][0].address_id);
+        }
+      }
       return res.json({ result: true });
     } else {
       return res.json({ result: false });
@@ -43,6 +53,20 @@ delivery.get("/delivery-address/list/:user_id", async (req, res) => {
     return res.json(results[0]);
   } catch (error) {
     console.error("Error retrieving address list:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// 배송지 목록에서 삭제
+delivery.delete("/delivery-address/:address_id", async (req, res) => {
+  const address_id = req.params.address_id;
+  try {
+    const query = `DELETE FROM address_information WHERE address_id = ?`;
+    const result = await pool.query(query, [address_id]);
+    console.log(result[0]);
+    return res.json({ result: result[0].affectedRows > 0 });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });

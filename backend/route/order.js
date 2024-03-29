@@ -1,21 +1,23 @@
 const express = require("express");
 const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 const order = express.Router();
 const pool = require("../DB.js");
 
 // 주문 내역 업로드 api
 order.post("", async (req, res) => {
-  const { user_id, address_id, order_type } = req.body;
+  const { user_id, address_content, order_type } = req.body;
   const selected_cart_id = req.body.selected_cart_id;
   try {
     const order_date = moment().format("YYYY-MM-DD");
     const order_time = moment().format("HH:mm:ss");
     const order_datetime = `${order_date} ${order_time}`;
 
-    const query = `INSERT INTO order_list (user_id, address_id, order_type, order_date, order_state) VALUES (?,?,?,?,?)`;
+    const query = `INSERT INTO order_list (user_id, address, order_type, order_date, order_state) VALUES (?,?,?,?,?)`;
     await pool.query(query, [
       user_id,
-      address_id,
+      address_content,
       order_type,
       order_datetime,
       0,
@@ -31,11 +33,12 @@ order.post("", async (req, res) => {
       const query2 = `SELECT product_id, product_quentity FROM shopping_cart WHERE cart_id = ?`;
       const results = await pool.query(query2, selected_cart_id[i]);
       console.log(results);
-      const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone) VALUES (?,?,?,?,?)`;
+      const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone, is_progress) VALUES (?,?,?,?,?,?)`;
       await pool.query(query3, [
         order_id[0][0].order_id,
         results[0][0].product_id,
         results[0][0].product_quentity,
+        0,
         0,
         0,
       ]);

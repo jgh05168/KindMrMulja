@@ -12,8 +12,10 @@ const deliveryRouter = require("./route/delivery.js");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const initializeSocket = require("./socketServer.js");
+const payRouter = require("./route/payments.router.js");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -26,6 +28,7 @@ app.use("/wishlist", wishlistRouter);
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
 app.use("/delivery", deliveryRouter);
+app.use("/sandbox-dev/api/v1/payments", payRouter);
 
 const socketServerPort = process.env.SOCKET_SERVER_PORT || 12001;
 initializeSocket(socketServerPort);
