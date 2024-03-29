@@ -74,9 +74,12 @@
                   <v-icon size="25">mdi-currency-krw</v-icon>
                 </h2>
               </div>
-              <BlackButton button-width="100%" @click="addCart()">
-                <template #button-text>장바구니</template>
-              </BlackButton>
+              <div class="mt-2" button-width="100%">
+                <div class="black-button" color="#212121" height="55px" @click="addCart()">
+                  <v-icon color="white">mdi-cart-arrow-down</v-icon>담기
+                </div>
+                <div @click="addCartAndGo()">구매하기</div>
+              </div>
             </v-card>
             <!-- <v-btn
               class="modal-choice-btn"
@@ -144,6 +147,24 @@ const addCart = async () => {
   }
 }
 
+const addCartAndGo = async () => {
+  // 사용자 장바구니에 추가 요청
+  // 만약 로그인 안되어 있으면 로그인 창으로 이동
+  if (authStore.user_id == null) {
+    alert()
+    router.push({ name: 'login' })
+  } else {
+    const addToCart_res = await Service.addToCart(
+      authStore.user_id,
+      productStore.now_product_id,
+      cnt.value
+    )
+    if (addToCart_res) {
+      router.push({ name: 'cart ' })
+    }
+  }
+}
+
 onMounted(async () => {
   if (authStore.user_id) {
     const res = await Service.checkProductWish(authStore.user_id, productStore.now_product_id)
@@ -168,7 +189,7 @@ onMounted(async () => {
 }
 
 .first-modal {
-  height: 100%;
+  height: 120%;
   display: flex;
   flex-direction: column;
   background-color: white;
