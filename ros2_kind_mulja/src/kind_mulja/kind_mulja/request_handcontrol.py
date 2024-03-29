@@ -76,6 +76,8 @@ class RequestMsgHandControl(Node):
         self.moving_y=self.target_grid_msg.moving_zone_y
         self.product_x=self.target_grid_msg.product_x
         self.product_y=self.target_grid_msg.product_y
+        # self.product_x=self.target_grid_msg.charge_x
+        # self.product_y=self.target_grid_msg.charge_y
         print("msg: ",msg)
         
         self.timer = self.create_timer(2, self.timer_callback)
@@ -150,10 +152,10 @@ class RequestMsgHandControl(Node):
  
             
     #         # 목적지 주소를 전달한다.
-    #         # self.request_target_msg.header.frame_id = 'map' 
-    #         # self.request_target_msg.pose.position.x=self.charge_x
-    #         # self.request_target_msg.pose.position.y=self.charge_y
-    #         # self.target_publisher.publish(self.request_target_msg)
+                # self.request_target_msg.header.frame_id = 'map' 
+                # self.request_target_msg.pose.position.x=self.charge_x
+                # self.request_target_msg.pose.position.y=self.charge_y
+                # self.target_publisher.publish(self.request_target_msg)
 
             
 

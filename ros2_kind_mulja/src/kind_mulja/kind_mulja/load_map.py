@@ -86,23 +86,35 @@ class loadMap(Node):
                     '''
                     로직 3. 점유영역 근처 필터처리
                     '''
-                    for box_x in range(-10,10):
-                        for box_y in range(-10,10):
+                    for box_x in range(-5,6):
+                        for box_y in range(-5,6):
                             if  0< x+box_x < 250 and 0 < y+box_y <250 and grid[x+box_x][y+box_y]<80 :
                                 grid[x+box_x][y+box_y]=127
         
-        for i in range(10):
-            grid[149+i][81]=0
-            grid[123-i][143]=0
-            grid[183-i][106]=0
-            grid[196][224+i]=0
-            grid[183-i][157]=0
+        for i in range(5):
+            grid[85][74+i]=0
+            grid[53][60-i]=0
+            grid[72][91-i]=0
+            grid[12-i][97]=0
+            grid[47][91-i]=0
 
-        for j in range(37, 250):
-            if j != 67 and j != 107 and j != 147 and j != 187 and j != 227:
-                grid[98][j]=127
+        for j in range(3, 100):
+            if j != 11 and j != 31 and j != 51 and j != 71 and j != 91:
+                grid[j][49]=127
             else:
-                grid[98][j]=0
+                grid[j][49]=0
+
+        for j in range(57, 109):
+                grid[63][j]=0
+
+        for j in range(24, 31):
+                grid[j][61]=127
+
+        for j in range(32, 92):
+            if j != 62 and j != 63 and j != 85:
+                grid[j][78]=127
+            else:
+                grid[j][78]=0
 
         np_map_data=grid.reshape(1,250*250) 
         list_map_data=np_map_data.tolist()
@@ -131,3 +143,8 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
+
+
+
+       
+   

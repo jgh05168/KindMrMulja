@@ -25,6 +25,7 @@ find_package(geometry_msgs REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Col.msg"
   "msg/Num.msg"
   "msg/EnviromentStatus.msg"
   "msg/TurtlebotStatus.msg"
