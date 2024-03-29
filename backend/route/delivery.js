@@ -1,7 +1,7 @@
 const express = require("express");
 const moment = require("moment");
 const delivery = express.Router();
-const pool = require("./DB.js");
+const pool = require("../DB.js");
 // 배송지 추가하기 api
 delivery.post("/delivery-address/add", async (req, res) => {
   const user_id = req.body.user_id;
