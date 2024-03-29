@@ -16,11 +16,45 @@
     <RouterView />
     <AppFooter />
   </div>
+  <!-- 만약 관리자 계정으로 로그인 된 경우, (조건문 걸어주기) -->
+  <v-card>
+    <v-layout style="position: relative; height: 100vh">
+      <v-navigation-drawer floating permanent style="position: relative">
+        <v-list dense nav>
+          <RouterLink :to="{ name: 'factory_map' }" tag="v-list-item" class="link">
+            <template v-slot:default="{ attrs }">
+              <v-list-item
+                v-bind="attrs"
+                prepend-icon="mdi-factory"
+                title="Factory Map"
+                value="factory_map"
+                color="black"
+              ></v-list-item>
+            </template>
+          </RouterLink>
+          <RouterLink :to="{ name: 'robots_status' }" tag="v-list-item" class="link">
+            <template v-slot:default="{ attrs }">
+              <v-list-item
+                v-bind="attrs"
+                prepend-icon="mdi-robot"
+                title="Robots"
+                value="robots"
+                color="black"
+              ></v-list-item>
+            </template>
+          </RouterLink>
+        </v-list>
+      </v-navigation-drawer>
+      <v-main style="padding-left: 0; flex-grow: 1">
+        <RouterView />
+      </v-main>
+    </v-layout>
+  </v-card>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 // import AppHeader from '@/layouts/AppHeader.vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
@@ -30,19 +64,21 @@ const productStore = useProductStore()
 
 onMounted(async () => {
   const productList_res = await Service.getProductList()
-  // console.log('상품 전체 리스트 : ', productList_res)
-  // 전체 상품 돌면서 찜 기능을 위한 속성 추가
   productList_res.forEach(async (product) => {
-    product.is_zzim = false // 찜 속성 추가 및 초기화
+    product.is_zzim = false
   })
 
-  // productList_res가 어디서 온 것인지 확인이 필요합니다.
   console.log('상품 전체 리스트 - is_zzim 추가 : ', productList_res)
   productStore.product_list = productList_res
 })
 </script>
 
 <style scoped>
+.galaxy_24 {
+  width: 415px;
+  height: 900px;
+}
+
 .phone {
   position: relative;
   width: 100%;
@@ -52,5 +88,14 @@ onMounted(async () => {
 
 .app-footer {
   position: fixed;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.link:hover {
+  color: black; /* 변경하고자 하는 색상으로 설정하세요 */
 }
 </style>
