@@ -1,17 +1,21 @@
 <template>
   <div>
-    <RouterLink :to="{ name: 'main' }" class="link">main</RouterLink> /
-    <RouterLink :to="{ name: 'login' }" class="link">login</RouterLink> /
-    <RouterLink :to="{ name: 'home' }" class="link">home</RouterLink> /
-    <RouterLink :to="{ name: 'address' }" class="link">address</RouterLink> /
-    <RouterLink :to="{ name: 'create-address' }" class="link">create-address</RouterLink> /
-    <RouterLink :to="{ name: 'cart' }" class="link">my-cart</RouterLink> /
-    <RouterLink :to="{ name: 'pay' }" class="link">Pay</RouterLink> /
-    <RouterLink :to="{ name: 'paid' }" class="link">Paid</RouterLink> /
-    <RouterLink :to="{ name: 'order' }" class="link">my-order</RouterLink> /
-    <RouterLink :to="{ name: 'zzim' }" class="link">ZZIM</RouterLink> /
+    <!-- <RouterLink :to="{ name: 'main' }">main</RouterLink> /
+    <RouterLink :to="{ name: 'login' }">login</RouterLink> /
+    <RouterLink :to="{ name: 'home' }">home</RouterLink> /
+    <RouterLink :to="{ name: 'address' }">address</RouterLink> /
+    <RouterLink :to="{ name: 'create-address' }">create-address</RouterLink> /
+    <RouterLink :to="{ name: 'cart' }">my-cart</RouterLink> /
+    <RouterLink :to="{ name: 'pay' }">Pay</RouterLink> /
+    <RouterLink :to="{ name: 'paid' }">Paid</RouterLink> /
+    <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
+    <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> / -->
   </div>
 
+  <div class="phone">
+    <RouterView />
+    <AppFooter />
+  </div>
   <!-- 만약 관리자 계정으로 로그인 된 경우, (조건문 걸어주기) -->
   <v-card>
     <v-layout style="position: relative; height: 100vh">
@@ -49,8 +53,9 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
 import { onMounted } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+// import AppHeader from '@/layouts/AppHeader.vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
 import Service from '@/api/api.js'
@@ -78,6 +83,7 @@ onMounted(async () => {
   position: relative;
   width: 100%;
   height: 100vh;
+  font-family: 'pretendard';
 }
 
 .app-footer {

@@ -6,7 +6,7 @@
     <v-tabs
       v-model="tab"
       align-tabs="center"
-      center-active="true"
+      :center-active="true"
       show-arrows
       height="70px"
       density="comfortable"

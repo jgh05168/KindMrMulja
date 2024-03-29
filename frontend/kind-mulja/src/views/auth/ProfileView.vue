@@ -14,13 +14,18 @@
         <h2 v-else>이물자님, 안녕하세요!</h2>
       </div>
     </div>
+    <v-divider></v-divider>
     <div class="list-frame">
-      <div>
-        <h3 @click="router.push({ name: 'order' })">주문 목록</h3>
-      </div>
-      <div>
-        <h3 @click="router.push({ name: 'address' })">배송지 관리</h3>
-      </div>
+      <v-card class="profile-list">
+        <h2 @click="router.push({ name: 'order' })">주문 목록</h2>
+      </v-card>
+      <v-card class="profile-list">
+        <h2 @click="router.push({ name: 'address' })">배송지 관리</h2>
+      </v-card>
+      <v-card class="profile-list" style="align-items: center; justify-content: space-between">
+        <h2>psuh 알림 설정</h2>
+        <v-switch class="ms-15" hide-details :model-value="true" color="primary"></v-switch>
+      </v-card>
     </div>
   </div>
 </template>
@@ -46,5 +51,14 @@ const router = useRouter()
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.profile-list {
+  width: 100%;
+  height: 90px;
+  margin-top: 2%;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
 }
 </style>

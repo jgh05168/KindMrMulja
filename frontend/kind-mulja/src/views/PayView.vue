@@ -9,14 +9,13 @@
         <h3 v-else>픽업 장소</h3>
         <div v-if="orderStore.order_type == 0">
           <SelectDialog
-            @click="getAddressMore()"
             @update:addressId="updateAddressId"
             @update:selectedAddress="updateSelectedAddress"
           />
         </div>
       </div>
-      <AddressItem :width="'100%'">
-        <template v-slot:address-title="slotProps">
+      <AddressItem v-if="orderStore.order_type == 0" :width="'100%'">
+        <template #address-title>
           <div
             style="
               display: flex;
@@ -26,13 +25,6 @@
             "
           >
             <div>{{ selected_address?.address_name }}</div>
-
-            <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
-            <v-btn
-              @click="slotProps.editAddress(selected_address?.address_id)"
-              icon="mdi-home-edit-outline"
-              variant="plain"
-            ></v-btn>
           </div>
         </template>
         <template #address-detail>
@@ -41,6 +33,13 @@
           <p>받는사람 : {{ selected_address?.user_name }}</p>
         </template>
       </AddressItem>
+      <v-select
+        v-model="selected_area"
+        v-else
+        :items="['픽업A', '픽업B', '픽업C']"
+        variant="outlined"
+        >xzxZxZ</v-select
+      >
     </div>
 
     <div class="set-pay">
@@ -78,8 +77,8 @@ const total_price = orderStore.total_price
 const address_id = ref(null)
 // 선택된 id 로 선택된 배송지 저장
 const selected_address = ref(null)
-
-const getAddressMore = () => {}
+// 선택된 픽업 장소 저장
+const selected_area = ref(null)
 
 const updateAddressId = (id) => {
   address_id.value = id
@@ -100,19 +99,24 @@ const selected_cart_id = computed(() => {
 })
 
 const orderCreate = async () => {
+  console.log(selected_area.value)
   // console.log(
   //   '보내는 주소지',
   //   JSON.stringify(selected_address.value.address_normal) +
   //     ',' +
   //     JSON.stringify(selected_address.value.address_detail)
-  // )
-  const order_info = {
+  // )'
+  let order_info = {
     user_id: authStore.user_id,
-    address_content: JSON.stringify(
-      selected_address.value.address_normal + selected_address.value.address_detail
-    ),
     order_type: orderStore.order_type,
     selected_cart_id: selected_cart_id.value
+  }
+  if (orderStore.order_type == 0) {
+    order_info.address_content = JSON.stringify(
+      selected_address.value.address_normal + selected_address.value.address_detail
+    )
+  } else {
+    order_info.address_content = JSON.stringify(selected_area.value)
   }
   return order_info
 }
@@ -143,11 +147,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: fit-content;
 }
 
 .order-info {
-  margin: auto auto;
+  margin: 0 auto;
   width: 100%;
+  margin-bottom: 10%;
 }
 
 .pay-button {

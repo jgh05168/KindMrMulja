@@ -2,7 +2,7 @@
   <div
     style="
       width: 100%;
-      height: 100px;
+      height: 90px;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -20,7 +20,8 @@
       <slot name="header-bar"> </slot>
     </span>
     <v-btn size="50" variant="plain">
-      <v-icon size="30">mdi-view-headline</v-icon>
+      <v-icon v-if="authStore.user_id == null" size="30">mdi-login</v-icon>
+      <v-icon v-else size="30">mdi-logout</v-icon>
       <v-menu activator="parent">
         <v-list>
           <v-list-item v-if="authStore.user_id == null" @click="router.push({ name: 'login' })">
