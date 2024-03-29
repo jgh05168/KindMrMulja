@@ -1,6 +1,8 @@
 const express = require("express");
 const moment = require("moment");
 const user = express.Router();
+const pool = require("../DB.js");
+
 user.get("/hihi", (req, res) => {
   res.send("hello");
 });
@@ -16,7 +18,7 @@ user.post("/signup", async (req, res) => {
   try {
     const query = `
       INSERT INTO user (user_name, user_email, user_password, alarm) VALUES (?, ?, ?, ?);`;
-    const results = await global.pool.query(query, [name, email, password, alarm]);
+    const results = await pool.query(query, [name, email, password, alarm]);
     return res.json({ result: true });
     // console.log(result);
   } catch (error) {
@@ -32,7 +34,7 @@ user.post("/email-duplicate-check", async (req, res) => {
 
   try {
     const query = `SELECT * FROM user WHERE user_email = ?`;
-    const results = await global.pool.query(query, [email]);
+    const results = await pool.query(query, [email]);
     console.log(results[0]);
     if (results[0].length > 0) {
       return res.json({ result: false });
@@ -56,7 +58,7 @@ user.post("/signin", async (req, res) => {
             WHERE user_email = ? AND user_password = ?
           `;
 
-    const result = await global.pool.query(query, [email, password]);
+    const result = await pool.query(query, [email, password]);
     console.log(result[0]);
     if (result[0].length > 0) {
       return res.json({

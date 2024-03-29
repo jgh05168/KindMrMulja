@@ -9,7 +9,6 @@ pipeline {
         FRONT_CONTAINER_NAME='vuejs-client'
 
         DATABASE_NAME='mariadb'
-
     }
 
 
@@ -17,6 +16,15 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+        stage('Copy env file'){
+            steps{
+                script{
+                    sh'''
+                        cp /var/jenkins_home/settingsFiles/.env ./backend/.env
+                    '''
+                }
             }
         }
 
@@ -51,29 +59,35 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: "docker ps -a --filter name=${FRONT_CONTAINER_NAME}", returnStdout: true).trim().split('\n').size()
-                            echo "${frontContainerExists}"
-                            if (frontContainerExists>1) {
-                                echo "${frontContainerExists}"
-                                sh "docker stop ${FRONT_CONTAINER_NAME}"
-                                sh "docker rm ${FRONT_CONTAINER_NAME}"
-                            } else {
-                                echo "Frontend container does not exist. Skipping deletion."
-                            }
+                            sh" docker stop  ${FRONT_CONTAINER_NAME} ||true"
+                            sh "docker rm ${FRONT_CONTAINER_NAME} || true"
+
+                            // def frontContainerExists = sh(script: "docker ps -a ${SEPERATE_CHAR} grep ${FRONT_CONTAINER_NAME}", returnStatus: true)
+                            // echo "${frontContainerExists}"
+                            // if (frontContainerExists) {
+                            //     echo "${frontContainerExists}"
+                            //     sh "docker stop ${FRONT_CONTAINER_NAME}"
+                            //     sh "docker rm ${FRONT_CONTAINER_NAME}"
+                            // } else {
+                            //     echo "Frontend container does not exist. Skipping deletion."
+                            // }
                         }
                     }
                 }
                 stage('Delete Previous Back Docker Container'){
                     steps {
                         script {
-                            def backContainerExists = sh(script: "docker ps -a --filter name=${BACK_CONTAINER_NAME}", returnStdout: true).trim().split('\n').size()
-                            echo "${backContainerExists}"
-                            if (backContainerExists>1) {
-                                sh "docker stop ${BACK_CONTAINER_NAME}"
-                                sh "docker rm ${BACK_CONTAINER_NAME}"
-                            } else {
-                                echo "backend container does not exist. Skipping deletion."
-                            }
+                            // def frontContainerExists = sh(script: 'docker ps -a | grep ${BACK_CONTAINER_NAME} || true', returnStatus: true).trim().split('\n').size()
+                            // echo "${frontContainerExists}"
+                            // if (frontContainerExists==1) {
+                            //     echo "${frontContainerExists}"
+                            //     sh "docker stop ${BACK_CONTAINER_NAME}"
+                            //     sh "docker rm ${BACK_CONTAINER_NAME}"
+                            // } else {
+                            //     echo "Frontend container does not exist. Skipping deletion."
+                            // }
+                            sh" docker stop  ${BACK_CONTAINER_NAME} || true"
+                            sh "docker rm ${BACK_CONTAINER_NAME} || true"
                         }
                     }
                 }
@@ -93,7 +107,7 @@ pipeline {
                 stage('Run Back Docker Container'){
                     steps{
                         script{
-                            sh "docker run -d --link ${DATABASE_NAME} --name ${BACK_CONTAINER_NAME} -p 3000:3000 ${BACK_DOCKER_IMAGE_NAME}"
+                            sh "docker run -d --name ${BACK_CONTAINER_NAME} -p 3000:3000 ${BACK_DOCKER_IMAGE_NAME}"
                         }
                     }
                 }
