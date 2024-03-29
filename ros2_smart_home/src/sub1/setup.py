@@ -28,7 +28,8 @@ setup(
             'odom = sub1.odom:main',
             'make_path = sub1.make_path:main',
             'path_pub = sub1.path_pub:main',
-            'path_tracking = sub1.path_tracking:main'
+            'path_tracking = sub1.path_tracking:main',
+            'camera = sub1.camera:main'
         ],
     },
 )
