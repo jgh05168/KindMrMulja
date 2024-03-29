@@ -3,6 +3,30 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription([
+        # package_name : ssafy_bridge
+        Node(
+            package='ssafy_bridge',
+            node_executable='udp_to_pub',
+            node_name='udp_to_pub'
+        ),
+        Node(
+            package='ssafy_bridge',
+            node_executable='sub_to_udp',
+            node_name='sub_to_udp'
+        ),
+        Node(
+            package='ssafy_bridge',
+            node_executable='udp_to_cam',
+            node_name='udp_to_cam'
+        ),
+
+        Node(
+            package='ssafy_bridge',
+            node_executable='udp_to_laser',
+            node_name='udp_to_laser'
+        ),
+        
+        # package_name : kind_mulja
         Node(
             package='kind_mulja',
             node_executable='odom',
@@ -51,5 +75,14 @@ def generate_launch_description():
         #     node_executable='client',
         #     node_name='client'
         # ),
-      
+        Node(
+            package='kind_mulja',
+            node_executable='local_grid_map',
+            node_name='local_grid_map'
+        ),
+        Node(
+            package='kind_mulja',
+            node_executable='send_turtlebot_loc',
+            node_name='send_turtlebot_loc'
+        ),
     ])
