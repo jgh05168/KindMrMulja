@@ -3,6 +3,7 @@
     <div ref="mapContainer" style="position: relative; width: 250px; height: 250px; border: 1px solid black;">
       <img ref="image" src="/map/image.jpg" alt="Map Image" style="width: 100%; height: auto;">
       <div ref="marker" class="marker"></div>
+      <img ref="image1" src="" alt="">
     </div>
   </div>
 </template>
@@ -14,19 +15,24 @@ import io from 'socket.io-client';
 const mapContainer = ref(null);
 const image = ref(null);
 const marker = ref(null);
+const image1 = ref(null); // 추가
 
 // 이미지 좌표
 const imageCoords = { x: 250, y: 250 };
 
 onMounted(() => {
   const socket = io('http://localhost:12002/')
-
+  const socket1 = io('http://localhost:12003/')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log('웹소켓 연결이 열렸습니다.')
     // 데이터를 수신 받았을 때의 처리
   })
 
+  socket1.on('connect', () => {
+    console.log('웹소켓 연결이 열렸습니다.')
+    // 데이터를 수신 받았을 때의 처리
+  })
   // 데이터를 수신하여 마커 위치를 조정
   socket.on("sendToFront", (data) => {
     const parsedData = JSON.parse(data); // 문자열을 JSON 객체로 변환
@@ -37,6 +43,22 @@ onMounted(() => {
 
   // 에러가 발생했을 때의 처리
   socket.on('error', (error) => {
+    console.error('웹소켓 에러:', error)
+  })
+
+  socket1.on("sendToFrontImage", (data) => {
+    // 이미지 데이터를 Base64로 인코딩
+    const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
+    
+    // 이미지를 표시할 img 태그 선택
+    const imgElement = image1.value; // 수정
+
+    // 이미지 데이터를 img 태그의 src 속성에 할당하여 표시
+    imgElement.src = "data:image/jpeg;base64," + imageData;
+  });
+
+  // 에러가 발생했을 때의 처리
+  socket1.on('error', (error) => {
     console.error('웹소켓 에러:', error)
   })
 });

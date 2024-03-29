@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const PORT = 3000;
-const pool = require("./DB.js");
 const userRouter = require("./route/users.js");
 const productRouter = require("./route/product.js");
 const wishlistRouter = require("./route/wishlist.js");
@@ -14,6 +13,9 @@ const io = require("socket.io")(server);
 const initializeSocket = require("./socketServer.js");
 const payRouter = require("./route/payments.router.js");
 const initializeSocketLoc = require("./socketServerLoc.js");
+const initializeSocketLoc2 = require("./socketServerLoc2.js");
+
+//
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,5 +40,8 @@ initializeSocket(socketServerPort1);
 // 로봇 좌표 받기
 const socketServerPort2 = process.env.SOCKET_SERVER_PORT_LOC || 12002;
 initializeSocketLoc(socketServerPort2);
+
+const socketServerPort3 = process.env.SOCKET_SERVER_PORT_LOC2 || 12003;
+initializeSocketLoc2(socketServerPort3);
 
 app.listen(PORT, () => console.log(`${PORT} 서버 기동중`));
