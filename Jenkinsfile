@@ -109,7 +109,7 @@ pipeline {
                 stage('Run Back Docker Container'){
                     steps{
                         script{
-                            sh "docker run -d --link ${DATABASE_NAME} --name ${BACK_CONTAINER_NAME} -p 3000:3000 ${BACK_DOCKER_IMAGE_NAME}"
+                            sh "docker run -d --name ${BACK_CONTAINER_NAME} -p 3000:3000 ${BACK_DOCKER_IMAGE_NAME}"
                         }
                     }
                 }
