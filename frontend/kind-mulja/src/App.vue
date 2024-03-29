@@ -1,5 +1,5 @@
 <template>
-  <!-- <div>
+  <div>
     <RouterLink :to="{ name: 'main' }">main</RouterLink> /
     <RouterLink :to="{ name: 'login' }">login</RouterLink> /
     <RouterLink :to="{ name: 'home' }">home</RouterLink> /
@@ -10,8 +10,9 @@
     <RouterLink :to="{ name: 'paid' }">Paid</RouterLink> /
     <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
     <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> /
-  </div> -->
-  <div class="phone">
+  </div>
+
+  <div class="galaxy_24">
     <RouterView />
     <AppFooter />
   </div>
@@ -19,7 +20,7 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 // import AppHeader from '@/layouts/AppHeader.vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
@@ -35,6 +36,7 @@ onMounted(async () => {
     product.is_zzim = false // 찜 속성 추가 및 초기화
   })
 
+  // productList_res가 어디서 온 것인지 확인이 필요합니다.
   console.log('상품 전체 리스트 - is_zzim 추가 : ', productList_res)
   productStore.product_list = productList_res
 })
@@ -43,6 +45,7 @@ onMounted(async () => {
 <style scoped>
 .phone {
   position: relative;
+  width: 100%;
   height: 100vh;
   font-family: 'pretendard';
 }
