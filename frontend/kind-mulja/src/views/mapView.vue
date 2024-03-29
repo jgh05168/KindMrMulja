@@ -1,46 +1,15 @@
 <template>
-  <v-card>
-    <v-layout style="position: relative; height: 100vh">
-      <v-navigation-drawer floating permanent style="position: relative">
-        <v-list density="compact" nav>
-          <v-list-item
-            @click="navigateTo('factory_map')"
-            prepend-icon="mdi-factory"
-            title="Factory Map"
-            value="factory_map"
-          ></v-list-item>
-          <v-list-item
-            @click="navigateTo('robots')"
-            prepend-icon="mdi-robot"
-            title="Robots"
-            value="robots"
-          ></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <v-main style="padding-left: 0; flex-grow: 1">
-        <!-- 패딩 제거 및 flex-grow 추가 -->
-        <div v-if="selectedPage === 'factory_map'">
-          <!-- Home 페이지에 대한 내용 -->
-          <h2>Factory Map 페이지</h2>
-          <p>이 곳은 Factory Map 페이지입니다.</p>
-          <div ref="mapContainer" class="container">
-            <img
-              ref="image"
-              src="/map/image.jpg"
-              alt="Map Image"
-              style="width: 100%; height: 100%; transform: scaleX(-1)"
-            />
-            <div ref="marker" class="marker"></div>
-          </div>
-        </div>
-        <div v-else-if="selectedPage === 'robots'">
-          <!-- About 페이지에 대한 내용 -->
-          <h2>Robots 페이지</h2>
-          <p>이 곳은 Robots 페이지입니다.</p>
-        </div>
-      </v-main>
-    </v-layout>
-  </v-card>
+  <!-- <h2>Factory Map 페이지</h2>
+  <p>이 곳은 Factory Map 페이지입니다.</p> -->
+  <div ref="mapContainer" class="container">
+    <img
+      ref="image"
+      src="/map/image.jpg"
+      alt="Map Image"
+      style="width: 100%; height: 100%; transform: scaleX(-1)"
+    />
+    <div ref="marker" class="marker"></div>
+  </div>
 </template>
 
 <script setup>
@@ -51,28 +20,26 @@ const mapContainer = ref(null)
 const image = ref(null)
 const marker = ref(null)
 
-const selectedPage = ref('factory_map') // 초기 선택 페이지 설정
-
-const navigateTo = (page) => {
-  selectedPage.value = page
-}
-
 // 이미지 좌표
-const imageCoords = { x: 498, y: 498 }
+const imageCoords = { x: 600, y: 600 }
 
 onMounted(() => {
   const socket = io('http://localhost:12002/')
 
+  // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log('웹소켓 연결이 열렸습니다.')
+    // 데이터를 수신 받았을 때의 처리
   })
 
   // 데이터를 수신하여 마커 위치를 조정
   socket.on('sendToFront', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
+    // console.log(parsedData)
     // 시뮬레이터의 위치와 맵 상의 위치를 맞춰주기
-    const adjustedX = Math.abs(-parsedData.x - 50) * 10
-    const adjustedY = Math.abs(-parsedData.y - 50) * 10 - 2.5
+    console.log(Math.abs(-parsedData.x - 50) * 24 - 2.5)
+    const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
+    const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
     adjustMarkerPosition(adjustedX, adjustedY)
   })
 
@@ -83,6 +50,9 @@ onMounted(() => {
 })
 
 function adjustMarkerPosition(x, y) {
+  // mapContainer가 null이면 함수 종료
+  if (!mapContainer.value) return
+
   // 이미지 컨테이너의 크기
   const containerWidth = mapContainer.value.clientWidth
   const containerHeight = mapContainer.value.clientHeight
@@ -101,9 +71,11 @@ function adjustMarkerPosition(x, y) {
 /* 필요한 스타일 추가 */
 
 .container {
-  width: 500px;
-  height: 500px;
+  position: relative;
+  width: 600px;
+  height: 600px;
   border: 1px solid black;
+  margin: 5%;
 }
 
 .marker {

@@ -54,7 +54,6 @@ import { onMounted } from 'vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
 import Service from '@/api/api.js'
-import io from 'socket.io-client'
 
 const productStore = useProductStore()
 
@@ -62,16 +61,6 @@ onMounted(async () => {
   const productList_res = await Service.getProductList()
   productList_res.forEach(async (product) => {
     product.is_zzim = false
-  })
-
-  const socket = io('http://localhost:12002/')
-
-  socket.on('connect', () => {
-    console.log('웹소켓 연결이 열렸습니다.')
-  })
-
-  socket.on('error', (error) => {
-    console.error('웹소켓 에러:', error)
   })
 
   console.log('상품 전체 리스트 - is_zzim 추가 : ', productList_res)
