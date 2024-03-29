@@ -30,6 +30,9 @@ setup(
             'request_handcontrol=kind_mulja.request_handcontrol:main',
             'client= kind_mulja.client_test3:main', 
             'test_request_handcontrol= kind_mulja.test_request_handcontrol:main',
+            'local_grid_map = kind_mulja.local_grid_map:main',
+            'send_turtlebot_loc = kind_mulja.send_turtlebot_loc:main',
+
         ],
     },
 )

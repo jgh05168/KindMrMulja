@@ -39,7 +39,7 @@ class astarLocalpath(Node):
         self.timer = self.create_timer(time_period, self.timer_callback)
         
         # local 탐색 개수 
-        self.local_path_size=30 
+        self.local_path_size=20
         self.count=0
 
 
@@ -58,7 +58,7 @@ class astarLocalpath(Node):
         if self.is_odom and self.is_path ==True:
             
             local_path_msg=Path()
-            local_path_msg.header.frame_id='/map'
+            local_path_msg.header.frame_id='map'
             
             x=self.odom_msg.pose.pose.position.x
             y=self.odom_msg.pose.pose.position.y

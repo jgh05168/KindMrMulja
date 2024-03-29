@@ -7,7 +7,7 @@ from ssafy_msgs.msg import TurtlebotStatus
 
 class TrutlebotLoc(Node):
     def __init__(self):
-        super().__init__('turtlebot_loc')
+        super().__init__('send_turtlebot_loc')
         self.subscription = self.create_subscription(
                 TurtlebotStatus,
                 'turtlebot_status',
