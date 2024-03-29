@@ -9,7 +9,6 @@ pipeline {
         FRONT_CONTAINER_NAME='vuejs-client'
 
         DATABASE_NAME='mariadb'
-
     }
 
 
