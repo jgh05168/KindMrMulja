@@ -61,15 +61,18 @@ pipeline {
                 stage('Delete Previous Front Docker Container'){
                     steps {
                         script {
-                            def frontContainerExists = sh(script: "docker ps -a | grep ${FRONT_CONTAINER_NAME}", returnStatus: true)
-                            echo "${frontContainerExists}"
-                            if (frontContainerExists) {
-                                echo "${frontContainerExists}"
-                                sh "docker stop ${FRONT_CONTAINER_NAME}"
-                                sh "docker rm ${FRONT_CONTAINER_NAME}"
-                            } else {
-                                echo "Frontend container does not exist. Skipping deletion."
-                            }
+                            sh" docekr stop  ${FRONT_CONTAINER_NAME} ||true"
+                            sh "docker rm ${FRONT_CONTAINER_NAME} || true"
+
+                            // def frontContainerExists = sh(script: "docker ps -a ${SEPERATE_CHAR} grep ${FRONT_CONTAINER_NAME}", returnStatus: true)
+                            // echo "${frontContainerExists}"
+                            // if (frontContainerExists) {
+                            //     echo "${frontContainerExists}"
+                            //     sh "docker stop ${FRONT_CONTAINER_NAME}"
+                            //     sh "docker rm ${FRONT_CONTAINER_NAME}"
+                            // } else {
+                            //     echo "Frontend container does not exist. Skipping deletion."
+                            // }
                         }
                     }
                 }
