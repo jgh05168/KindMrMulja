@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\2. SpecializationPJT\SUB2\ros2_kind_mulja\build\ssafy_msgs\CMakeFiles\d130b22dfebbc7b9bb300e4f08f48b5d\Num_.idl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\2. SpecializationPJT\SUB2\ros2_kind_mulja\build\ssafy_msgs\CMakeFiles\801ea2561ebfaa87f056ab8cb57b08cc\ssafy_msgs__dds_opensplice_idl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\2. SpecializationPJT\SUB2\ros2_kind_mulja\src\ssafy_msgs\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\2. SpecializationPJT\SUB2\ros2_kind_mulja\build\ssafy_msgs\CMakeFiles\ssafy_msgs__dds_opensplice_idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{5EA53607-0BDF-3DBB-8141-B0F3E16B855C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

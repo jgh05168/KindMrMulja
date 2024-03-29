@@ -1,0 +1,20 @@
+^C:\2. SPECIALIZATIONPJT\SUB2\ROS2_KIND_MULJA\BUILD\SSAFY_MSGS\CMAKEFILES\9AA2C334492B6B6050BB46DA683B5D28\NUM__ROSIDL_TYPESUPPORT_INTROSPECTION_C.H.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c --generator-arguments-file "C:/2. SpecializationPJT/SUB2/ros2_kind_mulja/build/ssafy_msgs/rosidl_typesupport_introspection_c__arguments.json"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\2. SPECIALIZATIONPJT\SUB2\ROS2_KIND_MULJA\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/2. SpecializationPJT/SUB2/ros2_kind_mulja/src/ssafy_msgs" "-BC:/2. SpecializationPJT/SUB2/ros2_kind_mulja/build/ssafy_msgs" --check-stamp-file "C:/2. SpecializationPJT/SUB2/ros2_kind_mulja/build/ssafy_msgs/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

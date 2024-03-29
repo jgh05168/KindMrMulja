@@ -1,0 +1,12 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from ssafy_msgs/msg\RequestHandControl.msg
+// generated code does not contain a copyright notice
+
+
+module ssafy_msgs {
+  module msg {
+    struct RequestHandControl {
+      uint8 control_mode;
+    };
+  };
+};

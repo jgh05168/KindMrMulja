@@ -1,0 +1,30 @@
+// generated from rosidl_generator_dds_idl/resource/idl.idl.em
+// with input from ssafy_msgs:msg\RequestHandControl.idl
+// generated code does not contain a copyright notice
+
+#ifndef __ssafy_msgs__msg__request_hand_control__idl__
+#define __ssafy_msgs__msg__request_hand_control__idl__
+
+
+module ssafy_msgs {
+
+module msg {
+
+module dds_ {
+
+
+struct RequestHandControl_ {
+octet control_mode_;
+
+};
+
+#pragma keylist RequestHandControl_
+
+};  // module dds_
+
+};  // module msg
+
+};  // module ssafy_msgs
+
+
+#endif  // __ssafy_msgs__msg__request_hand_control__idl__

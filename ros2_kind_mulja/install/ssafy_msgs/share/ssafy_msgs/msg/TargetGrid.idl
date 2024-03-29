@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from ssafy_msgs/msg\TargetGrid.msg
+// generated code does not contain a copyright notice
+
+
+module ssafy_msgs {
+  module msg {
+    struct TargetGrid {
+      double product_x;
+
+      double product_y;
+
+      double moving_zone_x;
+
+      double moving_zone_y;
+
+      double charge_x;
+
+      double charge_y;
+    };
+  };
+};
