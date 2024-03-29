@@ -1,7 +1,7 @@
 const express = require("express");
 const moment = require("moment");
 const wishlist = express.Router();
-const pool = require("./DB.js");
+const pool = require("../DB.js");
 
 // 사용자 찜목록 불러오기
 wishlist.get("/:user_id", async (req, res) => {
