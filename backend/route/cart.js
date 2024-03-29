@@ -1,7 +1,6 @@
 const express = require("express");
 const moment = require("moment");
 const cart = express.Router();
-const pool = require("../DB.js");
 
 // 사용자 장바구니 목록 불러오기
 cart.get("/:user_id", async (req, res) => {
@@ -13,7 +12,7 @@ cart.get("/:user_id", async (req, res) => {
             JOIN product_list pl ON sc.product_id = pl.product_id
             WHERE sc.user_id = ?;
           `;
-    const results = await pool.query(query, user_id);
+    const results = await global.pool.query(query, user_id);
     console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
@@ -29,7 +28,7 @@ cart.patch("/cart-update", async (req, res) => {
 
   try {
     const query = `UPDATE shopping_cart SET product_quentity = ? WHERE cart_id = ?`;
-    const result = await pool.query(query, [product_quentity, cart_id]);
+    const result = await global.pool.query(query, [product_quentity, cart_id]);
     console.log(result[0]);
     if (result[0].affectedRows > 0) {
       return res.json({ result: true });
@@ -47,7 +46,7 @@ cart.delete("/:cart_id", async (req, res) => {
 
   try {
     const query = `DELETE FROM shopping_cart WHERE cart_id = ?`;
-    const result = await pool.query(query, cart_id);
+    const result = await global.pool.query(query, cart_id);
     if (result[0].affectedRows > 0) {
       return res.json({ result: true });
     } else {

@@ -33,7 +33,7 @@ class CameraSubscriber(Node):
             print('Failed to send image data to server:', str(e))
 
     def start_socketio(self):
-        self.sio.connect('http://localhost:12003/')
+        self.sio.connect('http://192.168.100.173:12003/')
         self.sio.wait()
 
 def main():
