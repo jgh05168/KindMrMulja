@@ -80,10 +80,14 @@ class RequestMsgHandControl(Node):
         self.charge_y=self.target_grid_msg.charge_y
         # print("msg: ",msg)
         
-        self.timer = self.create_timer(2, self.timer_callback)
+        # self.timer = self.create_timer(2, self.timer_callback)
+        self.move_to_goal()
+        
+        
           
         
-    def timer_callback(self):  
+    # def timer_callback(self):  
+    def move_to_goal(self):
         turtle_x=self.odom_msg.pose.pose.position.x
         turtle_y=self.odom_msg.pose.pose.position.y
         
