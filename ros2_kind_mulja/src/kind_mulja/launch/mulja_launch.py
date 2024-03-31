@@ -65,16 +65,16 @@ def generate_launch_description():
             node_executable='auto_handcontrol',
             node_name='auto_handcontrol'
         ),
-        # Node(
-        #     package='kind_mulja',
-        #     node_executable='request_handcontrol',
-        #     node_name='request_handcontrol'
-        # ),
-        # Node(
-        #     package='kind_mulja',
-        #     node_executable='client',
-        #     node_name='client'
-        # ),
+        Node(
+            package='kind_mulja',
+            node_executable='request_handcontrol',
+            node_name='request_handcontrol'
+        ),
+        Node(
+            package='kind_mulja',
+            node_executable='client',
+            node_name='client'
+        ),
         Node(
             package='kind_mulja',
             node_executable='local_grid_map',

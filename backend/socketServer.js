@@ -1,5 +1,6 @@
 const socketIO = require("socket.io");
 const pool = require("./DB.js");
+
 const initializeSocket = (server) => {
   const io = socketIO(server);
 
@@ -99,8 +100,8 @@ const initializeSocket = (server) => {
         const position = await pool.query(query2, [results[0][0].product_id]);
         const region = getRegion(results[0][0].address);
         const jsonData = {
-          //turtle_id: turtle[0][0].turtle_id,
-          turtle_id: 1,
+          turtle_id: turtle[0][0].turtle_id,
+          // turtle_id: 2,
           order_detail_id: results[0][0].order_detail_id,
           product_x: position[0][0].pos_x,
           product_y: position[0][0].pos_y,
