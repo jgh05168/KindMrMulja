@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto my-8" elevation="5" max-width="90%">
+  <v-card class="mx-auto mt-4" elevation="3" max-width="90%">
     <v-card-title style="display: flex; flex-direction: row; justify-content: space-between">
       <span>No.{{ props.orderBundle.order_id }}</span>
       <span>주문일자 : {{ props.orderBundle.order_date.slice(0, 10) }}</span>
@@ -17,8 +17,7 @@
       <template #item-name>{{ item.product_name }}</template>
       <template #item-price>{{ item.product_price }}</template>
       <template #item-cnt>
-        <!-- 상품 수량 변경 시 DB 에도 장바구니 수량 변경 요청 보내야 함 -->
-        <span>{{ item.order_quentity }}</span>
+        <span>{{ item.order_quentity }} 개</span>
       </template>
     </CartItem>
     <v-card-text>

@@ -74,9 +74,9 @@
             style="height: 600px; padding: 10px 20px; font-size: 17px; font-weight: bold"
             v-show="expand"
           >
-            <p>가로 : {{ props.item.width }}</p>
-            <p>세로 : {{ props.item.length }}</p>
-            <p>높이 : {{ props.item.height }}</p>
+            <p>가로 : {{ props.item.width }} cm</p>
+            <p>세로 : {{ props.item.length }} cm</p>
+            <p>높이 : {{ props.item.height }} cm</p>
             <v-img width="300px" :src="`/product/${item_id}_size.jpg`"></v-img>
           </div>
         </v-expand-transition>
