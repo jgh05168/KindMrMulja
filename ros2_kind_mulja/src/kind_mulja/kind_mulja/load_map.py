@@ -116,6 +116,15 @@ class loadMap(Node):
             else:
                 grid[j][78]=0
 
+        for i in range(95,98):
+            for j in range(87,109):
+                grid[i][j]=0
+        
+        for i in range(5):
+            grid[112+i][108]=0
+            grid[112+i][78]=0
+            grid[112+i][26]=0
+
         np_map_data=grid.reshape(1,250*250) 
         list_map_data=np_map_data.tolist()
    
