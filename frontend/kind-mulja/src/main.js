@@ -1,6 +1,5 @@
 import './plugins/axios'
 import '/public/style.css'
-import '../dev-dist/registerSW'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
