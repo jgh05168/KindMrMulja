@@ -55,8 +55,8 @@ class lidarTrans(Node):
                 lidar_point = Point32()
 
                 if 0.0 < r < 12:
-                    lidar_point.x = self.x + r * cos((angle - 90) * pi / 180)
-                    lidar_point.y = self.y + r * sin((angle - 90) * pi / 180)
+                    lidar_point.x = self.x + r * cos((angle + 180) * pi / 180)
+                    lidar_point.y = self.y + r * sin((angle + 180) * pi / 180)
                     pcd_msg.points.append(lidar_point)
 
             self.pcd_pub.publish(pcd_msg)

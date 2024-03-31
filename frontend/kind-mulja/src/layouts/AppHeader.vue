@@ -24,6 +24,10 @@
       <v-icon v-else size="30">mdi-logout</v-icon>
       <v-menu activator="parent">
         <v-list>
+          <v-list-item @click="changeApp()">
+            <v-list-item-title v-if="authStore.is_admin == false">admin전환</v-list-item-title>
+            <v-list-item-title v-else>user전환</v-list-item-title>
+          </v-list-item>
           <v-list-item v-if="authStore.user_id == null" @click="router.push({ name: 'login' })">
             <v-list-item-title>로그인</v-list-item-title>
           </v-list-item>
@@ -45,6 +49,15 @@ import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 const router = useRouter()
+
+const changeApp = () => {
+  authStore.is_admin = !authStore.is_admin
+  if (authStore.is_admin == true) {
+    router.push({ name: 'factory_map' })
+  } else {
+    router.push({ name: 'home' })
+  }
+}
 </script>
 
 <style scoped></style>

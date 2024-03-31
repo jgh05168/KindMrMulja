@@ -84,13 +84,12 @@
           </template>
         </CartItem>
       </div>
-      <v-card style="width: 100%; height: 300px; text-align: center" v-else>
-        <p>장바구니에 담긴 상품이 없습니다.</p>
+      <div style="width: 100%; height: 300px; text-align: center; margin-top: 30%" v-else>
         <v-icon @click="router.push({ name: 'home' })" color="grey" size="100"
           >mdi-cart-arrow-down</v-icon
         >
-        <p>담으러 가기</p>
-      </v-card>
+        <h2>담으러 가기</h2>
+      </div>
     </div>
 
     <div class="pay-button">
@@ -170,10 +169,14 @@ const items_price = computed(() => {
   return item_total_price
 })
 const delivery_price = computed(() => {
-  if (selected_items.value.length > 0) {
-    return 25000
-  } else {
+  if (selectedOption.value == 1) {
     return 0
+  } else {
+    if (selected_items.value.length > 0) {
+      return 5000
+    } else {
+      return 0
+    }
   }
 })
 const total_price = computed(() => {
@@ -254,9 +257,8 @@ onMounted(async () => {
 }
 
 .selected-option {
-  border-radius: 2px sloid #424242;
-  background-color: antiquewhite;
-  transition: ease-in-out 0.3s;
+  border: 3px solid black;
+  transition: ease-in-out 0.1s;
 }
 
 .modal-choice-btn {

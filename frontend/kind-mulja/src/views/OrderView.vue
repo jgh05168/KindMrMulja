@@ -4,7 +4,6 @@
   </AppHeader>
   <div class="oreder-frame">
     <div class="state">
-      <div>
         <v-tabs v-model="tab" align-tabs="center" density="comfortable" color="#424242">
           <v-tab class="state-tab" :value="0">상품 준비</v-tab>
           <v-tab class="state-tab" :value="1">배송 상태</v-tab>
@@ -15,7 +14,6 @@
             <OrderState :state="state" :order-list="state_list[state]" />
           </v-window-item>
         </v-window>
-      </div>
     </div>
   </div>
 </template>
