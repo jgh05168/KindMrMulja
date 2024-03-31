@@ -62,9 +62,12 @@ user.post("/signin", async (req, res) => {
     console.log(result[0]);
     if (result[0].length > 0) {
       return res.json({
-        user_id: result[0][0].user_id,
-        user_name: result[0][0].user_name,
-        alarm: result[0][0].alarm,
+        user_info: {
+          user_id: result[0][0].user_id,
+          user_name: result[0][0].user_name,
+          alarm: result[0][0].alarm,
+        },
+        result: true,
       });
     } else {
       return res.json({ result: false });
