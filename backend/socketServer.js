@@ -1,5 +1,6 @@
 const socketIO = require("socket.io");
 const pool = require("./DB.js");
+const { json } = require("express");
 
 const initializeSocket = (server) => {
   const io = socketIO(server);
@@ -10,6 +11,7 @@ const initializeSocket = (server) => {
     // ros에서 받은 메세지
     socket.on("turtleStatus", async (data) => {
       const parsedData = JSON.parse(data);
+      console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
@@ -108,7 +110,7 @@ const initializeSocket = (server) => {
           moving_zone: region,
         };
         io.emit("order", JSON.stringify(jsonData));
-
+        console.log(jsonData);
         // await pool.query(
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]
