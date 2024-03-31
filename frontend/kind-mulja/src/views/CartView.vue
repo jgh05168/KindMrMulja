@@ -70,6 +70,7 @@
               size="xs"
               icon="mdi-plus"
               varient="tonal"
+              :disabled="item.product_quentity + 1 > item.product_stock"
               @click="item.product_quentity++"
             ></v-btn>
           </template>

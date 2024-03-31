@@ -1,7 +1,7 @@
 <template>
   <ProductItem>
     <template #item-img>
-      <v-carousel height="500" show-arrows="hover" hide-delimiters>
+      <v-carousel height="500" show-arrows="hover" hide-delimiter-background>
         <v-carousel-item :src="`/product/${item_id}.jpg`"></v-carousel-item>
         <v-carousel-item :src="`/product/${item_id}_showroom.jpg`"></v-carousel-item>
       </v-carousel>
@@ -10,8 +10,17 @@
     <template #item-title>
       <span
         style="color: brown; font-weight: bold"
-        v-if="props.item.product_stock !== null && props.item.product_stock < 5"
+        v-if="
+          props.item.product_stock !== null &&
+          props.item.product_stock < 5 &&
+          props.item.product_stock > 0
+        "
         >남은 재고 {{ props.item.product_stock }} 개, 품절임박!!</span
+      >
+      <span
+        style="color: brown; font-weight: bold"
+        v-if="props.item.product_stock !== null && props.item.product_stock == 0"
+        >품절된 상품입니다.</span
       >
       <h2>{{ props.item.product_name }}</h2>
       <div class="mt-3 d-flex">

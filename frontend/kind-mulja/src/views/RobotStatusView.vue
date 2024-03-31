@@ -7,17 +7,13 @@
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item v-for="n in 3" :key="n" :value="n">
-        <v-container fluid>
-          <v-row>
-            <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
-            <v-img
-              v-if="tab === n"
-              :src="imageSources[n - 1]"
-              aspect-ratio="1"
-              :ref="`image${n}`"
-            ></v-img>
-          </v-row>
-        </v-container>
+        <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
+        <v-img
+          v-if="tab === n"
+          :src="imageSources[n - 1]"
+          aspect-ratio="1"
+          :ref="`image${n}`"
+        ></v-img>
       </v-window-item>
     </v-window>
   </v-card>
