@@ -80,11 +80,13 @@ class RequestMsgHandControl(Node):
         self.charge_y=self.target_grid_msg.charge_y
         # print("msg: ",msg)
         
+        self.product_is_done=False
+        self.truct_is_done=False
+        
         # self.timer = self.create_timer(2, self.timer_callback)
         self.move_to_goal()
         
         
-          
         
     # def timer_callback(self):  
     def move_to_goal(self):
