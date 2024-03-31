@@ -11,7 +11,7 @@
         <div v-if="authStore.user_id == null">
           <span>로그인하기</span> | <span>회원가입하기</span>
         </div>
-        <h2 v-else>이물자님, 안녕하세요!</h2>
+        <h2 v-else>{{ authStore.user_name }} 님, 안녕하세요!</h2>
       </div>
     </div>
     <v-divider></v-divider>
@@ -22,10 +22,15 @@
       <v-card class="profile-list">
         <h2 @click="router.push({ name: 'address' })">배송지 관리</h2>
       </v-card>
-      <v-card class="profile-list" style="align-items: center; justify-content: space-between">
+      <!-- <v-card class="profile-list" style="align-items: center; justify-content: space-between">
         <h2>psuh 알림 설정</h2>
-        <v-switch class="ms-15" hide-details :model-value="true" color="primary"></v-switch>
-      </v-card>
+        <v-switch
+          class="ms-15"
+          hide-details
+          :model-value="authStore.allow_alarm"
+          color="success"
+        ></v-switch>
+      </v-card> -->
     </div>
   </div>
 </template>
