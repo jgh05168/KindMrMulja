@@ -5,10 +5,12 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 RUN npm install
+RUN npm install -pm2 -g
 
 COPY . .
 
 EXPOSE 3000
-EXPOSE 12002
+
+RUN HOST=43.201.59.121 PORT=12002 pm2 start socketServerLoc.js
 
 CMD ["node", "app.js"]
