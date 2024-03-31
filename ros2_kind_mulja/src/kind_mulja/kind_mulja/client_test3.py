@@ -10,8 +10,8 @@ truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
 turtle_id_about_me=1
-turtle_charge_x= -57.2209
-turtle_charge_y= -55.436
+turtle_charge_x= -50.0
+turtle_charge_y= -50.0
 # turtle_charge_x= -50.0
 # turtle_charge_y= -50.0
 
@@ -39,6 +39,7 @@ class Client(Node):
             try:
                 json_data=json.loads(data)
                 #json 파싱 
+                print(data)
                 local_num=json_data.get('moving_zone')
                 product_x=json_data.get('product_x')  
                 product_y=json_data.get('product_y')    

@@ -17,8 +17,8 @@ user.post("/signup", async (req, res) => {
   const alarm = req.body.alarm;
   try {
     const query = `
-      INSERT INTO user (user_name, user_email, user_password, alarm) VALUES (?, ?, ?, ?);`;
-    const results = await pool.query(query, [name, email, password, alarm]);
+      INSERT INTO user (user_name, user_email, user_password) VALUES (?, ?, ?);`;
+    const results = await pool.query(query, [name, email, password]);
     return res.json({ result: true });
     // console.log(result);
   } catch (error) {
@@ -54,7 +54,7 @@ user.post("/signin", async (req, res) => {
 
   try {
     const query = `
-            SELECT user_id, user_name, alarm FROM user
+            SELECT user_id, user_name, is_admin FROM user
             WHERE user_email = ? AND user_password = ?
           `;
 
@@ -65,7 +65,7 @@ user.post("/signin", async (req, res) => {
         user_info: {
           user_id: result[0][0].user_id,
           user_name: result[0][0].user_name,
-          alarm: result[0][0].alarm,
+          is_admin: result[0][0].is_admin,
         },
         result: true,
       });

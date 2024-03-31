@@ -1,5 +1,6 @@
 const socketIO = require("socket.io");
 const pool = require("./DB.js");
+const { json } = require("express");
 
 const initializeSocket = (server) => {
   const io = socketIO(server);
@@ -10,12 +11,21 @@ const initializeSocket = (server) => {
     // ros에서 받은 메세지
     socket.on("turtleStatus", async (data) => {
       const parsedData = JSON.parse(data);
+      console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
       //console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
+      const query3 = `UPDATE order_list
+      SET order_state = order_state + 1
+      WHERE order_id IN (
+          SELECT order_id
+          FROM order_detail_list
+          WHERE order_detail_id = ?
+      );`;
+
       if (work_status === "start") {
         await Promise.all([
           pool.query(query1, [order_detail_id]),
@@ -23,7 +33,10 @@ const initializeSocket = (server) => {
         ]);
       } else if (work_status === "done") {
         // await pool.query(query1, [order_detail_id]);
-        await pool.query(query2, [0, turtle_id]);
+        await Promise.all([
+          pool.query(query2, [0, turtle_id]),
+          pool.query(query3, [order_detail_id]),
+        ]);
       }
     });
 
@@ -108,7 +121,7 @@ const initializeSocket = (server) => {
           moving_zone: region,
         };
         io.emit("order", JSON.stringify(jsonData));
-
+        console.log(jsonData);
         // await pool.query(
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]
