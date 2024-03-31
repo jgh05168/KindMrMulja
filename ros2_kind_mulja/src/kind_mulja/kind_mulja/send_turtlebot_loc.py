@@ -47,7 +47,8 @@ class TrutlebotLoc(Node):
             self.send_location_to_server(location_data)
 
     def start_socketio(self):
-        self.sio.connect('http://localhost:12002/')
+        # self.sio.connect('http://localhost:12002/')
+        self.sio.connect('https://j10c109.p.ssafy.io:12002/')
         self.sio.wait()
 
 def main():

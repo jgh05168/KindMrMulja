@@ -32,7 +32,7 @@ setup(
             'test_request_handcontrol= kind_mulja.test_request_handcontrol:main',
             'local_grid_map = kind_mulja.local_grid_map:main',
             'send_turtlebot_loc = kind_mulja.send_turtlebot_loc:main',
-
+            'camera = kind_mulja.camera:main'
         ],
     },
 )

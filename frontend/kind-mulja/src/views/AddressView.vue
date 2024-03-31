@@ -5,7 +5,7 @@
     </AppHeader>
     <div>
       <AddressItem
-        :width="'360px'"
+        :width="'90%'"
         @click="clickAddress(n)"
         :class="{ 'default-address': address.id == default_address }"
         v-for="(address, n) in sorted_address_list"
@@ -21,7 +21,12 @@
               align-items: center;
             "
           >
-            <div>{{ address.title }}</div>
+            <div>
+              <span style="font-size: 23px; font-weight: bold">{{ address.title }}</span
+              ><v-chip class="ms-2" size="small" v-if="default_address == address.id"
+                >기본배송지</v-chip
+              >
+            </div>
             <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
             <v-btn
               @click="slotProps.editAddress(address.id)"
@@ -46,6 +51,7 @@
       </AddressItem>
     </div>
     <v-btn
+      color="success"
       @click="goCreate"
       icon="mdi-plus"
       style="position: fixed; bottom: 10%; right: 5%"
@@ -122,7 +128,6 @@ const goCreate = () => {
 }
 
 .default-address {
-  border: 2px solid #424242;
 }
 
 .set-default {

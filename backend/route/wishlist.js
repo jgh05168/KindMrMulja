@@ -1,6 +1,8 @@
 const express = require("express");
 const moment = require("moment");
 const wishlist = express.Router();
+const pool = require("../DB.js");
+
 // 사용자 찜목록 불러오기
 wishlist.get("/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
@@ -11,7 +13,7 @@ wishlist.get("/:user_id", async (req, res) => {
             JOIN product_list pl ON wl.product_id = pl.product_id
             WHERE wl.user_id = ?;
           `;
-    const results = await global.global.pool.query(query, user_id);
+    const results = await pool.query(query, user_id);
     console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
@@ -26,18 +28,18 @@ wishlist.delete("/:wishlist_id", async (req, res) => {
   try {
     // wishlist에서 해당 wishlist_id에 해당하는 제품의 product_id 가져오기
     const selectQuery = `SELECT product_id FROM wishlist WHERE wishlist_id = ?`;
-    const selectResult = await global.pool.query(selectQuery, wishlist_id);
+    const selectResult = await pool.query(selectQuery, wishlist_id);
     if (selectResult.length > 0) {
       const product_id = selectResult[0][0].product_id;
 
       // 찜리스트에서 해당 항목 삭제
       const deleteQuery = `DELETE FROM wishlist WHERE wishlist_id = ?`;
-      const deleteResult = await global.pool.query(deleteQuery, wishlist_id);
+      const deleteResult = await pool.query(deleteQuery, wishlist_id);
 
       if (deleteResult[0].affectedRows > 0) {
         // 제품의 찜 횟수를 업데이트
         const updateQuery = `UPDATE product_list SET wishcount = wishcount - 1 WHERE product_id = ?`;
-        const updateResult = await global.pool.query(updateQuery, product_id);
+        const updateResult = await pool.query(updateQuery, product_id);
         console.log(updateResult[0]);
         if (updateResult[0].affectedRows > 0) {
           // 제품의 찜 횟수가 성공적으로 업데이트되었을 경우
