@@ -4,12 +4,16 @@ import rclpy
 from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
-truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336]
-truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231]
+truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336,-53.3041,-59.2474,-69.6383]
+truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
+# truct_x=[-61.64,-53.581,-45.569,-37.532,-29.518]
+# truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
-turtle_id_about_me=3
-turtle_charge_x= -58.8931
-turtle_charge_y= -58.1479
+turtle_id_about_me=1
+turtle_charge_x= -57.2209
+turtle_charge_y= -55.436
+# turtle_charge_x= -50.0
+# turtle_charge_y= -50.0
 
 class Client(Node):
     def __init__(self):
@@ -97,7 +101,7 @@ class Client(Node):
         
     
     def start_socketio(self):
-        self.sio.connect('http://192.168.201.94:12001/')
+        self.sio.connect('http://localhost:12001/')
         self.sio.wait()
 
     
