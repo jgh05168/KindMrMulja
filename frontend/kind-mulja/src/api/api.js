@@ -394,6 +394,41 @@ export class Service {
         })
     })
   }
+
+  static getOrderProcessingList() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: api_url + `/order/order-list-all`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('주문목록 처리 전체 리스트', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`주문목록 처리 전체 리스트 조회 실패: ${error.message}`))
+        })
+    })
+  }
+
+  static getOrderTutle() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: api_url + `/order/turtle`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('터틀봇이 담당 order', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`터틀봇이 담당하는 order 조회 실패: ${error.message}`))
+        })
+    })
+  }
+
 }
 
 export default Service

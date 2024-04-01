@@ -10,14 +10,22 @@
             <h2 class="ms-4">친절한 물자씨</h2>
           </div>
           <v-divider class="nav-divider"></v-divider>
-          <div class="nav-item-link" @click="router.push({ name: 'factory_map' })">
+          <v-btn height="70px" class="nav-item-link" @click="router.push({ name: 'factory_map' })">
             <v-icon size="40">mdi-factory</v-icon>
             <p>Factory Map</p>
-          </div>
-          <div class="nav-item-link" @click="router.push({ name: 'robots_status' })">
+          </v-btn>
+          <v-btn
+            height="70px"
+            class="nav-item-link"
+            @click="router.push({ name: 'robots_status' })"
+          >
             <v-icon size="40">mdi-robot</v-icon>
             <p>Robots</p>
-          </div>
+          </v-btn>
+          <v-btn height="70px" class="nav-item-link" @click="authStore.logout()">
+            <v-icon size="40">mdi-logout</v-icon>
+            <p>LogOut</p>
+          </v-btn>
         </div>
       </v-navigation-drawer>
       <v-app-bar title="실시간 모니터링 시스템"></v-app-bar>
@@ -30,6 +38,9 @@
 
 <script setup>
 import { RouterView, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 
 const router = useRouter()
 </script>
@@ -43,14 +54,15 @@ const router = useRouter()
   margin-bottom: 10px;
 }
 .nav-item-link {
-  height: 80px;
-  padding-left: 40px;
+  margin: 20px auto;
+  width: 90%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
 }
 
-.nav-item-link > p {
-  width: 100%;
-  text-align: center;
+.nav-item-link p {
+  margin-left: 20px;
 }
 </style>

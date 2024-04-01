@@ -2,7 +2,7 @@
   <div class="detail-frame">
     <div class="detail-frame-main">
       <v-btn
-        @click="router.go(-1)"
+        @click="router.push({ name: 'home' })"
         icon="mdi-chevron-left"
         style="position: fixed; left: 5%; top: 3%; z-index: 99"
       >
