@@ -40,7 +40,7 @@ const marker_3 = ref(null)
 const imageCoords = { x: 600, y: 600 }
 
 const connect_socket = (id, marker, socket_url) => {
-  const socket = io(socket_url)
+  const socket = io(socket_url, { secure: true })
   // const socket = io(socket_url, {
   //   // note changed URL here
   //   path: '/socket'
