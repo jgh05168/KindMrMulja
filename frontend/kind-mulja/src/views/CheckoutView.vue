@@ -70,6 +70,7 @@ onMounted(async () => {
   position: fixed;
   bottom: 8%;
   margin: auto auto;
+  z-index: 99;
 }
 
 .agreement {

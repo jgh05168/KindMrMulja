@@ -4,10 +4,17 @@ import rclpy
 from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
-truct_x=[-61.6042,-53.5767,-45.5926,-37.5455,-37.5455]
-truct_y=[-59.33,-59.33,-59.33,-59.33,-59.33]
+truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336,-53.3041,-59.2474,-69.6383]
+truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
+# truct_x=[-61.64,-53.581,-45.569,-37.532,-29.518]
+# truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
-turtle_id_about_me=1
+turtle_id_about_me=2
+turtle_charge_x= -50.0
+turtle_charge_y= -50.0
+### float 형태로 해주세요 !!!!!!!
+# turtle_charge_x= -50.0
+# turtle_charge_y= -50.0
 
 class Client(Node):
     def __init__(self):
@@ -21,7 +28,7 @@ class Client(Node):
         # self.setup_sio()
         self.sio = socketio.Client()
         
-        self.order_detail_id=-99
+        # self.order_detail_id=-99
         
         @self.sio.event
         def connect():
@@ -33,10 +40,11 @@ class Client(Node):
             try:
                 json_data=json.loads(data)
                 #json 파싱 
+                print(data)
                 local_num=json_data.get('moving_zone')
                 product_x=json_data.get('product_x')  
                 product_y=json_data.get('product_y')    
-                self.order_detail_id=json_data.get('order_detail_id')   
+                order_detail_id=json_data.get('order_detail_id')   
                 order_turtle_id=json_data.get('turtle_id')
                 
                 if order_turtle_id==turtle_id_about_me:                                                                      
@@ -53,10 +61,14 @@ class Client(Node):
                             location_msg.product_y=product_y
                             location_msg.moving_zone_x=moving_zone_x
                             location_msg.moving_zone_y=moving_zone_y
+                            location_msg.charge_x=turtle_charge_x
+                            location_msg.charge_y=turtle_charge_y
+                            location_msg.order_detail_id=order_detail_id
+                            
                             # location_msg.is_done=False
                             self.location_publisher.publish(location_msg)
-                            print(location_msg)
-                            # print("1: ",self.work_status_msg)
+                            # print(location_msg)
+                            print("work_status: ",self.work_status_msg)
             
                     else:
                         print('not found num and grid')
@@ -74,9 +86,9 @@ class Client(Node):
             print('disconnected from server')
         
     def work_status_cb(self,msg):
-        print("3: ",msg)
+        # print("3: ",msg)
         self.work_status_msg=msg
-        print(self.work_status_msg.is_start)
+        # print(self.work_status_msg.is_start)
         
         if self.work_status_msg.is_start:
             self.send_work_turtle_status("start")
@@ -85,7 +97,7 @@ class Client(Node):
 
             
     def send_work_turtle_status(self,str):
-        status_data={"turtle_id":turtle_id_about_me,"order_detail_id":self.order_detail_id,"work_status":str}
+        status_data={"turtle_id":turtle_id_about_me,"order_detail_id":self.work_status_msg.order_detail_id,"work_status":str}
         json_status=json.dumps(status_data)
         print("status data: ", json_status)
         self.sio.emit('turtleStatus',json_status)

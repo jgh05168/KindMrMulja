@@ -76,14 +76,21 @@ class RequestMsgHandControl(Node):
         self.moving_y=self.target_grid_msg.moving_zone_y
         self.product_x=self.target_grid_msg.product_x
         self.product_y=self.target_grid_msg.product_y
-        # self.product_x=self.target_grid_msg.charge_x
-        # self.product_y=self.target_grid_msg.charge_y
-        print("msg: ",msg)
+        self.charge_x=self.target_grid_msg.charge_x
+        self.charge_y=self.target_grid_msg.charge_y
+        self.order_detail_id=self.target_grid_msg.order_detail_id
+        # print("msg: ",msg)
+        
+        self.product_is_done=False
+        self.truct_is_done=False
         
         self.timer = self.create_timer(2, self.timer_callback)
-          
+        # self.move_to_goal()
+        
+        
         
     def timer_callback(self):  
+    # def move_to_goal(self):
         turtle_x=self.odom_msg.pose.pose.position.x
         turtle_y=self.odom_msg.pose.pose.position.y
         
@@ -99,6 +106,7 @@ class RequestMsgHandControl(Node):
             print(self.request_target_msg)
             
             self.work_status_msg.is_start=True
+            self.work_status_msg.order_detail_id=self.order_detail_id
             self.work_status_publisher.publish(self.work_status_msg)
             
             self.product_is_done=True
@@ -122,7 +130,7 @@ class RequestMsgHandControl(Node):
                 self.request_target_msg.pose.position.x=self.moving_x
                 self.request_target_msg.pose.position.y=self.moving_y
                 self.target_publisher.publish(self.request_target_msg)
-                print(self.request_target_msg)
+                # print(self.request_target_msg)
                 
                 
     
@@ -146,16 +154,22 @@ class RequestMsgHandControl(Node):
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
                 
                 self.work_status_msg.is_start=False
+                self.work_status_msg.order_detail_id=self.order_detail_id
                 self.work_status_publisher.publish(self.work_status_msg)
+                # print(self.work_status_msg.is_start)
                 
-                self.truct_is_done==True
+                self.truct_is_done=True
  
             
     #         # 목적지 주소를 전달한다.
-                # self.request_target_msg.header.frame_id = 'map' 
-                # self.request_target_msg.pose.position.x=self.charge_x
-                # self.request_target_msg.pose.position.y=self.charge_y
-                # self.target_publisher.publish(self.request_target_msg)
+        if self.turtlebot_status_msg.can_use_hand==False and self.work_status_msg.is_start==False:
+                
+            self.request_target_msg.header.frame_id = 'map' 
+            self.request_target_msg.pose.position.x=self.charge_x
+            self.request_target_msg.pose.position.y=self.charge_y
+            self.target_publisher.publish(self.request_target_msg) 
+                
+                
 
             
 
