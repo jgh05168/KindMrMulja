@@ -62,7 +62,7 @@ class followTheCarrot(Node):
 
         if self.is_status and self.is_odom and self.is_path:
 
-            if len(self.path_msg.poses) > 2:
+            if len(self.path_msg.poses) > 3:
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
@@ -120,7 +120,7 @@ class followTheCarrot(Node):
                     
                     # 로직 7. 선속도, 각속도 정하기
                     out_vel=0.7
-                    out_rad_vel=theta*1.55
+                    out_rad_vel=theta*1.0
 
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel

@@ -23,6 +23,11 @@ order.post("", async (req, res) => {
       0,
     ]);
 
+    const addressPrefix = address_content.substr(1, 2);
+    // 픽업 주소인지 확인
+    if (addressPrefix === "픽업") {
+      addressPrefix = address.substr(1, 3); // 픽업 문자열과 뒤에 오는 글자 추출
+    }
     const order_id = await pool.query("SELECT LAST_INSERT_ID() AS order_id");
 
     let total_price = 0;
@@ -34,14 +39,16 @@ order.post("", async (req, res) => {
       const results = await pool.query(query2, selected_cart_id[i]);
       console.log(results);
       const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone, is_progress) VALUES (?,?,?,?,?,?)`;
+      const query6 = `UPDATE product_list SET product_stock = product_stock - 1 WHERE product_id = ?`;
       await pool.query(query3, [
         order_id[0][0].order_id,
         results[0][0].product_id,
         results[0][0].product_quentity,
         0,
-        0,
+        addressPrefix,
         0,
       ]);
+      await pool.query(query5, results[0][0].product_id);
 
       const query4 = `SELECT product_price FROM product_list WHERE product_id = ?`;
       const price_result = await pool.query(query4, [results[0][0].product_id]);

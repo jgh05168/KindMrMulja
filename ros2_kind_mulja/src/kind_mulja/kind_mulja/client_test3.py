@@ -5,16 +5,16 @@ from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
 truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336,-53.3041,-59.2474,-69.6383]
-truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
+truct_y=[-56.7071,-60.7233,-64.7082,-68.7176,-72.8231,-52.488,-52.488,-52.488]
 # truct_x=[-61.64,-53.581,-45.569,-37.532,-29.518]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
-turtle_id_about_me=2
+turtle_id_about_me=1
+#turtle_charge_x= -53.4449
+#turtle_charge_y= -55.436
+### float 형태로 해주세요 !!!!!!!
 turtle_charge_x= -50.0
 turtle_charge_y= -50.0
-### float 형태로 해주세요 !!!!!!!
-# turtle_charge_x= -50.0
-# turtle_charge_y= -50.0
 
 class Client(Node):
     def __init__(self):
@@ -104,7 +104,8 @@ class Client(Node):
         
     
     def start_socketio(self):
-        self.sio.connect('http://localhost:12001/')
+        #self.sio.connect('https://j10c109.p.ssafy.io/liftSocket')
+        self.sio.connect('http://localhost:12001')
         self.sio.wait()
 
     
