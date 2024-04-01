@@ -17,7 +17,7 @@ const initializeSocket = (server) => {
       const work_status = parsedData.work_status;
       //console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
-      const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
+      const query2 = `UPDATE turtlebot SET turtlebot_status = ?, progress_detail_id = ? WHERE turtle_id = ?`;
       const query3 = `UPDATE order_list
       SET order_state = order_state + 1
       WHERE order_id IN (
@@ -25,17 +25,18 @@ const initializeSocket = (server) => {
           FROM order_detail_list
           WHERE order_detail_id = ?
       );`;
-
+      const query4 = `UPDATE order_detail_list SET is_progress = is_progress + 1 WHERE order_detail_id = ? `;
       if (work_status === "start") {
         await Promise.all([
           pool.query(query1, [order_detail_id]),
-          pool.query(query2, [1, turtle_id]),
+          pool.query(query2, [1, order_detail_id, turtle_id]),
         ]);
       } else if (work_status === "done") {
         // await pool.query(query1, [order_detail_id]);
         await Promise.all([
-          pool.query(query2, [0, turtle_id]),
+          pool.query(query2, [0, 0, turtle_id]),
           pool.query(query3, [order_detail_id]),
+          pool.query(query4, [order_detail_id]),
         ]);
       }
     });
@@ -122,7 +123,7 @@ const initializeSocket = (server) => {
         };
         console.error("send json:", jsonData);
         io.emit("order", JSON.stringify(jsonData));
-        console.log(jsonData);
+        //console.log(jsonData);
         // await pool.query(
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]

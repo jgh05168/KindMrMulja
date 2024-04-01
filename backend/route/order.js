@@ -44,9 +44,7 @@ order.post("", async (req, res) => {
       ]);
 
       const query4 = `SELECT product_price FROM product_list WHERE product_id = ?`;
-      const price_result = await pool.query(query4, [
-        results[0][0].product_id,
-      ]);
+      const price_result = await pool.query(query4, [results[0][0].product_id]);
       console.log(price_result[0]);
       total_quentity += results[0][0].product_quentity;
       total_price +=
@@ -118,4 +116,33 @@ order.get("/order-list-detail/:order_id", async (req, res) => {
   }
 });
 
+//
+
+order.get("/order-list-all", async (req, res) => {
+  try {
+    const query = `SELECT * FROM order_detail_list WHERE order_quentity > is_progress`;
+    const results = await pool.query(query);
+    console.log(results);
+    return res.json(results[0]);
+  } catch (error) {
+    console.error("에러 발생:", error);
+    return res
+      .status(500)
+      .json({ error: "요청 처리 중에 오류가 발생했습니다." }); // 오류 응답을 반환
+  }
+});
+
+order.get("/turtle", async (req, res) => {
+  try {
+    const query = `SELECT turtle_id, turtlebot_status, progress_detail_id FROM turtlebot`;
+    const results = await pool.query(query);
+    console.log(results[0]);
+    return res.json(results[0]);
+  } catch (error) {
+    console.error("에러 발생:", error);
+    return res
+      .status(500)
+      .json({ error: "요청 처리 중에 오류가 발생했습니다." }); // 오류 응답을 반환
+  }
+});
 module.exports = order;
