@@ -25,10 +25,14 @@ const imageCoords = { x: 600, y: 600 }
 onMounted(() => {
   // 서버 주소 수정
 
-  const socket = io('https://j10c109.p.ssafy.io', {
+  // const socket = io('http://localhost:3000', {
+  //   // note changed URL here
+  //   path: '/socket',
+  // })
+
+  const socket = io('https://j10c109.p.ssafy.io/socket', {
     // note changed URL here
-    path: '/socket',
-    autoConnect: false
+    forceNew: true
   })
 
   // 연결이 수립되었을 때의 처리
