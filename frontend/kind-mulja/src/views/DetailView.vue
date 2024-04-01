@@ -69,7 +69,7 @@
                       size="xs"
                       variant="plain"
                       @click="cnt++"
-                      :disabled="cnt + 1 >= productStore.item.product_stock"
+                      :disabled="cnt + 1 > productStore.item.product_stock"
                       ><v-icon size="30">mdi-plus-box-outline</v-icon></v-btn
                     >
                   </div>

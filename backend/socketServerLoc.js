@@ -15,7 +15,7 @@ const initializeSocketLoc = (server) => {
 
     // ros에서 받은 위치 정보
     socket.on("sendLocation", (data) => {
-      console.log("수신한 메시지:", data);
+      // console.log("수신한 메시지:", data);
       raw_data = data;
       // console.log(raw_data["x"]);
     });

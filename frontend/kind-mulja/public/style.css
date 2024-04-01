@@ -3,3 +3,9 @@
   src: url('public/fonts/PretendardVariable.ttf') format('truetype');
   font-weight: 500;
 }
+
+@font-face {
+  font-family: 'pretendard-extrabold';
+  src: url('public/fonts/Pretendard-ExtraBold.ttf') format('truetype');
+  font-weight: 500;
+}
