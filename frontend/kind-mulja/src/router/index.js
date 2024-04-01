@@ -205,7 +205,7 @@ const router = createRouter({
         const authStore = useAuthStore()
         if (to.name == 'robots_status') {
           if (authStore.is_admin) {
-            next('robots_status')
+            next()
           }
           else {
             alert('관리자 전용 페이지 입니다.')

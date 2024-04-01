@@ -18,17 +18,29 @@
       </v-card-title>
     </template>
 
-    <v-data-table
-      :headers="headers"
-      :items="sortedOrderItems"
-      :search="search"
-      items-per-page="5"
-    ></v-data-table>
+    <v-data-table :headers="headers" :items="sortedOrderItems" :search="search" items-per-page="5">
+      <template v-slot:item="{ item }">
+        <tr :class="{ 'is-in-progress': item.isInProgress }">
+          <td>{{ item.order_id }}</td>
+          <td>{{ item.order_detail_id }}</td>
+          <td>{{ item.product_id }}</td>
+          <td>{{ item.order_quentity }}</td>
+          <td>{{ item.order_progress }}</td>
+          <td>{{ item.moving_zone }}</td>
+          <td>{{ item.is_progress }}</td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 <script setup>
-import { ref, onMounted,computed} from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Service from '@/api/api'
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  robots: Array
+})
 
 const search = ref('')
 const headers = [
@@ -46,31 +58,27 @@ const headers = [
   { key: 'is_progress', title: '완료수량' }
 ]
 const orderItems = ref([{}])
-const robots = ref([{}])
-
-setInterval(async () => {
-  robots.value = await Service.getOrderTutle()
-}, 5000)
 
 onMounted(async () => {
   orderItems.value = await Service.getOrderProcessingList()
-  robots.value = await Service.getOrderTutle()
 })
 
 const sortedOrderItems = computed(() => {
   // robots 배열에서 progress_detail_id를 키로 하는 객체 생성
   const robotMap = {}
-  robots.value.forEach(robot => {
+  props.robots.forEach((robot) => {
     robotMap[robot.progress_detail_id] = true
   })
 
   // progress_detail_id를 가진 orderItems와 가지지 않은 orderItems 분리
   const itemsWithProgress = []
   const itemsWithoutProgress = []
-  orderItems.value.forEach(item => {
+  orderItems.value.forEach((item) => {
     if (robotMap[item.order_detail_id]) {
+      item.isInProgress = true // 처리 중인 아이템을 식별하기 위한 플래그 설정
       itemsWithProgress.push(item)
     } else {
+      item.isInProgress = false
       itemsWithoutProgress.push(item)
     }
   })
@@ -80,5 +88,9 @@ const sortedOrderItems = computed(() => {
 
   return sortedItems
 })
-
 </script>
+<style scoped>
+.is-in-progress {
+  background-color: #c8e6c9;
+}
+</style>
