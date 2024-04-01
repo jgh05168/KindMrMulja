@@ -120,7 +120,8 @@ class followTheCarrot(Node):
                     
                     # 로직 7. 선속도, 각속도 정하기
                     out_vel=0.7
-                    out_rad_vel=theta*1.55
+                    out_rad_vel=theta*1.0
+                    # out_rad_vel=theta*1.55
 
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel
