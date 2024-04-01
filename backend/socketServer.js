@@ -13,7 +13,7 @@ const initializeSocket = (server) => {
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
-      //console.log(turtle_id, order_detail_id, work_status);
+      console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
       if (work_status === "start") {
