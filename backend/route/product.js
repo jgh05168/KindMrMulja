@@ -24,7 +24,6 @@ product.get("/product-list", async (req, res) => {
           p.product_id, p.product_name, p.product_price, p.product_category
     `;
     const results = await pool.query(query);
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.error(error);
