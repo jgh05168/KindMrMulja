@@ -27,7 +27,7 @@ onMounted(() => {
 
   const socket = io('http://localhost:3000', {
     // note changed URL here
-    path: '/seacher',
+    path: '/socket',
     autoConnect: false
   })
 
