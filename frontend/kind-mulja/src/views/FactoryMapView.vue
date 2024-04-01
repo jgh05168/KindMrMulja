@@ -45,7 +45,7 @@ const connect_socket = (id, marker, socket_url) => {
     // note changed URL here
     path: '/socket.io',
     transports: ['websocket'],
-    namespace: `/socket/location`
+    namespace: `/socket_location`
   })
 
   // const socket = io('http://localhost:12002')
