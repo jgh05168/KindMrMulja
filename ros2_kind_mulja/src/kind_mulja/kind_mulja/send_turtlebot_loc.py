@@ -25,7 +25,7 @@ class TrutlebotLoc(Node):
         @self.sio.event
         def connect():
             print('connection established')
-            self.sio.emit('sendTime', 'TEST메세지 입니다. 안녕하세요')
+            self.sio.emit('sendTime', '터틀봇의 x, y 좌표를 보냅니다. 안녕하세요')
 
     def send_location_to_server(self, location_data):
         try:
@@ -48,7 +48,10 @@ class TrutlebotLoc(Node):
 
     def start_socketio(self):
         # self.sio.connect('http://localhost:12002/')
-        self.sio.connect('https://j10c109.p.ssafy.io:12002/')
+        # self.sio.connect('http://host.docker.internal:12002/')     # 이렇게 보내는 게 맞나 ,,, 알아보기
+        self.sio.connect('https://j10c109.p.ssafy.io/socket')
+        # self.sio.connect('https://j10c109.p.ssafy.io:12002/')
+        
         self.sio.wait()
 
 def main():

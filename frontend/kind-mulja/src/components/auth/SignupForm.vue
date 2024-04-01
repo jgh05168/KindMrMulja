@@ -129,7 +129,7 @@ const rules = ref({
   },
   email_check: () => {
     if (email_duplicate.value == true) {
-      return false
+      return '중복된 이메일입니다.'
     } else {
       return true
     }

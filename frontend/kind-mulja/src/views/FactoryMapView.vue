@@ -17,27 +17,31 @@ import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 
 const mapContainer = ref(null)
-const image = ref(null)
 const marker = ref(null)
 
-// 이미지 좌표
+// 이미지 좌표 (수정 필요)
 const imageCoords = { x: 600, y: 600 }
 
 onMounted(() => {
-  // const socket = io('http://localhost:12002/')
-  const socket = io('https://j10c109.p.ssafy.io:12002/')
+  // 서버 주소 수정
+  const socket = io('http://localhost:3000', {
+    // note changed URL here
+    path: '/socket',
+    autoConnect: false,
+    transports: ['websocket']
+  })
+  // const socket = io('https://localhost:12002/')
+
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log('웹소켓 연결이 열렸습니다.')
-    // 데이터를 수신 받았을 때의 처리
   })
 
   // 데이터를 수신하여 마커 위치를 조정
   socket.on('sendToFront', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
-    // console.log(parsedData)
-    // 시뮬레이터의 위치와 맵 상의 위치를 맞춰주기
-    console.log(Math.abs(-parsedData.x - 50) * 24 - 2.5)
+    // console.log(parsedData);
+    // 서버에서 받은 데이터를 기반으로 마커 위치 조정
     const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
     const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
     adjustMarkerPosition(adjustedX, adjustedY)
@@ -49,6 +53,8 @@ onMounted(() => {
   })
 })
 
+// 마커 위치 조정 함수
+
 function adjustMarkerPosition(x, y) {
   // mapContainer가 null이면 함수 종료
   if (!mapContainer.value) return
@@ -56,10 +62,10 @@ function adjustMarkerPosition(x, y) {
   // 이미지 컨테이너의 크기
   const containerWidth = mapContainer.value.clientWidth
   const containerHeight = mapContainer.value.clientHeight
-
   // 이미지 내에서의 마커 위치 계산
   const markerX = (x / imageCoords.x) * containerWidth
   const markerY = (y / imageCoords.y) * containerHeight
+  // console.log(markerX, markerY)
 
   // 마커 위치를 조정
   marker.value.style.left = `${markerX}px`
