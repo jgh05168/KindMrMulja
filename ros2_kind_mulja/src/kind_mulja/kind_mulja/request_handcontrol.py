@@ -78,6 +78,7 @@ class RequestMsgHandControl(Node):
         self.product_y=self.target_grid_msg.product_y
         self.charge_x=self.target_grid_msg.charge_x
         self.charge_y=self.target_grid_msg.charge_y
+        self.order_detail_id=self.target_grid_msg.order_detail_id
         # print("msg: ",msg)
         
         self.product_is_done=False
@@ -105,6 +106,7 @@ class RequestMsgHandControl(Node):
             print(self.request_target_msg)
             
             self.work_status_msg.is_start=True
+            self.work_status_msg.order_detail_id=self.order_detail_id
             self.work_status_publisher.publish(self.work_status_msg)
             
             self.product_is_done=True
@@ -152,17 +154,22 @@ class RequestMsgHandControl(Node):
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
                 
                 self.work_status_msg.is_start=False
+                self.work_status_msg.order_detail_id=self.order_detail_id
                 self.work_status_publisher.publish(self.work_status_msg)
+                # print(self.work_status_msg.is_start)
                 
-                self.truct_is_done==True
+                self.truct_is_done=True
  
             
     #         # 목적지 주소를 전달한다.
-            if self.turtlebot_status_msg.can_use_hand==False:
-                self.request_target_msg.header.frame_id = 'map' 
-                self.request_target_msg.pose.position.x=self.charge_x
-                self.request_target_msg.pose.position.y=self.charge_y
-                self.target_publisher.publish(self.request_target_msg) 
+        if self.turtlebot_status_msg.can_use_hand==False and self.work_status_msg.is_start==False:
+                
+            self.request_target_msg.header.frame_id = 'map' 
+            self.request_target_msg.pose.position.x=self.charge_x
+            self.request_target_msg.pose.position.y=self.charge_y
+            self.target_publisher.publish(self.request_target_msg) 
+                
+                
 
             
 

@@ -68,7 +68,7 @@ const connect_socket = (id, marker, socket_url) => {
 }
 
 onMounted(() => {
-  connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io:12002')
+  connect_socket(1, marker_1.value, 'http://j10c109.p.ssafy.io:12002')
 })
 
 // 마커 위치 조정 함수
