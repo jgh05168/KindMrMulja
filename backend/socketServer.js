@@ -122,7 +122,7 @@ const initializeSocket = (server) => {
         };
         console.error("send json:", jsonData);
         io.emit("order", JSON.stringify(jsonData));
-        console.log(jsonData);
+        //console.log(jsonData);
         // await pool.query(
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]
