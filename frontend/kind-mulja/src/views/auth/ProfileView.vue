@@ -9,7 +9,9 @@
       </v-avatar>
       <div class="ms-3">
         <div v-if="authStore.user_id == null">
-          <span>로그인하기</span> | <span>회원가입하기</span>
+          <h3 @click="router.push({ name: 'login' })">로그인하기</h3>
+          |
+          <span @click="router.push({ name: 'signup' })">회원가입하기</span>
         </div>
         <h2 v-else>{{ authStore.user_name }} 님, 안녕하세요!</h2>
       </div>

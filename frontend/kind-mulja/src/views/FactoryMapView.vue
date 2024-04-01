@@ -15,10 +15,10 @@
     </div>
     <div class="live-board">
       <div class="live-order-list">
-        <LiveOrder />
+        <LiveOrder :robots="robots" />
       </div>
       <div class="robots-status">
-        <RobotsStatus />
+        <RobotsStatus @robotSelected="handleRobotSelected" :robots="robots" />
       </div>
     </div>
   </div>
@@ -29,12 +29,39 @@ import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 import LiveOrder from '@/components/LiveOrder.vue'
 import RobotsStatus from '@/components/RobotsStatus.vue'
+import Service from '@/api/api'
 
 const mapContainer = ref(null)
 const image = ref(null)
 const marker_1 = ref(null)
 const marker_2 = ref(null)
 const marker_3 = ref(null)
+
+const robots = ref([{}])
+
+setInterval(async () => {
+  robots.value = await Service.getOrderTutle()
+}, 2000)
+
+const handleRobotSelected = (robotId) => {
+  // marker 에 달린 .selected-turtle-marker 제거
+  const markers = [marker_1, marker_2, marker_3]
+  markers.forEach((markerRef) => {
+    const marker = markerRef.value
+    if (marker) {
+      marker.classList.remove('selected-turtle-marker')
+    }
+  })
+
+  // 선택된 로봇 번호에 따라 해당하는 마커에 클래스 추가
+  if (robotId !== null) {
+    const selectedMarker = `marker_${robotId}`
+    const selectedMarkerRef = eval(selectedMarker)
+    if (selectedMarkerRef && selectedMarkerRef.value) {
+      selectedMarkerRef.value.classList.add('selected-turtle-marker')
+    }
+  }
+}
 
 // 이미지 좌표 (수정 필요)
 const imageCoords = { x: 600, y: 600 }
@@ -74,7 +101,8 @@ const connect_socket = (id, marker, socket_url) => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
+  robots.value = await Service.getOrderTutle()
   connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io')
   // connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
   // connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
@@ -111,7 +139,7 @@ function adjustMarkerPosition(marker, x, y) {
   width: 600px;
   height: 600px;
   border: 1px solid black;
-  margin: 7% 5%;
+  margin: 7% 3%;
 }
 
 .marker_1 {
@@ -143,5 +171,31 @@ function adjustMarkerPosition(marker, x, y) {
 }
 
 .robots-status {
+}
+
+@keyframes blink-animation {
+  0% {
+    opacity: 1; /* 0% 지점에서는 표시 */
+  }
+  50% {
+    opacity: 0.7; /* 100% 지점에서는 숨김 */
+  }
+  100% {
+    opacity: 0.4; /* 100% 지점에서는 숨김 */
+  }
+}
+
+.marker_1,
+.marker_2,
+.marker_3 {
+  transition:
+    left 0.5s ease,
+    top 0.5s ease; /* left와 top 속성에 대해 0.5초간의 부드러운 변화를 적용 */
+}
+
+.selected-turtle-marker {
+  scale: 2;
+  transform: scale(2); /* 선택된 마커를 2배로 확대 */
+  animation: blink-animation 1s infinite alternate;
 }
 </style>
