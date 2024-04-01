@@ -7,7 +7,7 @@
         <v-btn class="close-modal" size="xs" variant="plain" @click="modalClose"
           ><v-icon>mdi-close-circle-outline</v-icon></v-btn
         >
-        <slot name="modal-choice">
+        <slot name="modal-choice" :modalClose="modalClose">
           <!-- 선택 버튼 두개 -->
           <v-btn>전체 상품 보러가기</v-btn>
           <v-btn>장바구니로 이동하기</v-btn>

@@ -7,7 +7,7 @@ cart.get("/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   try {
     const query = `
-            SELECT sc.cart_id, sc.product_id, pl.product_name, pl.product_price, sc.product_quentity
+            SELECT sc.cart_id, sc.product_id, pl.product_name, pl.product_price, sc.product_quentity, pl.product_stock
             FROM shopping_cart sc
             JOIN product_list pl ON sc.product_id = pl.product_id
             WHERE sc.user_id = ?;

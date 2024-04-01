@@ -1,5 +1,7 @@
 const socketIO = require("socket.io");
 const pool = require("./DB.js");
+const { json } = require("express");
+
 const initializeSocket = (server) => {
   const io = socketIO(server);
 
@@ -9,20 +11,33 @@ const initializeSocket = (server) => {
     // ros에서 받은 메세지
     socket.on("turtleStatus", async (data) => {
       const parsedData = JSON.parse(data);
+      console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
       //console.log(turtle_id, order_detail_id, work_status);
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
-      const query2 = `UPDATE turtlebot SET turtlebot_status = ? WHERE turtle_id = ?`;
+      const query2 = `UPDATE turtlebot SET turtlebot_status = ?, progress_detail_id = ? WHERE turtle_id = ?`;
+      const query3 = `UPDATE order_list
+      SET order_state = order_state + 1
+      WHERE order_id IN (
+          SELECT order_id
+          FROM order_detail_list
+          WHERE order_detail_id = ?
+      );`;
+      const query4 = `UPDATE order_detail_list SET is_progress = is_progress + 1 WHERE order_detail_id = ? `;
       if (work_status === "start") {
         await Promise.all([
           pool.query(query1, [order_detail_id]),
-          pool.query(query2, [1, turtle_id]),
+          pool.query(query2, [1, order_detail_id, turtle_id]),
         ]);
       } else if (work_status === "done") {
         // await pool.query(query1, [order_detail_id]);
-        await pool.query(query2, [0, turtle_id]);
+        await Promise.all([
+          pool.query(query2, [0, 0, turtle_id]),
+          pool.query(query3, [order_detail_id]),
+          pool.query(query4, [order_detail_id]),
+        ]);
       }
     });
 
@@ -99,15 +114,16 @@ const initializeSocket = (server) => {
         const position = await pool.query(query2, [results[0][0].product_id]);
         const region = getRegion(results[0][0].address);
         const jsonData = {
-          //turtle_id: turtle[0][0].turtle_id,
-          turtle_id: 1,
+          turtle_id: turtle[0][0].turtle_id,
+          // turtle_id: 2,
           order_detail_id: results[0][0].order_detail_id,
           product_x: position[0][0].pos_x,
           product_y: position[0][0].pos_y,
           moving_zone: region,
         };
+        console.error("send json:", jsonData);
         io.emit("order", JSON.stringify(jsonData));
-
+        //console.log(jsonData);
         // await pool.query(
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]

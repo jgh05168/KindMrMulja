@@ -6,8 +6,11 @@ import { useProductStore } from './product'
 export const useAuthStore = defineStore('auth', () => {
   const productStore = useProductStore()
   const user_id = ref(null)
+  const user_name = ref(null)
+  const allow_alarm = ref(null)
   const redirectUrl = ref(null)
   const is_admin = ref(false)
+
 
 
   const logout = async () => {
@@ -28,8 +31,10 @@ export const useAuthStore = defineStore('auth', () => {
 
       }
 
-    
+    // allow_alarm 값이 바뀌면 백엔드로 권한 설정 바꾸는 요청 보내기
+    const toggleAlarm = async () =>{
+      allow_alarm.value = !allow_alarm.value
+    }
 
-
-  return { user_id , redirectUrl, logout, is_admin }
+  return { user_id ,user_name, allow_alarm, redirectUrl, logout, is_admin, toggleAlarm }
 }, { persist: true })
