@@ -79,12 +79,18 @@ const Login = async () => {
       authStore.user_id = login_res.user_info.user_id
       authStore.user_name = login_res.user_info.user_name
       authStore.is_admin = login_res.user_info.is_admin
-      orderStore.address_list = await Service.getAddress(login_res.user_info.user_id)
-      // 로그인 요청 완료 되면 사용자별로 상품들을 찜 했는지 안헀는지 체크해줘야 함
-      await check_zzim()
-      // Home 페이지로 이동
-      router.push({ name: 'home' })
-      // 로그인 할 때 사용자가 알람 받기를 동의 했으면
+
+      // 만약 사용자가 관리자이면 관리자 페이지로
+      if (login_res.user_info.is_admin == 1) {
+        router.push({ name: 'factory_map' })
+      } else {
+        orderStore.address_list = await Service.getAddress(login_res.user_info.user_id)
+        // 로그인 요청 완료 되면 사용자별로 상품들을 찜 했는지 안헀는지 체크해줘야 함
+        await check_zzim()
+        // Home 페이지로 이동
+        router.push({ name: 'home' })
+        // 로그인 할 때 사용자가 알람 받기를 동의 했으면
+      }
     } else {
       // 로그인 실패했다고 문구 띄어주기
       alert('아이디가 일치하지 않거나, 비밀번호가 틀렸습니다.')
