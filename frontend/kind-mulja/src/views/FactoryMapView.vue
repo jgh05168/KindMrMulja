@@ -24,7 +24,7 @@ const imageCoords = { x: 600, y: 600 }
 
 onMounted(() => {
   // 서버 주소 수정
-  const socket = imageCoordso('http://localhost:3000', {
+  const socket = io('http://localhost:3000', {
     // note changed URL here
     path: '/socket',
     autoConnect: false,
