@@ -43,7 +43,9 @@ const connect_socket = (id, marker, socket_url) => {
   // const socket = io(socket_url, { secure: true })
   const socket = io(socket_url, {
     // note changed URL here
-    path: '/socket'
+    path: '/socket.io',
+    transports: ['websocket'],
+    namespace: '/socket'
   })
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
