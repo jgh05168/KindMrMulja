@@ -10,8 +10,9 @@ truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
 turtle_id_about_me=2
-turtle_charge_x= -57.2209
-turtle_charge_y= --55.436
+turtle_charge_x= -50.0
+turtle_charge_y= -50.0
+### float 형태로 해주세요 !!!!!!!
 # turtle_charge_x= -50.0
 # turtle_charge_y= -50.0
 

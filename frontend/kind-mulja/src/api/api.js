@@ -1,8 +1,8 @@
 import axios from 'axios'
 //여기 사이트에 json 데이터 파일 있음
 
-// const api_url = 'http://localhost:3000'
-const api_url = 'https://j10c109.p.ssafy.io/api'
+const api_url = 'http://localhost:3000'
+//const api_url = 'https://j10c109.p.ssafy.io/api'
 export class Service {
   static SignIn(email, password) {
     return new Promise((resolve, reject) => {
@@ -11,18 +11,18 @@ export class Service {
         url: api_url + '/user/signin',
         data: {
           email: email,
-          password: password,
+          password: password
         }
       })
-      .then((res) => {
-        const data = res.data
-        // 만약 로그인이 완료 되면 회원 정보 local 에 저장
-        console.log('회원 로그인 성공 여부 : ', data)
-        resolve(data)
-      })
-      .catch((error) => {
-        reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          // 만약 로그인이 완료 되면 회원 정보 local 에 저장
+          console.log('회원 로그인 성공 여부 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
+        })
     })
   }
 
