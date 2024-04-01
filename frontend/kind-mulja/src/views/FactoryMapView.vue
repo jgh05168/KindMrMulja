@@ -7,7 +7,7 @@
         ref="image"
         src="/map/map.png"
         alt="Map Image"
-        style="width: 100%; height: 100%; transform: scaleX(-1)"
+        style="width: 100%; height: 100%; transform: scaleY(-1) scaleX(-1)"
       />
       <div ref="marker_1" class="marker_1"></div>
       <div ref="marker_2" class="marker_2"></div>
@@ -40,11 +40,15 @@ const marker_3 = ref(null)
 const imageCoords = { x: 600, y: 600 }
 
 const connect_socket = (id, marker, socket_url) => {
-  const socket = io(socket_url)
-  // const socket = io(socket_url, {
-  //   // note changed URL here
-  //   path: '/socket'
-  // })
+  // const socket = io(socket_url, { secure: true })
+  const socket = io(socket_url, {
+    // note changed URL here
+    path: '/socket.io',
+    transports: ['websocket'],
+    namespace: `/locSocket${id}`
+  })
+
+  // const socket = io('http://localhost:12002')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log(id, '번 로봇의 웹소켓 연결이 열렸습니다.')
@@ -54,11 +58,14 @@ const connect_socket = (id, marker, socket_url) => {
   // 데이터를 수신하여 마커 위치를 조정
   socket.on('sendToFront', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
-    console.log(parsedData)
+    // console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
-    const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
-    const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
-    adjustMarkerPosition(marker, adjustedX, adjustedY)
+    // 전달받은 데이터가 null이 아닐 경우 실행
+    if (parsedData !== null) {
+      const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
+      const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
+      adjustMarkerPosition(marker, adjustedX, adjustedY)
+    }
   })
 
   // 에러가 발생했을 때의 처리
@@ -68,7 +75,9 @@ const connect_socket = (id, marker, socket_url) => {
 }
 
 onMounted(() => {
-  connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io:12002')
+  connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io')
+  // connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
+  // connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
 })
 
 // 마커 위치 조정 함수
@@ -83,11 +92,11 @@ function adjustMarkerPosition(marker, x, y) {
   // 이미지 내에서의 마커 위치 계산
   const markerX = (x / imageCoords.x) * containerWidth
   const markerY = (y / imageCoords.y) * containerHeight
-  // console.log(markerX, markerY)
 
   // 마커 위치를 조정
   marker.style.left = `${markerX}px`
-  marker.style.top = `${markerY}px`
+  marker.style.top = `${imageCoords.y - markerY - 10}px`
+  // console.log(marker.style.left, marker.style.top)
 }
 </script>
 
