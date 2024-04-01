@@ -26,7 +26,7 @@ order.post("", async (req, res) => {
     const addressPrefix = address_content.substr(1, 2);
     // 픽업 주소인지 확인
     if (addressPrefix === "픽업") {
-      addressPrefix = address.substr(1, 3); // 픽업 문자열과 뒤에 오는 글자 추출
+      addressPrefix = address_content.substr(1, 3); // 픽업 문자열과 뒤에 오는 글자 추출
     }
     const order_id = await pool.query("SELECT LAST_INSERT_ID() AS order_id");
 
