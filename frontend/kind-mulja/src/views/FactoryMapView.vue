@@ -24,13 +24,8 @@ const imageCoords = { x: 600, y: 600 }
 
 onMounted(() => {
   // 서버 주소 수정
-  const socket = io('http://localhost:3000', {
-    // note changed URL here
-    path: '/socket',
-    autoConnect: false,
-    transports: ['websocket']
-  })
-  // const socket = io('https://localhost:12002/')
+
+  const socket = io('https://localhost:12002/')
 
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
@@ -40,7 +35,7 @@ onMounted(() => {
   // 데이터를 수신하여 마커 위치를 조정
   socket.on('sendToFront', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
-    // console.log(parsedData);
+    console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
     const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
     const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
