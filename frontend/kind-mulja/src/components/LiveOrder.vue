@@ -20,7 +20,7 @@
 
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="orderItems"
       :search="search"
       items-per-page="5"
     ></v-data-table>
@@ -45,7 +45,7 @@ const headers = [
   { key: 'moving_zone', title: '분류장소' },
   { key: 'is_progress', title: '완료수량' }
 ]
-const orderItems = [{}]
+const orderItems = ref([{}])
 
 onMounted(async () => {
   orderItems.value = await Service.getOrderProcessingList()
