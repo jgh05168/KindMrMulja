@@ -48,7 +48,7 @@ order.post("", async (req, res) => {
         addressPrefix,
         0,
       ]);
-      await pool.query(query5, results[0][0].product_id);
+      await pool.query(query6, results[0][0].product_id);
 
       const query4 = `SELECT product_price FROM product_list WHERE product_id = ?`;
       const price_result = await pool.query(query4, [results[0][0].product_id]);
