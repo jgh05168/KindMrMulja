@@ -10,6 +10,14 @@ export default defineConfig({
     port: 5173,
     host: '0.0.0.0'
   },
+  proxy: {
+    // socket.io 프락시 설정
+    '/socket': {
+      target: 'http://j10c109.p.ssafy.io:12002', // HTTP로 통신
+      changeOrigin: true, // 원본 헤더를 변경하여 대상 호스트를 목적지로 사용하도록 설정
+      ws: true // WebSocket 프록시 활성화
+    }
+  },
   plugins: [
     vue(),
     VitePWA({
