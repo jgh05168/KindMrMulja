@@ -63,9 +63,9 @@ class followTheCarrot(Node):
         if self.is_status and self.is_odom and self.is_path:
             #print(len(self.path_msg.poses))
             #print(self.robot_yaw)
-            print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
+            #print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
 
-            if len(self.path_msg.poses) > 5:
+            if len(self.path_msg.poses) > 6:
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
@@ -147,27 +147,88 @@ class followTheCarrot(Node):
 
            
             else :
-                if len(self.path_msg.poses) > 2:
+                self.is_look_forward_point= False
+                
+                # 로봇의 현재 위치를 나타내는 변수
+                robot_pose_x=self.odom_msg.pose.pose.position.x
+                robot_pose_y=self.odom_msg.pose.pose.position.y
+
+                lateral_error= sqrt(pow(self.path_msg.poses[0].pose.position.x-robot_pose_x,2)+pow(self.path_msg.poses[0].pose.position.y-robot_pose_y,2))
+                # print(robot_pose_x,robot_pose_y,lateral_error)
+                
+                # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.75
+
+                if self.lfd < self.min_lfd :
+                    self.lfd=self.min_lfd
+                if self.lfd > self.max_lfd:
+                    self.lfd=self.max_lfd
+
+                min_dis=float('inf')
+                
+                # 로직 5. 전방 주시 포인트 설정
+                for num ,waypoint in enumerate(self.path_msg.poses) :
+
+                    self.current_point=waypoint.pose.position
+                    dis=sqrt(pow(self.path_msg.poses[0].pose.position.x - self.current_point.x, 2) + pow(self.path_msg.poses[0].pose.position.y - self.current_point.y, 2))
+                    if abs(dis-self.lfd) < min_dis :
+                        min_dis=abs(dis-self.lfd)
+                        self.forward_point=self.current_point
+                        self.is_look_forward_point=True
+
+
+                    
+                if self.is_look_forward_point and self.collision == False:
+
+                    global_forward_point=[self.forward_point.x ,self.forward_point.y,1]
+
+                    trans_matrix =np.array([
+                        [cos(self.robot_yaw), -sin(self.robot_yaw), robot_pose_x],
+                        [sin(self.robot_yaw), cos(self.robot_yaw), robot_pose_y],
+                        [0,0,1]
+                    ])
+                    det_trans_matrix=np.linalg.inv(trans_matrix)
+                    local_forward_point = det_trans_matrix.dot(global_forward_point)
+                    theta = -atan2(local_forward_point[1], local_forward_point[0])
+
+
+                if len(self.path_msg.poses) > 3:
+                    print("slow")
                     self.cmd_msg.linear.x=0.1
-                    self.cmd_msg.angular.z=0.0
+                    out_rad_vel=theta*0.2
+                    self.cmd_msg.angular.z=out_rad_vel
                 
                 # print("no found forward point")
                 else:
-                    # if self.odom_msg.pose.pose.position.x < -58 and self.odom_msg.pose.pose.position.x > -61 and self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59:
-                    #     print("in")
-                    #     if self.robot_yaw > -3.1 and self.robot_yaw < 0:
-                    #         print("--")
-                    #         self.cmd_msg.linear.x=0.0001
-                    #         self.cmd_msg.angular.z=0.5
-                    #     elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
-                    #         print("++")
-                    #         self.cmd_msg.linear.x=0.0001
-                    #         self.cmd_msg.angular.z=-0.5
-                    #     else:
-                    #         self.cmd_msg.linear.x=0.0
-                    #         self.cmd_msg.angular.z=0.0
+                    print("end")
                     self.cmd_msg.linear.x=0.0
                     self.cmd_msg.angular.z=0.0
+                    if (self.odom_msg.pose.pose.position.x < -58 and self.odom_msg.pose.pose.position.x > -61 and 
+                        self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    if (self.odom_msg.pose.pose.position.x < -61 and self.odom_msg.pose.pose.position.x > -64 and 
+                        self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59):
+                        
+                        if self.robot_yaw > 0 and self.robot_yaw < 3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 0 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
 
             
             self.cmd_pub.publish(self.cmd_msg)
