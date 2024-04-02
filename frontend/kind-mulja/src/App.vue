@@ -37,12 +37,29 @@ const authStore = useAuthStore()
 
 onMounted(async () => {
   const productList_res = await Service.getProductList()
-  productList_res.forEach(async (product) => {
+  await productList_res.forEach((product) => {
     product.is_zzim = false
   })
 
   console.log('상품 전체 리스트 - is_zzim 추가 : ', productList_res)
   productStore.product_list = productList_res
+
+   // 인기순으로 정렬하여 반환
+   productStore.category_items['popular'] = await productStore.product_list.sort(
+    (a, b) => b.wish_count - a.wish_count
+  )
+
+  // product_list 배열을 순회하면서 조건을 만족하는 상품들을 찾음
+  await productStore.product_list.forEach((product) => {
+    productStore.category_items[product.product_category].push(product)
+  })
+
+  // product_list 배열을 순회하면서 품절상품이 위로 안오도록 하기
+  await productStore.category.forEach((category) => {
+    if (category.id !== 'popular') {
+      productStore.category_items[category.id].sort((a, b) => b.product_stock - a.product_stock)
+    }
+  })
 })
 </script>
 
