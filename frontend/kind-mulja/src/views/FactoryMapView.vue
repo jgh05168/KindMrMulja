@@ -2,23 +2,20 @@
   <!-- <h2>Factory Map 페이지</h2>
   <p>이 곳은 Factory Map 페이지입니다.</p> -->
   <div class="monitoring-layout">
-    <div ref="mapContainer" class="container">
-      <img
-        ref="image"
-        src="/map/map.png"
-        alt="Map Image"
-        style="width: 100%; height: 100%; transform: scaleY(-1) scaleX(-1)"
-      />
-      <div ref="marker_1" class="marker_1"></div>
-      <div ref="marker_2" class="marker_2"></div>
-      <div ref="marker_3" class="marker_3"></div>
+    <div class="robot-monitor">
+      <div class="robots-status">
+        <RobotsStatus @robotSelected="handleRobotSelected" :robots="robots" />
+      </div>
+      <div ref="mapContainer" class="container">
+        <img ref="image" src="/map/map.png" alt="Map Image" style="width: 100%; height: 100%" />
+        <div ref="marker_1" class="marker_1"><v-img src="/public/mulja.png"></v-img></div>
+        <div ref="marker_2" class="marker_2"><v-img src="/public/mulja.png"></v-img></div>
+        <div ref="marker_3" class="marker_3"><v-img src="/public/mulja.png"></v-img></div>
+      </div>
     </div>
     <div class="live-board">
       <div class="live-order-list">
         <LiveOrder :robots="robots" />
-      </div>
-      <div class="robots-status">
-        <RobotsStatus @robotSelected="handleRobotSelected" :robots="robots" />
       </div>
     </div>
   </div>
@@ -64,7 +61,7 @@ const handleRobotSelected = (robotId) => {
 }
 
 // 이미지 좌표 (수정 필요)
-const imageCoords = { x: 600, y: 600 }
+const imageCoords = { x: 700, y: 700 }
 
 const connect_socket = (id, marker, socket_url) => {
   // const socket = io(socket_url, { secure: true })
@@ -134,40 +131,43 @@ function adjustMarkerPosition(marker, x, y) {
   display: flex;
 }
 
+.robot-monitor {
+  margin: 1% 3%;
+}
+
 .container {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
   border: 1px solid black;
-  margin: 7% 3%;
 }
 
 .marker_1 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #ff1744;
 }
 
 .marker_2 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #ffff00;
 }
 
 .marker_3 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #1de9b6;
 }
 
 .live-order-list {
-  margin-top: 5%;
+  margin-top: 8%;
 }
 
 .robots-status {
@@ -177,11 +177,8 @@ function adjustMarkerPosition(marker, x, y) {
   0% {
     opacity: 1; /* 0% 지점에서는 표시 */
   }
-  50% {
-    opacity: 0.7; /* 100% 지점에서는 숨김 */
-  }
   100% {
-    opacity: 0.4; /* 100% 지점에서는 숨김 */
+    opacity: 0.7; /* 100% 지점에서는 숨김 */
   }
 }
 
@@ -194,8 +191,7 @@ function adjustMarkerPosition(marker, x, y) {
 }
 
 .selected-turtle-marker {
-  scale: 2;
-  transform: scale(2); /* 선택된 마커를 2배로 확대 */
+  transform: scale(1.6); /* 선택된 마커를 2배로 확대 */
   animation: blink-animation 1s infinite alternate;
 }
 </style>
