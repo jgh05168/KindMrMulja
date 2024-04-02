@@ -14,7 +14,6 @@ const io = require("socket.io")(server);
 const initializeSocket = require("./socketServer.js");
 const payRouter = require("./route/payments.router.js");
 const initializeSocketLoc = require("./socketServerLoc.js");
-const initializeSocketLoc2 = require("./socketServerLoc2.js");
 
 //
 
@@ -41,8 +40,5 @@ initializeSocket(socketServerPort1);
 // 로봇 좌표 받기
 const socketServerPort2 = process.env.SOCKET_SERVER_PORT_LOC || 12002;
 initializeSocketLoc(socketServerPort2);
-
-const socketServerPort3 = process.env.SOCKET_SERVER_PORT_LOC2 || 12003;
-initializeSocketLoc2(socketServerPort3);
 
 app.listen(PORT, () => console.log(`${PORT} 서버 기동중`));
