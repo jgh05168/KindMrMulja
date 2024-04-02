@@ -107,7 +107,7 @@ function adjustMarkerPosition(marker, x, y) {
 
 onMounted(async () => {
   robots.value = await Service.getOrderTutle()
-  socket = io('http://localhost:12002', {
+  socket = io('https://j10c109.p.ssafy.io', {
     // note changed URL here
     path: '/socket.io',
     transports: ['websocket'],
