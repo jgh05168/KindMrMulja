@@ -33,6 +33,11 @@ class TrutlebotLoc(Node):
             
     def send_location_to_server(self, location_data):
         try:
+            '''
+            각자 사용하는 로봇 번호에 따라 sendLocation1, sendLocation2, sendLocation3 으로 설정할 것
+            - localhost에서 지정해줘야 하므로 무조건 크로스체크 하기(실제 시연하는 로컬에서 설정할 것)
+            - camera.py 함수와 같은 number를 사용해야 한다(로봇의 id와 같은 역할)
+            '''
             self.sio.emit('sendLocation1', location_data)
             print('Location data sent to server:', location_data)
         except Exception as e:
@@ -51,11 +56,7 @@ class TrutlebotLoc(Node):
             self.send_location_to_server(location_data)
 
     def start_socketio(self):
-        '''
-        각자 사용하는 로봇 번호에 따라 /socket1, /socket2, /socket3 으로 설정할 것
-        - localhost에서 지정해줘야 하므로 무조건 크로스체크 하기(실제 시연하는 로컬에서 설정할 것)
-        - camera.py 함수와 같은 number를 사용해야 한다(로봇의 id와 같은 역할)
-        '''
+        
         self.sio.connect('https://j10c109.p.ssafy.io/socket')           
         # self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/camloc/socket.io')
         # self.sio.connect('http://localhost:12002')

@@ -47,18 +47,26 @@
       <div class="mt-8 mb-7" style="font-size: 17px; font-weight: 500">
         {{ props.item.description }}
       </div>
-      <div>
-        <span style="font-size: 13px; font-weight: 400">제품번호. </span>
-        <span
-          style="
-            background-color: black;
-            color: aliceblue;
-            font-weight: 1000;
-            padding: 2px 10px;
-            border-radius: 10%;
-          "
-          >{{ item_id }}</span
-        >
+      <div style="display: flex">
+        <div>
+          <span style="font-size: 13px; font-weight: 400">제품번호. </span>
+          <span
+            style="
+              background-color: black;
+              color: aliceblue;
+              font-weight: 1000;
+              padding: 2px 10px;
+              border-radius: 10%;
+            "
+            >{{ item_id }}</span
+          >
+        </div>
+        <div class="ms-5">
+          <span style="font-size: 13px; font-weight: 400">재고수량. </span>
+          <span style="font-weight: 1000; padding: 2px 10px; border-radius: 10%"
+            >{{ props.item.product_stock }}개</span
+          >
+        </div>
       </div>
     </template>
     <template #item-size>
