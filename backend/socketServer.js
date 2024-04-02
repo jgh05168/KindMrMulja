@@ -133,7 +133,7 @@ const initializeSocket = (server) => {
       } catch (error) {}
 
       // 다음 호출 예약
-      setTimeout(getDataAndEmit, 10000);
+      setTimeout(getDataAndEmit, 8000);
     };
 
     getDataAndEmit(); // 처음 호출

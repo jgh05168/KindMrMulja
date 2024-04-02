@@ -127,7 +127,7 @@ class followTheCarrot(Node):
                         out_rad_vel=theta*1.0
                     else:
                         out_vel=1.0
-                        out_rad_vel=theta*2.0
+                        out_rad_vel=theta*1.9
 
                     #print(theta)
 
