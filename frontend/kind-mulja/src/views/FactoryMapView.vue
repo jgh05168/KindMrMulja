@@ -85,7 +85,7 @@ const connect_socket = (id, marker, socket_url) => {
   // 데이터를 수신하여 마커 위치를 조정
   socket.on('sendToFrontLoc', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
-    // console.log(parsedData)
+    console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
     // 전달받은 데이터가 null이 아닐 경우 실행
     if (parsedData !== null) {
