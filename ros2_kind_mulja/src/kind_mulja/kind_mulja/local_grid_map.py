@@ -17,9 +17,9 @@ class LocalGridMap(Node):
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
-        self.map_resolution = 0.2
-        self.map_size_x = 30
-        self.map_size_y = 30
+        self.map_resolution = 0.1
+        self.map_size_x = 60
+        self.map_size_y = 60
         self.map_center_x = -50.0
         self.map_center_y = -50.0
         self.local_grid_map = np.zeros((self.map_size_x, self.map_size_y), dtype=int)
