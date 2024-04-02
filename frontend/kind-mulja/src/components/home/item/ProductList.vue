@@ -84,7 +84,7 @@ const router = useRouter()
 // 사용자가 상세 정보 페이지로 이동하려고 클릭하면, 상세 정보를 요청하는 API 호출을 먼저 하고, 그 응답을 받은 후에 페이지를 이동하는 것이 좋습니다. 이 방법은 사용자가 페이지를 빠르게 로드하고 즉시 상세 정보를 볼 수 있게 해줍니다.
 const getItemDetail = async (id) => {
   const detail = await Service.getProduct(id)
-  console.log('상품 상세 정보,', detail)
+  // console.log('상품 상세 정보,', detail)
   productStore.now_product_id = id
   productStore.item = detail
 }

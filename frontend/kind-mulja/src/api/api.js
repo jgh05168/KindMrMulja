@@ -17,7 +17,7 @@ export class Service {
         .then((res) => {
           const data = res.data
           // 만약 로그인이 완료 되면 회원 정보 local 에 저장
-          console.log('회원 로그인 성공 여부 : ', data)
+          // console.log('회원 로그인 성공 여부 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -40,7 +40,7 @@ export class Service {
         withCredentials: false // 기본값
       })
         .then((res) => {
-          console.log('회원가입 요청', res.data)
+          // console.log('회원가입 요청', res.data)
           // 결과값 result
           resolve(res.data)
         })
@@ -97,7 +97,7 @@ export class Service {
         .then((res) => {
           // "product_name" : string,"product_price" : int,"description” : string
           const data = res.data
-          console.log('상품 단일 데이터 : ', data)
+          // console.log('상품 단일 데이터 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -135,7 +135,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('상품 찜 토글 : ', data)
+          // console.log('상품 찜 토글 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -152,7 +152,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('상품 찜 목록 조회 : ', data)
+          // console.log('상품 찜 목록 조회 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -169,7 +169,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('위시리스트에서 삭제 여부 : ', data)
+          // console.log('위시리스트에서 삭제 여부 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -191,7 +191,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('장바구니 담기 : ', data)
+          // console.log('장바구니 담기 : ', data)
           resolve(data.result)
         })
         .catch((error) => {
@@ -208,7 +208,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('장바구니 목록 : ', data)
+          // console.log('장바구니 목록 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -229,7 +229,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('장바구니 업데이트 : ', data)
+          // console.log('장바구니 업데이트 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -246,7 +246,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('장바구니 에서 상품 삭제 : ', data)
+          // console.log('장바구니 에서 상품 삭제 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -272,7 +272,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('배송지 추가 : ', data)
+          // console.log('배송지 추가 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -289,7 +289,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('배송지 목록 : ', data)
+          // console.log('배송지 목록 : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -310,7 +310,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('기본 배송지 성공? : ', data)
+          // console.log('기본 배송지 성공? : ', data)
           resolve(data)
         })
         .catch((error) => {
@@ -333,7 +333,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('주문', data)
+          // console.log('주문', data)
           resolve(data)
         })
         .catch((error) => {
@@ -360,7 +360,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('주문목록 묶음 리스트', data)
+          // console.log('주문목록 묶음 리스트', data)
           resolve(data)
         })
         .catch((error) => {
@@ -386,7 +386,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('주문목록 묶음 상세 리스트', data)
+          // console.log('주문목록 묶음 상세 리스트', data)
           resolve(data)
         })
         .catch((error) => {
@@ -403,7 +403,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('주문목록 처리 전체 리스트', data)
+          // console.log('주문목록 처리 전체 리스트', data)
           resolve(data)
         })
         .catch((error) => {
@@ -420,7 +420,7 @@ export class Service {
       })
         .then((res) => {
           const data = res.data
-          console.log('터틀봇이 담당 order', data)
+          // console.log('터틀봇이 담당 order', data)
           resolve(data)
         })
         .catch((error) => {
