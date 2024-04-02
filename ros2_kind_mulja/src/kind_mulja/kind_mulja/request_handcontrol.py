@@ -3,7 +3,7 @@ from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
 from ssafy_msgs.msg import RequestHandControl,TurtlebotStatus,TargetGrid,WorkStatus
-
+import time
 # 위치에 따른 물건 들고 내리기 로직 
 # 1. 로봇 위치를 받아온다. 
 # 2. 물건 위치를 받아온다. 
@@ -104,6 +104,8 @@ class RequestMsgHandControl(Node):
             self.request_target_msg.pose.position.y=self.product_y
             self.target_publisher.publish(self.request_target_msg)
             print(self.request_target_msg)
+
+            time.sleep(3)
             
             self.work_status_msg.is_start=True
             self.work_status_msg.order_detail_id=self.order_detail_id
@@ -152,11 +154,14 @@ class RequestMsgHandControl(Node):
             if self.turtlebot_status_msg.can_put:
                 self.request_hand_control_msg.control_mode=3        
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
+
+                time.sleep(3)
                 
                 self.work_status_msg.is_start=False
                 self.work_status_msg.order_detail_id=self.order_detail_id
                 self.work_status_publisher.publish(self.work_status_msg)
                 # print(self.work_status_msg.is_start)
+                
                 
                 self.truct_is_done=True
  

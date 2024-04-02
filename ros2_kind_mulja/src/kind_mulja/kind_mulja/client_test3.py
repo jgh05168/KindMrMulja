@@ -9,12 +9,11 @@ truct_y=[-56.7071,-60.7233,-64.7082,-68.7176,-72.8231,-52.488,-52.488,-52.488]
 # truct_x=[-61.64,-53.581,-45.569,-37.532,-29.518]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
-turtle_id_about_me=1
-#turtle_charge_x= -53.4449
-#turtle_charge_y= -55.436
-### float 형태로 해주세요 !!!!!!!
-turtle_charge_x= -50.0
-turtle_charge_y= -50.0
+turtle_id_about_me=2
+turtle_charge_x= -55.9282
+turtle_charge_y= -55.436
+# turtle_charge_x= -50.0
+# turtle_charge_y= -50.0
 
 class Client(Node):
     def __init__(self):
@@ -33,7 +32,7 @@ class Client(Node):
         @self.sio.event
         def connect():
             print('connection established')
-            self.sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
+            self.sio.emit('sendTime','auto lift 클라이언트 입니다. 서버에 접속합니다.')
         
         @self.sio.event
         def order(data):
@@ -83,7 +82,7 @@ class Client(Node):
         
         @self.sio.event
         def disconnect():
-            print('disconnected from server')
+            print('auto lift 클라이언트, 연결을 끊습니다.')
         
     def work_status_cb(self,msg):
         # print("3: ",msg)
@@ -104,8 +103,7 @@ class Client(Node):
         
     
     def start_socketio(self):
-        #self.sio.connect('https://j10c109.p.ssafy.io/liftSocket')
-        self.sio.connect('http://localhost:12001')
+        self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/lift/socket.io')
         self.sio.wait()
 
     
