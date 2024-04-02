@@ -73,14 +73,14 @@ function switchSocket(id, socket_url) {
       const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
 
       // 이미지 소스를 업데이트
-      imageSources.value[tab.value - 1] = 'data:image/webp;base64,' + imageData
+      imageSources.value[id - 1] = 'data:image/webp;base64,' + imageData
 
       // 이미지 요소의 참조를 업데이트
-      const imgElement = imageRefs[tab.value - 1].value
+      const imgElement = imageRefs[id - 1].value
 
       // 이미지 데이터를 img 요소의 src 속성에 할당하여 표시
       if (imgElement) {
-        imgElement.src = imageSources.value[tab.value - 1]
+        imgElement.src = imageSources.value[id - 1]
       }
     })
   }
