@@ -4,11 +4,11 @@
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
           size="xs"
-          icon="mdi-plus-box"
           variant="flat"
           class="text-none font-weight-regular"
           v-bind="activatorProps"
-        ></v-btn>
+          ><v-chip><v-icon size="25">mdi-plus</v-icon>배송지생성</v-chip></v-btn
+        >
       </template>
 
       <v-card rounded="xl">
@@ -20,7 +20,11 @@
         </v-card-title>
 
         <v-divider></v-divider>
-        <AddressForm :now-view="'from-payview'" :dialog="dialog" @address-created="handleAddressCreated"></AddressForm>
+        <AddressForm
+          :now-view="'from-payview'"
+          :dialog="dialog"
+          @address-created="handleAddressCreated"
+        ></AddressForm>
 
         <v-divider></v-divider>
 
@@ -44,7 +48,6 @@ const dialog = ref(false)
 const handleAddressCreated = () => {
   dialog.value = false // 배송지가 생성되면 다이얼로그를 닫음
 }
-
 </script>
 
 <style scoped></style>

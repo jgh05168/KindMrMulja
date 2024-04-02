@@ -1,20 +1,16 @@
 <template>
   <v-dialog v-model="dialog" width="85%" scrollable>
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn
-        icon="mdi-home-switch-outline"
-        variant="plain"
-        size="xs"
-        style="scale: 1.4"
-        v-bind="activatorProps"
-      ></v-btn>
+      <v-btn variant="plain" size="xs" style="scale: 1" v-bind="activatorProps"
+        ><v-chip><v-icon size="20">mdi-home-switch-outline</v-icon>배송지 선택</v-chip></v-btn
+      >
     </template>
 
     <v-card rounded="xl">
       <v-card-title style="display: flex; justify-content: space-between">
         <div style="display: flex; align-items: center">
           <v-icon icon="mdi-truck-delivery-outline" class="me-3"></v-icon>
-          <p>Select Address</p>
+          <p style="font-weight: bold">배송지 목록</p>
         </div>
         <CreateDialog></CreateDialog>
       </v-card-title>
@@ -29,7 +25,7 @@
           :value="address.address_id"
           :key="idx"
         >
-          <template v-slot:address-title="slotProps">
+          <template #address-title>
             <div
               style="
                 display: flex;
@@ -39,12 +35,6 @@
               "
             >
               <div>{{ address.address_name }}</div>
-              <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
-              <v-btn
-                @click="slotProps.editAddress(address.id)"
-                icon="mdi-home-edit-outline"
-                variant="plain"
-              ></v-btn>
             </div>
           </template>
           <template #address-detail>

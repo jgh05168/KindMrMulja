@@ -15,13 +15,15 @@ product.get("/product-list", async (req, res) => {
           p.product_name,
           p.product_price,
           p.product_category,
+          p.product_stock,
           COUNT(w.product_id) AS wish_count
+
       FROM 
           product_list p
       LEFT JOIN 
           wishlist w ON p.product_id = w.product_id
       GROUP BY 
-          p.product_id, p.product_name, p.product_price, p.product_category
+          p.product_id, p.product_name, p.product_price, p.product_category, p.product_stock
     `;
     const results = await pool.query(query);
     return res.json(results[0]);

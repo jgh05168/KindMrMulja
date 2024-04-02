@@ -1,6 +1,6 @@
 <template>
   <slot name="app-footer">
-    <v-layout class="overflow-visible" style="height: 56px; position: fixed">
+    <v-layout class="overflow-visible" style="height: 56px; position: fixed; z-index: 10">
       <v-bottom-navigation v-model="viewStore.now_value" grow color="dark">
         <v-btn @click="router.push({ name: 'home' })">
           <v-icon>mdi-home</v-icon>

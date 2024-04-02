@@ -98,8 +98,8 @@
                   height="55px"
                   width="70%"
                   style="font-size: 20px; font-weight: bold"
-                  @click="addCartAndGo()"
-                  >구매하러 가기</v-btn
+                  @click="addCartAndGo(slotProps.modalClose)"
+                  >담고 구매하러 가기</v-btn
                 >
               </v-card>
             </v-card>
@@ -121,6 +121,9 @@
         </CartModal>
         <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
           상품이 장바구니에 추가되었습니다.
+        </v-snackbar>
+        <v-snackbar v-model="checkbar" :timeout="timeout" color="#B71C1C">
+          {{ check_message }}
         </v-snackbar>
       </div>
     </div>
@@ -169,8 +172,24 @@ const zzim = async (product_id) => {
 }
 
 const snackbar = ref(false) // Snackbar를 제어하기 위한 변수
+const checkbar = ref(false)
+const check_message = ref('')
 const timeout = 3000 // Snackbar가 표시될 시간
 
+const check_stock = () => {
+  let res = false
+  if (productStore.item.product_stock == 0) {
+    check_message.value = '품절된 상품입니다.'
+    res = true
+  } else if (cnt.value > productStore.item.product_stock) {
+    check_message.value = '재고 수량 보다 많이 선택하셨습니다.'
+    res = true
+  }
+  if (res) {
+    checkbar.value = true
+  }
+  return res
+}
 const addCart = async (modalClose) => {
   // 사용자 장바구니에 추가 요청
   // 만약 로그인 안되어 있으면 로그인 창으로 이동
@@ -178,33 +197,41 @@ const addCart = async (modalClose) => {
     alert('로그인이 필요한 서비스입니다.')
     router.push({ name: 'login' })
   } else {
-    const addToCart_res = await Service.addToCart(
-      authStore.user_id,
-      productStore.now_product_id,
-      cnt.value
-    )
-    if (addToCart_res) {
-      // 장바구니에 추가되면 모달 창 닫기
+    if (!check_stock()) {
+      const addToCart_res = await Service.addToCart(
+        authStore.user_id,
+        productStore.now_product_id,
+        cnt.value
+      )
+      if (addToCart_res) {
+        // 장바구니에 추가되면 모달 창 닫기
+        modalClose()
+        snackbar.value = true
+      }
+    } else {
       modalClose()
-      snackbar.value = true
     }
   }
 }
 
-const addCartAndGo = async () => {
+const addCartAndGo = async (modalClose) => {
   // 사용자 장바구니에 추가 요청
   // 만약 로그인 안되어 있으면 로그인 창으로 이동
   if (authStore.user_id == null) {
     alert('로그인이 필요한 서비스입니다.')
     router.push({ name: 'login' })
   } else {
-    const addToCart_res = await Service.addToCart(
-      authStore.user_id,
-      productStore.now_product_id,
-      cnt.value
-    )
-    if (addToCart_res) {
-      router.push({ name: 'cart' })
+    if (!check_stock()) {
+      const addToCart_res = await Service.addToCart(
+        authStore.user_id,
+        productStore.now_product_id,
+        cnt.value
+      )
+      if (addToCart_res) {
+        router.push({ name: 'cart' })
+      }
+    } else {
+      modalClose()
     }
   }
 }
