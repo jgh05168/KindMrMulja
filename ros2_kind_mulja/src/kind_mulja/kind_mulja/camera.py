@@ -16,6 +16,15 @@ class CameraSubscriber(Node):
             10  # QoS profile depth
         )
         self.sio = socketio.Client()
+        self.start_msg = False
+        
+        # 서버 연결
+        @self.sio.event
+        def connect():
+            print('connection established')
+            if not self.start_msg:
+                self.sio.emit('sendTime', '터틀봇의 카메라 정보를 보냅니다. 안녕하세요')
+                self.start_msg = True
 
     def img_callback(self, msg):
         np_arr = np.frombuffer(msg.data, np.uint8)
@@ -25,6 +34,7 @@ class CameraSubscriber(Node):
         
         self.send_image_to_server(image_str)
 
+
     def send_image_to_server(self, image_data):
         try:
             self.sio.emit('sendImage', image_data)
@@ -33,13 +43,16 @@ class CameraSubscriber(Node):
         except Exception as e:
             print('Failed to send image data to server:', str(e))
 
+
     def start_socketio(self):
         '''
         각자 사용하는 로봇 번호에 따라 /socket1, /socket2, /socket3 으로 설정할 것
         - localhost에서 지정해줘야 하므로 무조건 크로스체크 하기(실제 시연하는 로컬에서 설정할 것)
         - camera.py 함수와 같은 number를 사용해야 한다(로봇의 id와 같은 역할)
         '''
-        self.sio.connect('https://j10c109.p.ssafy.io/socket1')
+        # self.sio.connect('https://j10c109.p.ssafy.io/socket1')
+        # self.sio.connect('http://localhost:12002')
+        self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/camloc/socket.io')
         self.sio.wait()
 
 def main():
