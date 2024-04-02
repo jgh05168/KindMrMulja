@@ -73,7 +73,7 @@ const initializeSocketLoc = (server) => {
       }
       // cam data
       if (camera_data1 !== null) {
-        io.emit("sendToFrontImage2", camera_data1);
+        io.emit("sendToFrontImage1", camera_data1);
       }
 
       //// turtlebot 2
@@ -82,7 +82,7 @@ const initializeSocketLoc = (server) => {
       }
       // cam data
       if (camera_data2 !== null) {
-        io.emit("sendToFrontImage1", camera_data2);
+        io.emit("sendToFrontImage2", camera_data2);
       }
 
       //// turtlebot 3

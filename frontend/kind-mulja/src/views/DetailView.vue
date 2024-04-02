@@ -239,7 +239,7 @@ const addCartAndGo = async (modalClose) => {
 onMounted(async () => {
   if (authStore.user_id) {
     const res = await Service.checkProductWish(authStore.user_id, productStore.now_product_id)
-    console.log(res)
+    // console.log(res)
     is_zzim.value = res.result
   }
 })

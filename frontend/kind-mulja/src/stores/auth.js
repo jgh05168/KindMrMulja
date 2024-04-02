@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
         user_id.value = null
         const productList = await JSON.parse(localStorage.getItem('product')).product_list
         await localStorage.clear()
-        console.log(productList)
+        // console.log(productList)
 
         // 전체 상품 돌면서 찜 기능을 위한 속성 초기화
         productList.forEach(async (product) => {

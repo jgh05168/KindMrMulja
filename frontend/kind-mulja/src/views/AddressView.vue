@@ -70,7 +70,7 @@ import { useOrderStore } from '@/stores/order'
 const router = useRouter()
 const authStore = useAuthStore()
 const orderStore = useOrderStore()
-console.log(authStore.user_id)
+// console.log(authStore.user_id)
 const default_address = ref([null])
 // getAddress 메서드 호출
 onMounted(async () => {
@@ -88,7 +88,7 @@ const click_id = ref(null)
 
 const clickAddress = (id) => {
   click_id.value = id
-  console.log('클릭된 주소 순서-', click_id.value)
+  // console.log('클릭된 주소 순서-', click_id.value)
 }
 
 const sorted_address_list = computed(() => {
@@ -112,10 +112,10 @@ const setDefault = async (id) => {
   default_address.value = id
   // 기본 배송지 설정 버튼을 눌렀으므로 현재 선택된 배송지 초기화
   click_id.value = null
-  console.log('기본 배송지 설정, 클릭 요소 초기화', click_id.value)
+  // console.log('기본 배송지 설정, 클릭 요소 초기화', click_id.value)
   await Service.setDefaultAddress(authStore.user_id, id)
   // orderStore.address_list = await Service.getAddress(authStore.user_id)
-  console.log(sorted_address_list.value)
+  // console.log(sorted_address_list.value)
 }
 
 const goCreate = () => {
