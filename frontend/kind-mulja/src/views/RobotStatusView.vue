@@ -34,7 +34,9 @@ const imageRefs = [ref(null), ref(null), ref(null)]
 let socket = null
 
 onMounted(() => {
-  switchSocket() // 초기 소켓 상태 설정
+  switchSocket(1, 'https://j10c109.p.ssafy.io')
+  switchSocket(2, 'https://j10c109.p.ssafy.io')
+  switchSocket(3, 'https://j10c109.p.ssafy.io')
 })
 
 watch(tab, (newValue) => {
@@ -46,11 +48,19 @@ watch(tab, (newValue) => {
   }
 })
 
-function switchSocket() {
+function switchSocket(id, socket_url) {
   // 탭 값이 1인 경우에만 소켓 열기
   if (tab.value === 1) {
-    socket = io('http://localhost:12003/')
+    // socket = io('http://localhost:12002/')
     // socket = io('https://j10c109.p.ssafy.io:12003/')
+
+    const socket = io(socket_url, {
+      // note changed URL here
+      path: '/socket.io',
+      transports: ['websocket'],
+      namespace: `/camloc` // namespace를 수정해가며 설정하기
+    })
+
     socket.on('connect', () => {
       console.log('웹소켓 연결이 열렸습니다.')
     })
@@ -58,19 +68,19 @@ function switchSocket() {
       console.error('웹소켓 에러:', error)
     })
     // 데이터를 수신하여 이미지 표시
-    socket.on('sendToFrontImage', (data) => {
+    socket.on(`sendToFrontImage${id}`, (data) => {
       // 이미지 데이터를 Base64로 인코딩
       const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
 
       // 이미지 소스를 업데이트
-      imageSources.value[tab.value - 1] = 'data:image/jpeg;base64,' + imageData
+      imageSources.value[id - 1] = 'data:image/webp;base64,' + imageData
 
       // 이미지 요소의 참조를 업데이트
-      const imgElement = imageRefs[tab.value - 1].value
+      const imgElement = imageRefs[id - 1].value
 
       // 이미지 데이터를 img 요소의 src 속성에 할당하여 표시
       if (imgElement) {
-        imgElement.src = imageSources.value[tab.value - 1]
+        imgElement.src = imageSources.value[id - 1]
       }
     })
   }
