@@ -58,8 +58,8 @@ class TrutlebotLoc(Node):
     def start_socketio(self):
         
         # self.sio.connect('https://j10c109.p.ssafy.io/socket')           
-        # self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/camloc/socket.io')
-        self.sio.connect('http://localhost:12002')
+        self.sio.connect('https://j10c109.p.ssafy.io')
+        # self.sio.connect('http://localhost:12002')
         self.sio.wait()
 
 def main():

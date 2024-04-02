@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 import LiveOrder from '@/components/LiveOrder.vue'
 import RobotsStatus from '@/components/RobotsStatus.vue'
@@ -110,14 +110,14 @@ function adjustMarkerPosition(marker, x, y) {
 
 onMounted(async () => {
   robots.value = await Service.getOrderTutle()
-  // socket = io(socket_url, {
-  //   // note changed URL here
-  //   path: '/socket.io',
-  //   transports: ['websocket'],
-  //   namespace: `/camloc` // namespace를 수정해가며 설정하기
-  // })
+  socket = io('http://localhost:12002', {
+    // note changed URL here
+    path: '/socket.io',
+    transports: ['websocket'],
+    namespace: `/camloc` // namespace를 수정해가며 설정하기
+  })
 
-  socket = io('http://localhost:12002')
+  // socket = io('http://localhost:12002')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log('웹소켓 연결이 열렸습니다.')
@@ -128,7 +128,7 @@ onMounted(async () => {
 
   connect_socket(1, marker_1.value)
   connect_socket(2, marker_2.value)
-  connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
+  connect_socket(3, marker_3.value)
 })
 </script>
 

@@ -52,8 +52,8 @@ class CameraSubscriber(Node):
 
     def start_socketio(self):
         # self.sio.connect('https://j10c109.p.ssafy.io/socket1')
-        self.sio.connect('http://localhost:12002')
-        # self.sio.connect('https://j10c109.p.ssafy.io')
+        # self.sio.connect('http://localhost:12002')
+        self.sio.connect('https://j10c109.p.ssafy.io')
         self.sio.wait()
 
 def main():
