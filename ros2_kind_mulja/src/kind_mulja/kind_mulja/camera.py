@@ -29,7 +29,7 @@ class CameraSubscriber(Node):
     def img_callback(self, msg):
         np_arr = np.frombuffer(msg.data, np.uint8)
         cv_image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        _, img_encoded = cv2.imencode('.jpg', cv_image)
+        _, img_encoded = cv2.imencode('.webp', cv_image, [cv2.IMWRITE_WEBP_QUALITY, 90])
         image_str = img_encoded.tostring()
         
         self.send_image_to_server(image_str)
