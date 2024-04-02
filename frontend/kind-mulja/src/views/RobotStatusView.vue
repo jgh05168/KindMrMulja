@@ -49,8 +49,16 @@ watch(tab, (newValue) => {
 function switchSocket() {
   // 탭 값이 1인 경우에만 소켓 열기
   if (tab.value === 1) {
-    socket = io('http://localhost:12003/')
+    // socket = io('http://localhost:12002/')
     // socket = io('https://j10c109.p.ssafy.io:12003/')
+
+    const socket = io('https://j10c109.p.ssafy.io', {
+      // note changed URL here
+      path: '/camloc/socket.io',
+      transports: ['websocket']
+      // namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+    })
+
     socket.on('connect', () => {
       console.log('웹소켓 연결이 열렸습니다.')
     })
