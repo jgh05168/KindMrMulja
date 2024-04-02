@@ -70,9 +70,9 @@ const connect_socket = (id, marker, socket_url) => {
   // const socket = io(socket_url, { secure: true })
   const socket = io(socket_url, {
     // note changed URL here
-    path: '/camloc/socket.io',
-    transports: ['websocket']
-    // namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+    path: '/socket.io',
+    transports: ['websocket'],
+    namespace: `/camloc` // namespace를 수정해가며 설정하기
   })
 
   // const socket = io('http://localhost:12002')
