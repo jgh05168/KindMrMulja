@@ -74,7 +74,7 @@ const deleteZzim = async (id) => {
 }
 
 onMounted(async () => {
-  console.log('위시리스트 목록', wish_list)
+  // console.log('위시리스트 목록', wish_list)
   await getWishlist()
 })
 </script>

@@ -40,7 +40,7 @@ onMounted(() => {
 })
 
 watch(tab, (newValue) => {
-  console.log('Tab value changed to:', newValue)
+  // console.log('Tab value changed to:', newValue)
   if (newValue !== 1) {
     socket.close() // 탭 값이 1이 아닌 경우 소켓 닫기
   } else if (newValue === 1) {

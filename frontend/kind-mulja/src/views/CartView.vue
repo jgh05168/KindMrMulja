@@ -243,7 +243,7 @@ const goToOrder = async () => {
   if (!check_stock()) {
     // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
     await save_data()
-    console.log(orderStore.selected_item)
+    // console.log(orderStore.selected_item)
     orderStore.address_list = await Service.getAddress(authStore.user_id)
     // 결제하기 버튼 클릭 시 결제 페이지로 이동
     await router.push({ name: 'pay' })
