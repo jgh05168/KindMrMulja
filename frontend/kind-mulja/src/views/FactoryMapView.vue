@@ -68,14 +68,14 @@ const imageCoords = { x: 600, y: 600 }
 
 const connect_socket = (id, marker, socket_url) => {
   // const socket = io(socket_url, { secure: true })
-  // const socket = io(socket_url, {
-  //   // note changed URL here
-  //   path: '/socket.io',
-  //   transports: ['websocket'],
-  //   namespace: `/socket/loc` // namespace를 수정해가며 설정하기
-  // })
+  const socket = io(socket_url, {
+    // note changed URL here
+    path: '/camloc/socket.io',
+    transports: ['websocket']
+    // namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+  })
 
-  const socket = io('http://localhost:12002')
+  // const socket = io('http://localhost:12002')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log(id, '번 로봇의 웹소켓 연결이 열렸습니다.')
