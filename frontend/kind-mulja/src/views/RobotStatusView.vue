@@ -34,7 +34,9 @@ const imageRefs = [ref(null), ref(null), ref(null)]
 let socket = null
 
 onMounted(() => {
-  switchSocket() // 초기 소켓 상태 설정
+  switchSocket(1, 'https://j10c109.p.ssafy.io')
+  switchSocket(2, 'https://j10c109.p.ssafy.io')
+  switchSocket(3, 'https://j10c109.p.ssafy.io')
 })
 
 watch(tab, (newValue) => {
@@ -46,13 +48,13 @@ watch(tab, (newValue) => {
   }
 })
 
-function switchSocket() {
+function switchSocket(id, socket_url) {
   // 탭 값이 1인 경우에만 소켓 열기
   if (tab.value === 1) {
     // socket = io('http://localhost:12002/')
     // socket = io('https://j10c109.p.ssafy.io:12003/')
 
-    const socket = io('https://j10c109.p.ssafy.io', {
+    const socket = io(socket_url, {
       // note changed URL here
       path: '/socket.io',
       transports: ['websocket'],
@@ -66,7 +68,7 @@ function switchSocket() {
       console.error('웹소켓 에러:', error)
     })
     // 데이터를 수신하여 이미지 표시
-    socket.on('sendToFrontImage', (data) => {
+    socket.on(`sendToFrontImage${id}`, (data) => {
       // 이미지 데이터를 Base64로 인코딩
       const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
 
