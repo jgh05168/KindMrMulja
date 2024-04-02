@@ -2,22 +2,26 @@
   <v-container>
     <v-infinite-scroll height="900" side="end">
       <v-row style="margin: 0 0">
-        <v-col style="position: relative" v-for="(item, idx) in productStore.category_items[props.categoryId]" :key="idx" cols="6">
-          <v-badge
-            v-if="item.product_stock == 0"
-            style="position: absolute; top: 58%; left: 20%; z-index: 2"
-            color="red-accent-4"
-            content="품절"
-          ></v-badge>
+        <v-col
+          v-for="(item, idx) in productStore.category_items[props.categoryId]"
+          :key="idx"
+          cols="6"
+        >
           <ProductItem>
             <template #item-img>
               <div @click="GoDetail(item?.product_id)">
                 <v-img
                   :aspect-ratio="1 / 1"
                   width="cover"
-                  style="border-radius: 3%"
+                  style="border-radius: 3%; position: relative"
                   :src="`/product/${item?.product_id}.jpg`"
                 >
+                  <v-badge
+                    v-if="item.product_stock == 0"
+                    style="position: absolute; bottom: 10%; left: 15%; z-index: 2"
+                    color="red-accent-4"
+                    content="품절"
+                  ></v-badge>
                 </v-img>
               </div>
             </template>
@@ -25,7 +29,7 @@
             <template #item-title>
               <v-card-subtitle
                 @click="GoDetail(item?.product_id)"
-                style="font-size: 16px; font-weight: bold"
+                style="font-size: 16px; font-weight: bold; position: relative"
               >
                 {{ item.product_name }}
               </v-card-subtitle>
