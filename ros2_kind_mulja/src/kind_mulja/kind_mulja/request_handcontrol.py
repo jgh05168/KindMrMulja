@@ -84,7 +84,7 @@ class RequestMsgHandControl(Node):
         self.product_is_done=False
         self.truct_is_done=False
         
-        self.timer = self.create_timer(4, self.timer_callback)
+        self.timer = self.create_timer(5, self.timer_callback)
         # self.move_to_goal()
         
         
@@ -155,12 +155,12 @@ class RequestMsgHandControl(Node):
                 self.request_hand_control_msg.control_mode=3        
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
 
-                time.sleep(3)
                 
                 self.work_status_msg.is_start=False
                 self.work_status_msg.order_detail_id=self.order_detail_id
                 self.work_status_publisher.publish(self.work_status_msg)
                 
+                time.sleep(5)
                 
                 self.truct_is_done=True
  

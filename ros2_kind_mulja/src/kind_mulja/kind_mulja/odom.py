@@ -51,7 +51,7 @@ class odom(Node):
         self.x=-53.4449
         self.y=-55.436
 
-        self.map_resolution=0.2
+        self.map_resolution=0.1
         self.map_offset_x=-50-25.0
         self.map_offset_y=-50-25.0
                 
