@@ -100,7 +100,6 @@ product.post("/wishlist-toggle", async (req, res) => {
     // 해당 유저와 제품에 대한 위시리스트 항목이 이미 존재하는지 확인하는 쿼리
     const checkQuery = `SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?`;
     const checkResult = await pool.query(checkQuery, [user_id, product_id]);
-    console.log(checkResult[0]);
     if (checkResult[0].length > 0) {
       // 이미 위시리스트에 해당 제품이 있으면 삭제하는 쿼리
       const deleteQuery = `DELETE FROM wishlist WHERE user_id = ? AND product_id = ?`;

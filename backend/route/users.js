@@ -9,7 +9,6 @@ user.get("/hihi", (req, res) => {
 
 // 회원가입 api
 user.post("/signup", async (req, res) => {
-  console.log(req.body);
 
   const name = req.body.name;
   const email = req.body.email;
@@ -20,7 +19,6 @@ user.post("/signup", async (req, res) => {
       INSERT INTO user (user_name, user_email, user_password) VALUES (?, ?, ?);`;
     const results = await pool.query(query, [name, email, password]);
     return res.json({ result: true });
-    // console.log(result);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -29,13 +27,11 @@ user.post("/signup", async (req, res) => {
 
 // 이메일 중복확인 api
 user.post("/email-duplicate-check", async (req, res) => {
-  console.log(req.body);
   const email = req.body.email;
 
   try {
     const query = `SELECT * FROM user WHERE user_email = ?`;
     const results = await pool.query(query, [email]);
-    console.log(results[0]);
     if (results[0].length > 0) {
       return res.json({ result: false });
     } else {
@@ -59,7 +55,6 @@ user.post("/signin", async (req, res) => {
           `;
 
     const result = await pool.query(query, [email, password]);
-    console.log(result[0]);
     if (result[0].length > 0) {
       return res.json({
         user_info: {
