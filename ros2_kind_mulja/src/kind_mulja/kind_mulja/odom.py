@@ -44,8 +44,13 @@ class odom(Node):
         self.is_imu=False
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.
-        self.x=-50
-        self.y=-50
+        
+        self.initial_x_is=False
+        self.initial_y_is=False
+
+        self.x=-53.4449
+        self.y=-55.436
+
         self.map_resolution=0.2
         self.map_offset_x=-50-25.0
         self.map_offset_y=-50-25.0
@@ -88,6 +93,21 @@ class odom(Node):
 
 
     def listener_callback(self, msg):
+        
+        print(self.initial_x_is,self.initial_y_is)
+        if self.initial_x_is==False and self.initial_y_is==False:
+            self.x=msg.twist.angular.x
+            self.y=msg.twist.angular.y
+            
+            self.initial_x_is=True
+            self.initial_y_is=True
+            
+            self.z=msg.twist.linear.z
+
+            print(self.x,self.y,self.z)
+            
+            self.imu_offset= -0.5 * pi * (self.z/-90)
+            
         # print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
         if self.is_imu ==True:
             if self.is_status == False :
@@ -149,7 +169,7 @@ class odom(Node):
 
 
                 # print(check_robot_pose_x, check_robot_pose_y)
-                print(self.x,self.y)
+                print(check_robot_pose_x,check_robot_pose_y)
 
         
 def main(args=None):

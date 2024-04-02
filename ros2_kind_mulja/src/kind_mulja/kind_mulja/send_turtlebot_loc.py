@@ -30,7 +30,9 @@ class TrutlebotLoc(Node):
                 self.sio.emit('sendTime', '터틀봇의 x, y 좌표를 보냅니다. 안녕하세요')
                 self.start_msg = True
                 
-            
+        # 주기적으로 위치를 보내는 타이머 생성
+        self.timer = self.create_timer(0.5, self.send_periodic_location)
+
     def send_location_to_server(self, location_data):
         try:
             '''
@@ -47,7 +49,8 @@ class TrutlebotLoc(Node):
         self.data["x"] = msg.twist.angular.x
         self.data["y"] = msg.twist.angular.y
 
-        # 위치 정보 송신
+    # 주기적으로 위치를 보내는 메소드
+    def send_periodic_location(self):
         if self.data["x"] is not None and self.data["y"] is not None:
             # 위치 데이터를 JSON 형태로 변환
             location_data = json.dumps({"x": self.data["x"], "y": self.data["y"]})
