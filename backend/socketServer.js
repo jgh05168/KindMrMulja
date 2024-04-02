@@ -56,9 +56,9 @@ const initializeSocket = (server) => {
 
       // 픽업 주소의 대표값 설정
       const pickupMapping = {
-        픽업A: 6,
-        픽업B: 7,
-        픽업C: 8,
+        픽업1: 6,
+        픽업2: 7,
+        픽업3: 8,
       };
 
       // 주소의 첫 두 글자를 추출
