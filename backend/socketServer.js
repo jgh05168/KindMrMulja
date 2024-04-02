@@ -8,6 +8,9 @@ const initializeSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("새로운 사용자가 연결되었습니다.");
 
+    socket.on("sendTime", async (data) => {
+      console.log(data);
+    });
     // ros에서 받은 메세지
     socket.on("turtleStatus", async (data) => {
       const parsedData = JSON.parse(data);
