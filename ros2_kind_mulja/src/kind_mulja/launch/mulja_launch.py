@@ -27,11 +27,11 @@ def generate_launch_description():
         ),
         
         # package_name : kind_mulja
-        Node(
-            package='kind_mulja',
-            node_executable='odom',
-            node_name='odom'
-        ),
+        # Node(
+        #     package='kind_mulja',
+        #     node_executable='odom',
+        #     node_name='odom'
+        # ),
         Node(
             package='kind_mulja',
             node_executable='path_tracking',

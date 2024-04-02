@@ -94,6 +94,7 @@ class odom(Node):
 
     def listener_callback(self, msg):
         
+        print(self.initial_x_is,self.initial_y_is)
         if self.initial_x_is==False and self.initial_y_is==False:
             self.x=msg.twist.angular.x
             self.y=msg.twist.angular.y
@@ -102,7 +103,9 @@ class odom(Node):
             self.initial_y_is=True
             
             self.z=msg.twist.linear.z
-        
+
+            print(self.x,self.y,self.z)
+            
             self.imu_offset= -0.5 * pi * (self.z/-90)
             
         # print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
