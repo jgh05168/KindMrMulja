@@ -63,7 +63,7 @@ const zzim_check = () => {
   productStore.product_list.forEach(async (product) => {
     // 찜 목록 체크하는 로직 추가
     const check_res = await Service.checkProductWish(authStore.user_id, product.product_id)
-    console.log('home Mounted 상품 찜 여부 : ', check_res.result)
+    // console.log('home Mounted 상품 찜 여부 : ', check_res.result)
     product.is_zzim = check_res.result
   })
 }

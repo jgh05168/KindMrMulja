@@ -94,7 +94,7 @@ const updateSelectedAddress = (address) => {
 const selected_cart_id = computed(() => {
   if (orderStore.selected_item && orderStore.selected_item.length > 0) {
     let res = orderStore.selected_item.map((item) => item.cart_id)
-    console.log(res)
+    // console.log(res)
     return res
   } else {
     return null
@@ -102,7 +102,7 @@ const selected_cart_id = computed(() => {
 })
 
 const orderCreate = async () => {
-  console.log(selected_area.value)
+  // console.log(selected_area.value)
   // console.log(
   //   '보내는 주소지',
   //   JSON.stringify(selected_address.value.address_normal) +

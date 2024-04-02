@@ -64,7 +64,7 @@ onMounted(async () => {
 
   // 각각의 상태별 목록 리스트를 날짜순으로 필터링
   for (let state_key in state_list.value) {
-    console.log(state_list.value[state_key])
+    // console.log(state_list.value[state_key])
     state_list.value[state_key].sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
   }
 })
