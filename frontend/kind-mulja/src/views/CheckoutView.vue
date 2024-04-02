@@ -38,7 +38,7 @@ const amount = props.totalPrice
 const requestPayment = async () => {
   try {
     orderStore.orderInfo = await props.orderCreate() // 주문지 생성
-    console.log(orderStore.orderInfo)
+    // console.log(orderStore.orderInfo)
     if (paymentWidget) {
       await paymentWidget.requestPayment({
         orderId: nanoid(),

@@ -44,7 +44,7 @@ const toggle = (id) => {
     selectedId.value = null
   } else {
     selectedId.value = id
-    console.log(selectedId.value)
+    // console.log(selectedId.value)
   }
   emit('robotSelected', selectedId.value) // 이벤트 발생
 }

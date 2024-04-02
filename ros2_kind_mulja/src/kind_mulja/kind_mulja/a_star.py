@@ -29,12 +29,12 @@ class a_star(Node):
         self.is_grid_update = False
 
         self.goal = [184, 224]
-        self.map_size_x = 250
-        self.map_size_y = 250
-        self.map_resolution = 0.2
+        self.map_size_x = 500
+        self.map_size_y = 500
+        self.map_resolution = 0.1
         self.map_offset_x = -50-25.0
         self.map_offset_y = -50-25.0
-        self.GRIDSIZE = 250 
+        self.GRIDSIZE = 500
 
         self.dx = [-1, 0, 0, 1]
         self.dy = [0, 1, -1, 0]
@@ -89,19 +89,19 @@ class a_star(Node):
                 merged_grid = np.copy(self.grid)
     
                 # Assuming local_map_msg contains local occupancy grid map data
-                local_map_data = np.array(self.local_map_msg.data).reshape((30, 30))
+                local_map_data = np.array(self.local_map_msg.data).reshape((60, 60))
 
                 local_map_data = np.rot90(local_map_data, 1)
                 local_map_data = np.flipud(local_map_data)
                 print(local_map_data)
                 # Adjust local grid position to match robot position
                 robot_pose_x, robot_pose_y = self.pose_to_grid_cell(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
-                robot_pose_x -= 15
-                robot_pose_y -= 15
+                robot_pose_x -= 30
+                robot_pose_y -= 30
                 print(robot_pose_x, robot_pose_y)
                 # Merge grids
-                for i in range(30):
-                    for j in range(30):
+                for i in range(60):
+                    for j in range(60):
                         global_x = robot_pose_x + i
                         global_y = robot_pose_y + j
                         print(local_map_data[i][j])
@@ -122,7 +122,7 @@ class a_star(Node):
             self.cost = np.full((self.GRIDSIZE, self.GRIDSIZE), self.GRIDSIZE * self.GRIDSIZE)
             self.f_func = np.full((self.GRIDSIZE, self.GRIDSIZE), self.GRIDSIZE * self.GRIDSIZE)
 
-            if 0 <= start_grid_cell[0] < self.GRIDSIZE and 0 <= start_grid_cell[1] < self.GRIDSIZE and 0 <= self.goal[0] < self.GRIDSIZE and 0 <= self.goal[1] < self.GRIDSIZE and start_grid_cell != self.goal:
+            if 0 <= start_grid_cell[0] < self.GRIDSIZE and 0 <= start_grid_cell[1] < self.GRIDSIZE and 0 <= self.goal[0] < self.GRIDSIZE and 0 <= self.goal[1] < self.GRIDSIZE and start_grid_cell != self.goal and merged_grid[start_grid_cell[0],start_grid_cell[1]] < 50:
                 self.dijkstra(start_grid_cell, merged_grid)
 
             self.global_path_msg = Path()
@@ -141,7 +141,7 @@ class a_star(Node):
 
         
     def heuristic(self, a, b):
-        #유클리디안 거리 함수
+        #맨해튼 거리 함수
         return abs(b[0] - a[0]) + abs(b[1] - a[1])
 
     def dijkstra(self, start, grid):

@@ -24,7 +24,6 @@ delivery.post("/delivery-address/add", async (req, res) => {
       phone_number,
       is_default,
     ]);
-    console.log(result2[0]);
     if (result[0].affectedRows > 0) {
       if (result2[0].length > 0) {
         const query2 = `UPDATE address_information SET is_default = 0 WHERE address_id = ?`;
@@ -48,7 +47,6 @@ delivery.get("/delivery-address/list/:user_id", async (req, res) => {
   try {
     const query = `SELECT * FROM address_information WHERE user_id = ?`;
     const results = await pool.query(query, [user_id]);
-    console.log(results);
     return res.json(results[0]);
   } catch (error) {
     console.error("Error retrieving address list:", error);
@@ -62,7 +60,6 @@ delivery.delete("/delivery-address/:address_id", async (req, res) => {
   try {
     const query = `DELETE FROM address_information WHERE address_id = ?`;
     const result = await pool.query(query, [address_id]);
-    console.log(result[0]);
     return res.json({ result: result[0].affectedRows > 0 });
   } catch (error) {
     console.log(error);
