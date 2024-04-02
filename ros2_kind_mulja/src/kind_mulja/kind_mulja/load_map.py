@@ -126,11 +126,12 @@ class loadMap(Node):
         #     grid[112+i][26]=0
                                 
         for i in range(11):
-            grid[170][149+i]=0
-            grid[107][123-i]=0
-            grid[144][183-i]=0
-            grid[24-i][194]=0
-            grid[94][183-i]=0
+            for w in range(-1,2):
+                grid[170+w][149+i]=0
+                grid[107+w][123-i]=0
+                grid[144+w][183-i]=0
+                grid[24-i][194+w]=0
+                grid[94+w][183-i]=0
                                 
         for i in range(109,112):
             for j in range(190,213):
@@ -150,21 +151,21 @@ class loadMap(Node):
 
         for i in range(28,79):
             for j in range(205,234):
-                if i == 53 and j >= 224:
+                if (i == 52 or i == 53 or i == 54) and j >= 224:
                     grid[j][i]=0
                 else:
                     grid[j][i]=127
         
         for i in range(132,182):
             for j in range(205,234):
-                if i == 157 and j >= 224:
+                if (i == 156 or i == 157 or i == 158) and j >= 224:
                     grid[j][i]=0
                 else:
                     grid[j][i]=127
 
         for i in range(192,242):
             for j in range(205,234):
-                if i == 216 and j >= 223:
+                if (i== 215 or i == 216 or i == 217) and j >= 223:
                     grid[j][i]=0
                 else:
                     grid[j][i]=127
@@ -179,16 +180,17 @@ class loadMap(Node):
             grid[189][j]=0
 
         for j in range(15, 185):
-            if j == 60  or j == 61 or j == 62 or j == 63 or j == 107 or j == 123 or j == 124 or j == 125 or j == 126:
+            if j == 60  or j == 61 or j == 62 or j == 63 or j == 106 or j == 107 or j == 108 or j == 123 or j == 124 or j == 125 or j == 126:
                 grid[j][112]=0
             else:
                 grid[j][112]=127
 
         for i in range(6):
-            grid[195-i][177]=0
-            grid[195-i][190]=0
-            grid[195-i][203]=0
-            grid[195-i][215]=0
+            for w in range(-1,2):
+                grid[195-i][177+w]=0
+                grid[195-i][190+w]=0
+                grid[195-i][203+w]=0
+                grid[195-i][215+w]=0
 
         for i in range(124, 158):
             grid[126][i]=0
