@@ -123,7 +123,6 @@ const initializeSocket = (server) => {
           product_y: position[0][0].pos_y,
           moving_zone: region,
         };
-        console.error("send json:", jsonData);
         io.emit("order", JSON.stringify(jsonData));
         //console.log(jsonData);
         // await pool.query(
