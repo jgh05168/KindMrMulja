@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-2 cart-item" elevation="1">
+  <v-card class="mb-2 cart-item" elevation="0">
     <slot name="item-check" style="width: 10%"> </slot>
     <v-avatar class="me-3" rounded="0" size="80">
       <slot name="item-image">

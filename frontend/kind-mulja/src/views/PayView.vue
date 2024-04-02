@@ -34,12 +34,15 @@
         </template>
       </AddressItem>
       <v-select
-        v-model="selected_area"
         v-else
-        :items="['픽업A', '픽업B', '픽업C']"
+        rounded="5"
+        v-model="selected_area"
+        style="font-weight: bold"
+        :items="['픽업1', '픽업2', '픽업3']"
         variant="outlined"
-        >xzxZxZ</v-select
+        placeholder="픽업 장소를 선택해주세요."
       >
+      </v-select>
     </div>
 
     <div class="set-pay">

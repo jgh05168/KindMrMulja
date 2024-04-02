@@ -9,7 +9,11 @@
       </div>
     </div>
     <div class="delivery-price mt-2 price-info">
-      <span>배송비</span>
+      <span
+        >배송비<v-chip size="small" color="orange" style="font-size: 10px; z-index: 0"
+          >조립 서비스일 경우 추가비용 청구</v-chip
+        ></span
+      >
       <div>
         <slot name="delivery-price"> 1000 </slot>
         <v-icon class="ms-2" size="xs" icon="mdi-currency-krw"></v-icon>

@@ -1,23 +1,19 @@
 <template>
   <v-card>
-    <v-tabs v-model="tab" align-tabs="center" color="deep-purple-accent-4">
-      <v-tab :value="1">1</v-tab>
-      <v-tab :value="2">2</v-tab>
-      <v-tab :value="3">3</v-tab>
+    <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
+      <v-tab class="tab-item" :value="1">1번 로봇</v-tab>
+      <v-tab class="tab-item" :value="2">2번 로봇</v-tab>
+      <v-tab class="tab-item" :value="3">3번 로봇</v-tab>
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item v-for="n in 3" :key="n" :value="n">
-        <v-container fluid>
-          <v-row>
-            <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
-            <v-img
-              v-if="tab === n"
-              :src="imageSources[n - 1]"
-              aspect-ratio="1"
-              :ref="`image${n}`"
-            ></v-img>
-          </v-row>
-        </v-container>
+        <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
+        <v-img
+          v-if="tab === n"
+          :src="imageSources[n - 1]"
+          aspect-ratio="1"
+          :ref="`image${n}`"
+        ></v-img>
       </v-window-item>
     </v-window>
   </v-card>
@@ -53,8 +49,16 @@ watch(tab, (newValue) => {
 function switchSocket() {
   // 탭 값이 1인 경우에만 소켓 열기
   if (tab.value === 1) {
-    socket = io('http://localhost:12003/')
+    // socket = io('http://localhost:12002/')
     // socket = io('https://j10c109.p.ssafy.io:12003/')
+
+    const socket = io('https://j10c109.p.ssafy.io', {
+      // note changed URL here
+      path: '/camloc/socket.io',
+      transports: ['websocket']
+      // namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+    })
+
     socket.on('connect', () => {
       console.log('웹소켓 연결이 열렸습니다.')
     })
@@ -80,3 +84,9 @@ function switchSocket() {
   }
 }
 </script>
+<style scoped>
+.tab-item {
+  font-size: 15px;
+  font-family: 'pretendard-extrabold';
+}
+</style>

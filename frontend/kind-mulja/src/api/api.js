@@ -11,18 +11,18 @@ export class Service {
         url: api_url + '/user/signin',
         data: {
           email: email,
-          password: password,
+          password: password
         }
       })
-      .then((res) => {
-        const data = res.data
-        // 만약 로그인이 완료 되면 회원 정보 local 에 저장
-        console.log('회원 로그인 성공 여부 : ', data)
-        resolve(data)
-      })
-      .catch((error) => {
-        reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
-      })
+        .then((res) => {
+          const data = res.data
+          // 만약 로그인이 완료 되면 회원 정보 local 에 저장
+          console.log('회원 로그인 성공 여부 : ', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`로그인에 실패했습니다.: ${error.message}`))
+        })
     })
   }
 
@@ -394,6 +394,41 @@ export class Service {
         })
     })
   }
+
+  static getOrderProcessingList() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: api_url + `/order/order-list-all`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('주문목록 처리 전체 리스트', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`주문목록 처리 전체 리스트 조회 실패: ${error.message}`))
+        })
+    })
+  }
+
+  static getOrderTutle() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: api_url + `/order/turtle`
+      })
+        .then((res) => {
+          const data = res.data
+          console.log('터틀봇이 담당 order', data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(new Error(`터틀봇이 담당하는 order 조회 실패: ${error.message}`))
+        })
+    })
+  }
+
 }
 
 export default Service

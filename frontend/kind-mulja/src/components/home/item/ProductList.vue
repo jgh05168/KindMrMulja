@@ -101,16 +101,16 @@ const zzim = async (item, product_id) => {
       // 다른 버튼의 bounce 클래스 제거
       buttons.forEach((otherButton) => {
         if (otherButton !== button) {
-          otherButton.classList.remove('bounce')
+          otherButton.classList.remove('like')
         }
       })
 
       // 현재 클릭한 버튼에 bounce 클래스 추가
-      button.classList.add('bounce')
+      button.classList.add('like')
 
       // 1초 후에 bounce 클래스 제거
       setTimeout(() => {
-        button.classList.remove('bounce')
+        button.classList.remove('like')
       }, 1000)
     })
   })
@@ -162,6 +162,42 @@ const zzim = async (item, product_id) => {
   100% {
     transform: translateX(0);
   }
+}
+
+@keyframes like_effect {
+  0% {
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes dislike_effect {
+  0% {
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like {
+  animation: like_effect 0.6s ease-in-out;
+}
+
+.dislike {
+  animation: dislike_effect 1s ease-in-out;
 }
 
 .shake {

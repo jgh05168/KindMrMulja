@@ -11,56 +11,29 @@
     <RouterLink :to="{ name: 'order' }">my-order</RouterLink> /
     <RouterLink :to="{ name: 'zzim' }">ZZIM</RouterLink> / -->
   </div>
+  <!-- 만약 관리자 계정으로 로그인 된 경우, (조건문 걸어주기) -->
+  <div v-if="authStore.is_admin == true" class="admin">
+    <AdminPage />
+  </div>
 
-  <div class="phone">
+  <div v-else class="phone">
     <RouterView />
     <AppFooter />
   </div>
-  <!-- 만약 관리자 계정으로 로그인 된 경우, (조건문 걸어주기) -->
-  <v-card>
-    <v-layout style="position: relative; height: 100vh">
-      <v-navigation-drawer floating permanent style="position: relative">
-        <v-list dense nav>
-          <RouterLink :to="{ name: 'factory_map' }" tag="v-list-item" class="link">
-            <template v-slot:default="{ attrs }">
-              <v-list-item
-                v-bind="attrs"
-                prepend-icon="mdi-factory"
-                title="Factory Map"
-                value="factory_map"
-                color="black"
-              ></v-list-item>
-            </template>
-          </RouterLink>
-          <RouterLink :to="{ name: 'robots_status' }" tag="v-list-item" class="link">
-            <template v-slot:default="{ attrs }">
-              <v-list-item
-                v-bind="attrs"
-                prepend-icon="mdi-robot"
-                title="Robots"
-                value="robots"
-                color="black"
-              ></v-list-item>
-            </template>
-          </RouterLink>
-        </v-list>
-      </v-navigation-drawer>
-      <v-main style="padding-left: 0; flex-grow: 1">
-        <RouterView />
-      </v-main>
-    </v-layout>
-  </v-card>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 // import AppHeader from '@/layouts/AppHeader.vue'
 import AppFooter from '@/layouts/AppFooter.vue'
 import { useProductStore } from './stores/product'
 import Service from '@/api/api.js'
+import { useAuthStore } from './stores/auth'
+import AdminPage from '@/layouts/AdminPage.vue'
 
 const productStore = useProductStore()
+const authStore = useAuthStore()
 
 onMounted(async () => {
   const productList_res = await Service.getProductList()
@@ -84,6 +57,10 @@ onMounted(async () => {
   width: 100%;
   height: 100vh;
   font-family: 'pretendard';
+}
+
+.admin {
+  font-family: 'pretendard-extrabold';
 }
 
 .app-footer {

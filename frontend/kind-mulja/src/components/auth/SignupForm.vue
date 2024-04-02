@@ -20,7 +20,10 @@
         label="Email"
         variant="underlined"
         @click:append-inner="duplicate_check()"
-        :class="{ 'possible-email': email_duplicate == false, impossible: email_duplicate == true }"
+        :class="{
+          'possible-email': email_duplicate == false,
+          'impossible-email': email_duplicate == true
+        }"
       ></v-text-field>
 
       <v-text-field
@@ -44,13 +47,13 @@
         variant="underlined"
         @click:append="show2 = !show2"
       ></v-text-field>
-
+      <!-- 
       <v-checkbox
         style="margin: 0 auto; display: flex; justify-content: center"
         v-model="allowAlarm"
         label="푸쉬 알림 권한 동의"
         color="secondary"
-      ></v-checkbox>
+      ></v-checkbox> -->
 
       <BlackButton type="submit" buttonWidth="80%">
         <template #button-text>회원가입</template>
@@ -126,7 +129,7 @@ const rules = ref({
   },
   email_check: () => {
     if (email_duplicate.value == true) {
-      return false
+      return '중복된 이메일입니다.'
     } else {
       return true
     }
@@ -143,7 +146,7 @@ const password_check = ref(null)
 // const terms = ref(false)
 const email_duplicate = ref(null)
 // 알림 권한
-const allowAlarm = ref(false)
+// const allowAlarm = ref(false)
 
 const email_icon = computed(() => {
   if (email_duplicate.value == null) {
@@ -182,7 +185,6 @@ const CreateAccount = async () => {
         name: name.value,
         email: email.value,
         password: password.value,
-        alarm: allowAlarm.value
       })
       // 만약 회원가입이 성공적으로 되었다면
       if (res.result) {
@@ -219,8 +221,11 @@ const CreateAccount = async () => {
 
 /* 이메일 중복체크에 따른 스타일 */
 .possible-email {
+  color: rgba(27, 114, 44, 0.883);
+
 }
 
 .impossible-email {
+  color: rgba(240, 16, 16, 0.839);
 }
 </style>

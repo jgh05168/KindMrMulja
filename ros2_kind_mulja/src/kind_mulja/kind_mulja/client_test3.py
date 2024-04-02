@@ -5,7 +5,7 @@ from ssafy_msgs.msg import TargetGrid,WorkStatus
 from rclpy.node import Node
 
 truct_x=[-66.1336,-66.1336,-66.1336,-66.1336,-66.1336,-53.3041,-59.2474,-69.6383]
-truct_y=[-56.8071,-60.8233,-64.8082,-68.8176,-72.8231,-52.488,-52.488,-52.488]
+truct_y=[-56.7071,-60.7233,-64.7082,-68.7176,-72.8231,-52.488,-52.488,-52.488]
 # truct_x=[-61.64,-53.581,-45.569,-37.532,-29.518]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
@@ -39,6 +39,7 @@ class Client(Node):
             try:
                 json_data=json.loads(data)
                 #json 파싱 
+                print(data)
                 local_num=json_data.get('moving_zone')
                 product_x=json_data.get('product_x')  
                 product_y=json_data.get('product_y')    

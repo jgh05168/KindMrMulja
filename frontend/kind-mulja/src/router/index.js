@@ -185,19 +185,41 @@ const router = createRouter({
     {
       path: '/factory_map',
       name: 'factory_map',
-      component: FactoryMapView
+      component: FactoryMapView,
+      beforeEnter: (to,from, next) => {
+        const authStore = useAuthStore()
+          if (authStore.is_admin == 1) {
+            next()
+          }
+          else {
+            alert('관리자 전용 페이지 입니다.')
+            router.push({name:'home'})
+          }
+      }
     },
     {
       path: '/robots_status',
       name: 'robots_status',
-      component: RobotStatusView
+      component: RobotStatusView,
+      beforeEnter: (to,from, next) => {
+        const authStore = useAuthStore()
+        if (to.name == 'robots_status') {
+          if (authStore.is_admin) {
+            next()
+          }
+          else {
+            alert('관리자 전용 페이지 입니다.')
+            router.push({name:'home'})
+          }
+        }
+      }
     }
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from,next) => {
   const viewStore = useViewStore()
-
+  
   console.log(`이동: ${from.name} -> ${to.name}`)
   // 현재 가는 곳이 탭에 있는 곳이면 탭 value에 맞게 수정
   if (to.name == 'home') {
