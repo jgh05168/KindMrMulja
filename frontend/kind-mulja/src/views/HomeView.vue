@@ -31,8 +31,12 @@
       </v-tab>
     </v-tabs>
     <v-window v-model="tab">
-      <v-window-item v-for="(item, idx) in productStore.category" :key="idx" :value="item.id">
-        <ProductList :items="category_items[item.id]"></ProductList>
+      <v-window-item
+        v-for="(category, idx) in productStore.category"
+        :key="idx"
+        :value="category.id"
+      >
+        <ProductList :category-id="category.id"></ProductList>
       </v-window-item>
     </v-window>
   </div>
@@ -53,15 +57,6 @@ const productStore = useProductStore()
 const authStore = useAuthStore()
 
 const tab = ref(null)
-
-const category_items = ref({
-  popular: [],
-  desk: [],
-  drawer: [],
-  mattress: [],
-  closet: [],
-  sofa: []
-})
 
 const zzim_check = () => {
   // 만약 로컬 환경에 로그인 되어 있으면
@@ -86,13 +81,20 @@ onMounted(async () => {
   // 전체 상품 리스트에서 현재 선택된 카테고리 기준으로 필터링 해주기
 
   // 인기순으로 정렬하여 반환
-  category_items.value['popular'] = await productStore.product_list.sort(
+  productStore.category_items['popular'] = await productStore.product_list.sort(
     (a, b) => b.wish_count - a.wish_count
   )
 
   // product_list 배열을 순회하면서 조건을 만족하는 상품들을 찾음
   await productStore.product_list.forEach((product) => {
-    category_items.value[product.product_category].push(product)
+    productStore.category_items[product.product_category].push(product)
+  })
+
+  // product_list 배열을 순회하면서 품절상품이 위로 안오도록 하기
+  await productStore.category.forEach((category) => {
+    if (category.id !== 'popular') {
+      productStore.category_items[category.id].sort((a, b) => b.product_stock - a.product_stock)
+    }
   })
 })
 </script>
