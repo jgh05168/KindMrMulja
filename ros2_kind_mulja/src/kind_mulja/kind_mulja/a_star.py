@@ -38,7 +38,7 @@ class a_star(Node):
 
         self.dx = [-1, 0, 0, 1]
         self.dy = [0, 1, -1, 0]
-        self.dCost = [1, 1, 1, 1]
+        self.dCost = [10, 10, 10, 10]
 
     def grid_update(self):
         self.is_grid_update = True
@@ -142,7 +142,7 @@ class a_star(Node):
         
     def heuristic(self, a, b):
         #맨해튼 거리 함수
-        return abs(b[0] - a[0]) + abs(b[1] - a[1])
+        return abs(b[0] - a[0])*10 + abs(b[1] - a[1])*10
 
     def dijkstra(self, start, grid):
         pq = []
