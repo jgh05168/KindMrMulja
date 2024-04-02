@@ -105,7 +105,7 @@ class RequestMsgHandControl(Node):
             self.target_publisher.publish(self.request_target_msg)
             print(self.request_target_msg)
 
-            time.sleep(3)
+            # time.sleep(3)
             
             self.work_status_msg.is_start=True
             self.work_status_msg.order_detail_id=self.order_detail_id
@@ -114,20 +114,7 @@ class RequestMsgHandControl(Node):
             self.product_is_done=True
         else: 
             print("request_target is None")
-   
-        
-            # 4. 백엔드로 부터 좌표를 받으면 target_grid_msg 기반으로 물건 앞으로 이동하라고 publish한다.  
-            if self.target_grid_msg and self.product_is_done==False:
-            # if self.product_initialized and not self.product_is_done:
-                # print(self.target_grid_msg.product_x)
-                # print(self.target_grid_msg.product_y)
-                self.request_target_msg.header.frame_id = 'map'
-                self.request_target_msg.pose.position.x=self.product_x
-                self.request_target_msg.pose.position.y=self.product_y
-                self.target_publisher.publish(self.request_target_msg)
-                print(self.request_target_msg)
-                
-                
+            
     
         # 7. 로봇은 목적지에 위치한다. 
     #     x=self.odom_msg.pose.pose.position.x
@@ -148,7 +135,7 @@ class RequestMsgHandControl(Node):
                 self.request_hand_control_msg.control_mode=3        
                 self.request_handcontrol_publisher.publish(self.request_hand_control_msg) 
 
-                time.sleep(3)
+                # time.sleep(3)
                 
                 self.work_status_msg.is_start=False
                 self.work_status_msg.order_detail_id=self.order_detail_id
@@ -166,10 +153,6 @@ class RequestMsgHandControl(Node):
             self.request_target_msg.pose.position.y=self.charge_y
             self.target_publisher.publish(self.request_target_msg) 
                 
-                
-
-            
-
         
 
 def main(args=None):
