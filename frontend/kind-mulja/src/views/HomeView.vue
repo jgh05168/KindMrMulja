@@ -63,7 +63,7 @@ const zzim_check = () => {
   productStore.product_list.forEach(async (product) => {
     // 찜 목록 체크하는 로직 추가
     const check_res = await Service.checkProductWish(authStore.user_id, product.product_id)
-    console.log('home Mounted 상품 찜 여부 : ', check_res.result)
+    // console.log('home Mounted 상품 찜 여부 : ', check_res.result)
     product.is_zzim = check_res.result
   })
 }
@@ -78,24 +78,6 @@ onMounted(async () => {
   if (authStore.user_id) {
     await zzim_check()
   }
-  // 전체 상품 리스트에서 현재 선택된 카테고리 기준으로 필터링 해주기
-
-  // 인기순으로 정렬하여 반환
-  productStore.category_items['popular'] = await productStore.product_list.sort(
-    (a, b) => b.wish_count - a.wish_count
-  )
-
-  // product_list 배열을 순회하면서 조건을 만족하는 상품들을 찾음
-  await productStore.product_list.forEach((product) => {
-    productStore.category_items[product.product_category].push(product)
-  })
-
-  // product_list 배열을 순회하면서 품절상품이 위로 안오도록 하기
-  await productStore.category.forEach((category) => {
-    if (category.id !== 'popular') {
-      productStore.category_items[category.id].sort((a, b) => b.product_stock - a.product_stock)
-    }
-  })
 })
 </script>
 
