@@ -27,8 +27,12 @@ export const useAuthStore = defineStore('auth', () => {
         productStore.product_list = productList
          // 앱을 새로고침
         window.location.reload();
-        router.push({name:'home'})
+        if (is_admin.value == 1) {
+          router.push({name:'factory_map'})
 
+        } else {
+          router.push({name:'home'})
+        }     
       }
 
     // allow_alarm 값이 바뀌면 백엔드로 권한 설정 바꾸는 요청 보내기
