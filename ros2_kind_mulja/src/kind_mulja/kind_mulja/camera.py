@@ -27,9 +27,10 @@ class CameraSubscriber(Node):
                 self.start_msg = True
 
     def img_callback(self, msg):
+        
         np_arr = np.frombuffer(msg.data, np.uint8)
         cv_image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        _, img_encoded = cv2.imencode('.webp', cv_image, [cv2.IMWRITE_WEBP_QUALITY, 90])
+        _, img_encoded = cv2.imencode('.webp', cv_image, [cv2.IMWRITE_WEBP_QUALITY, 80])
         image_str = img_encoded.tostring()
         
         self.send_image_to_server(image_str)
@@ -51,8 +52,8 @@ class CameraSubscriber(Node):
 
     def start_socketio(self):
         # self.sio.connect('https://j10c109.p.ssafy.io/socket1')
-        # self.sio.connect('http://localhost:12002')
-        self.sio.connect('https://j10c109.p.ssafy.io')
+        self.sio.connect('http://localhost:12002')
+        # self.sio.connect('https://j10c109.p.ssafy.io')
         self.sio.wait()
 
 def main():
