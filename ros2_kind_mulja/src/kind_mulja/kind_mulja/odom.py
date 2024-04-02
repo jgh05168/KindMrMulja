@@ -44,7 +44,7 @@ class odom(Node):
         self.is_imu=False
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.
-        self.x=-55.9282
+        self.x=-53.4449
         self.y=-55.436
         self.map_resolution=0.2
         self.map_offset_x=-50-25.0
@@ -52,7 +52,7 @@ class odom(Node):
                 
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
-        self.imu_offset= -0.5 * pi
+        self.imu_offset= -0.5 * pi *0.95
         self.prev_time=0
 
         
