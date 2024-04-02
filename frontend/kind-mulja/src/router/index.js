@@ -13,7 +13,6 @@ import OrderView from '@/views/OrderView.vue'
 import WishView from '@/views/WishView.vue'
 import ProfileView from '@/views/auth/ProfileView.vue'
 import FactoryMapView from '@/views/FactoryMapView.vue'
-import RobotStatusView from '@/views/RobotStatusView.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useOrderStore } from '@/stores/order'
 import { useViewStore } from '@/stores/view'
@@ -195,23 +194,6 @@ const router = createRouter({
             alert('관리자 전용 페이지 입니다.')
             router.push({name:'home'})
           }
-      }
-    },
-    {
-      path: '/robots_status',
-      name: 'robots_status',
-      component: RobotStatusView,
-      beforeEnter: (to,from, next) => {
-        const authStore = useAuthStore()
-        if (to.name == 'robots_status') {
-          if (authStore.is_admin) {
-            next()
-          }
-          else {
-            alert('관리자 전용 페이지 입니다.')
-            router.push({name:'home'})
-          }
-        }
       }
     }
   ]

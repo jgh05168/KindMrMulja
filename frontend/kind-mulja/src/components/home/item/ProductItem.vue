@@ -23,11 +23,4 @@
 
 <script setup></script>
 
-<style scoped>
-.product_item {
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  margin: 0 auto;
-}
-</style>
+<style scoped></style>

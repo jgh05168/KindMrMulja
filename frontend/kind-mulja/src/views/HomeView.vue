@@ -36,7 +36,7 @@
         :key="idx"
         :value="category.id"
       >
-        <ProductList :category-id="category.id"></ProductList>
+        <ProductList :items="categoryItems[category.id]"></ProductList>
       </v-window-item>
     </v-window>
   </div>
@@ -51,7 +51,7 @@ import AppHeader from '@/layouts/AppHeader.vue'
 import { useProductStore } from '@/stores/product'
 import { useAuthStore } from '@/stores/auth'
 import Service from '@/api/api'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
@@ -68,6 +68,15 @@ const zzim_check = () => {
   })
 }
 
+const categoryItems = reactive({
+  popular: [],
+  desk: [],
+  drawer: [],
+  mattress: [],
+  closet: [],
+  sofa: []
+})
+
 onUpdated(async () => {
   if (authStore.user_id) {
     await zzim_check()
@@ -78,6 +87,21 @@ onMounted(async () => {
   if (authStore.user_id) {
     await zzim_check()
   }
+
+  const sortedPopular = productStore.product_list
+    .slice()
+    .sort((a, b) => b.wish_count - a.wish_count)
+  categoryItems.popular = sortedPopular
+
+  productStore.product_list.forEach((product) => {
+    categoryItems[product.product_category].push(product)
+  })
+
+  productStore.category.forEach((category) => {
+    if (category.id !== 'popular') {
+      categoryItems[category.id].sort((a, b) => b.product_stock - a.product_stock)
+    }
+  })
 })
 </script>
 

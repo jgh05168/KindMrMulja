@@ -15,21 +15,22 @@
             <p>Factory Map</p>
           </v-btn>
           <v-btn
+            v-if="authStore.user_id == null"
             height="70px"
             class="nav-item-link"
-            @click="router.push({ name: 'robots_status' })"
+            @click="router.push({ name: 'login' })"
           >
-            <v-icon size="40">mdi-robot</v-icon>
-            <p>Robots</p>
+            <v-icon size="40">mdi-logout</v-icon>
+            <p>LogIn</p>
           </v-btn>
-          <v-btn height="70px" class="nav-item-link" @click="authStore.logout()">
+          <v-btn v-else height="70px" class="nav-item-link" @click="authStore.logout()">
             <v-icon size="40">mdi-logout</v-icon>
             <p>LogOut</p>
           </v-btn>
         </div>
       </v-navigation-drawer>
       <v-app-bar title="실시간 모니터링 시스템"></v-app-bar>
-      <v-main style="padding-left: 0">
+      <v-main v-if="authStore.user_id !== null" style="padding-left: 0">
         <RouterView />
       </v-main>
     </v-layout>
