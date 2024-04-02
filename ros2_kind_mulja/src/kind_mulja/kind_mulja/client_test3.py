@@ -32,7 +32,7 @@ class Client(Node):
         @self.sio.event
         def connect():
             print('connection established')
-            self.sio.emit('sendTime','TEST메세지 입니다. 안녕하세요')
+            self.sio.emit('sendTime','auto lift 클라이언트 입니다. 서버에 접속합니다.')
         
         @self.sio.event
         def order(data):
@@ -81,7 +81,7 @@ class Client(Node):
         
         @self.sio.event
         def disconnect():
-            print('disconnected from server')
+            print('auto lift 클라이언트, 연결을 끊습니다.')
         
     def work_status_cb(self,msg):
         # print("3: ",msg)
@@ -102,7 +102,7 @@ class Client(Node):
         
     
     def start_socketio(self):
-        self.sio.connect('http://192.168.100.131:12001/')
+        self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/test/socket.io')
         self.sio.wait()
 
     
