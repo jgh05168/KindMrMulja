@@ -48,10 +48,10 @@ class odom(Node):
         self.initial_x_is=False
         self.initial_y_is=False
 
-        self.x=-53.4449
-        self.y=-55.436
+        self.x=-50
+        self.y=-50
 
-        self.map_resolution=0.2
+        self.map_resolution=0.1
         self.map_offset_x=-50-25.0
         self.map_offset_y=-50-25.0
                 
