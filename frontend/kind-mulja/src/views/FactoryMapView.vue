@@ -93,7 +93,7 @@ const connect_socket = (id, marker, socket_url) => {
       const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
       adjustMarkerPosition(marker, adjustedX, adjustedY)
     }
-  })` `
+  })
 
   // 에러가 발생했을 때의 처리
   socket.on('error', (error) => {
