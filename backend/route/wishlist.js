@@ -14,7 +14,6 @@ wishlist.get("/:user_id", async (req, res) => {
             WHERE wl.user_id = ?;
           `;
     const results = await pool.query(query, user_id);
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.error("Error retrieving wishlist:", error);
@@ -40,7 +39,6 @@ wishlist.delete("/:wishlist_id", async (req, res) => {
         // 제품의 찜 횟수를 업데이트
         const updateQuery = `UPDATE product_list SET wishcount = wishcount - 1 WHERE product_id = ?`;
         const updateResult = await pool.query(updateQuery, product_id);
-        console.log(updateResult[0]);
         if (updateResult[0].affectedRows > 0) {
           // 제품의 찜 횟수가 성공적으로 업데이트되었을 경우
           return res.json({ result: true });
