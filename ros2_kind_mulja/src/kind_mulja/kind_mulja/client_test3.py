@@ -10,8 +10,8 @@ truct_y=[-56.7071,-60.7233,-64.7082,-68.7176,-72.8231,-52.488,-52.488,-52.488]
 # truct_y=[-58.0,-58.0,-58.0,-58.0,-58.0]
 
 turtle_id_about_me=1
-turtle_charge_x= -50
-turtle_charge_y= -50
+turtle_charge_x= -50.0
+turtle_charge_y= -50.0
 # turtle_charge_x= -50.0
 # turtle_charge_y= -50.0
 
@@ -104,6 +104,7 @@ class Client(Node):
     
     def start_socketio(self):
         self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/lift/socket.io')
+        #self.sio.connect('http://localhost:12001')
         self.sio.wait()
 
     
