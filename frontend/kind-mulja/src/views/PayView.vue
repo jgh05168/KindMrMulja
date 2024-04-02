@@ -38,7 +38,7 @@
         rounded="5"
         v-model="selected_area"
         style="font-weight: bold"
-        :items="['픽업A', '픽업B', '픽업C']"
+        :items="['픽업1', '픽업2', '픽업3']"
         variant="outlined"
         placeholder="픽업 장소를 선택해주세요."
       >

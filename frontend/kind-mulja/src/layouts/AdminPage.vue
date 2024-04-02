@@ -2,12 +2,12 @@
   <v-card>
     <v-layout style="position: relative; height: 100vh">
       <v-navigation-drawer floating permanent color="#212121" style="position: relative">
-        <div style="height: 100%">
+        <div style="height: 100%; width: 100%">
           <div class="nav-item" style="padding-left: 20px; display: flex; align-items: center">
             <v-avatar size="50"
               ><v-img style="width: 80px; height: 80px" src="/paid.png"></v-img
             ></v-avatar>
-            <h2 class="ms-4">친절한 물자씨</h2>
+            <h3 class="ms-4">친절한 물자씨</h3>
           </div>
           <v-divider class="nav-divider"></v-divider>
           <v-btn height="70px" class="nav-item-link" @click="router.push({ name: 'factory_map' })">
