@@ -30,7 +30,9 @@ class TrutlebotLoc(Node):
                 self.sio.emit('sendTime', '터틀봇의 x, y 좌표를 보냅니다. 안녕하세요')
                 self.start_msg = True
                 
-            
+        # 주기적으로 위치를 보내는 타이머 생성
+        self.timer = self.create_timer(0.5, self.send_periodic_location)
+
     def send_location_to_server(self, location_data):
         try:
             '''
@@ -38,7 +40,7 @@ class TrutlebotLoc(Node):
             - localhost에서 지정해줘야 하므로 무조건 크로스체크 하기(실제 시연하는 로컬에서 설정할 것)
             - camera.py 함수와 같은 number를 사용해야 한다(로봇의 id와 같은 역할)
             '''
-            self.sio.emit('sendLocation3', location_data)
+            self.sio.emit('sendLocation1', location_data)
             print('Location data sent to server:', location_data)
         except Exception as e:
             print('Failed to send location data to server:', str(e))
@@ -47,7 +49,8 @@ class TrutlebotLoc(Node):
         self.data["x"] = msg.twist.angular.x
         self.data["y"] = msg.twist.angular.y
 
-        # 위치 정보 송신
+    # 주기적으로 위치를 보내는 메소드
+    def send_periodic_location(self):
         if self.data["x"] is not None and self.data["y"] is not None:
             # 위치 데이터를 JSON 형태로 변환
             location_data = json.dumps({"x": self.data["x"], "y": self.data["y"]})

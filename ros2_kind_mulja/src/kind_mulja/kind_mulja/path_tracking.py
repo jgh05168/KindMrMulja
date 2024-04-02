@@ -61,8 +61,11 @@ class followTheCarrot(Node):
     def timer_callback(self):
 
         if self.is_status and self.is_odom and self.is_path:
-            print(len(self.path_msg.poses))
-            if len(self.path_msg.poses) > 6:
+            #print(len(self.path_msg.poses))
+            #print(self.robot_yaw)
+            print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
+
+            if len(self.path_msg.poses) > 5:
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
@@ -73,7 +76,7 @@ class followTheCarrot(Node):
                 # print(robot_pose_x,robot_pose_y,lateral_error)
                 
                 # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
-                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.8
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.75
 
                 if self.lfd < self.min_lfd :
                     self.lfd=self.min_lfd
@@ -120,8 +123,8 @@ class followTheCarrot(Node):
                     
                     # 로직 7. 선속도, 각속도 정하기
                     if theta > abs(0.5):
-                        out_vel=1.0
-                        out_rad_vel=theta*1.25
+                        out_vel=0.5
+                        out_rad_vel=theta*1.0
                     else:
                         out_vel=1.0
                         out_rad_vel=theta*2.0
@@ -144,12 +147,25 @@ class followTheCarrot(Node):
 
            
             else :
-                if len(self.path_msg.poses) > 1:
-                    self.cmd_msg.linear.x=0.3
+                if len(self.path_msg.poses) > 2:
+                    self.cmd_msg.linear.x=0.1
                     self.cmd_msg.angular.z=0.0
                 
                 # print("no found forward point")
                 else:
+                    # if self.odom_msg.pose.pose.position.x < -58 and self.odom_msg.pose.pose.position.x > -61 and self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59:
+                    #     print("in")
+                    #     if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                    #         print("--")
+                    #         self.cmd_msg.linear.x=0.0001
+                    #         self.cmd_msg.angular.z=0.5
+                    #     elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                    #         print("++")
+                    #         self.cmd_msg.linear.x=0.0001
+                    #         self.cmd_msg.angular.z=-0.5
+                    #     else:
+                    #         self.cmd_msg.linear.x=0.0
+                    #         self.cmd_msg.angular.z=0.0
                     self.cmd_msg.linear.x=0.0
                     self.cmd_msg.angular.z=0.0
 
