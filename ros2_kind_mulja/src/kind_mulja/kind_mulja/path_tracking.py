@@ -61,8 +61,8 @@ class followTheCarrot(Node):
     def timer_callback(self):
 
         if self.is_status and self.is_odom and self.is_path:
-
-            if len(self.path_msg.poses) > 3:
+            print(len(self.path_msg.poses))
+            if len(self.path_msg.poses) > 6:
                 self.is_look_forward_point= False
                 
                 # 로봇의 현재 위치를 나타내는 변수
@@ -73,7 +73,7 @@ class followTheCarrot(Node):
                 # print(robot_pose_x,robot_pose_y,lateral_error)
                 
                 # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
-                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.71
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.8
 
                 if self.lfd < self.min_lfd :
                     self.lfd=self.min_lfd
@@ -119,19 +119,39 @@ class followTheCarrot(Node):
                     theta = -atan2(local_forward_point[1], local_forward_point[0]) 
                     
                     # 로직 7. 선속도, 각속도 정하기
-                    out_vel=0.7
-                    out_rad_vel=theta*1.0
-                    # out_rad_vel=theta*1.55
+                    if theta > abs(0.5):
+                        out_vel=1.0
+                        out_rad_vel=theta*1.25
+                    else:
+                        out_vel=1.0
+                        out_rad_vel=theta*2.0
+
+                    #print(theta)
+
+                    # if theta > 0.1:
+                    #     out_rad_vel=2
+
+                    # elif theta < -0.1:
+                    #     out_rad_vel=-2
+
+                    # else:
+                    #     out_rad_vel=theta*1.55
+
+                    #out_rad_vel=theta*1.55
 
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel
 
-
            
             else :
+                if len(self.path_msg.poses) > 1:
+                    self.cmd_msg.linear.x=0.3
+                    self.cmd_msg.angular.z=0.0
+                
                 # print("no found forward point")
-                self.cmd_msg.linear.x=0.0
-                self.cmd_msg.angular.z=0.0
+                else:
+                    self.cmd_msg.linear.x=0.0
+                    self.cmd_msg.angular.z=0.0
 
             
             self.cmd_pub.publish(self.cmd_msg)
@@ -184,7 +204,7 @@ class followTheCarrot(Node):
             for waypoint in self.path_msg.poses:
                 for lidar_point in pcd_msg.points:
                     distance = sqrt(pow(waypoint.pose.position.x-lidar_point.x,2)+pow(waypoint.pose.position.y-lidar_point.y,2))
-                    if distance < 0.06: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
+                    if distance < 0.04: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
                         ### 아마 여기에 주로 코드를 작성하게 될 듯 ###
                         self.collision = True
 
