@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import io from 'socket.io-client'
 import LiveOrder from '@/components/LiveOrder.vue'
 import RobotsStatus from '@/components/RobotsStatus.vue'
@@ -36,6 +36,9 @@ const image = ref(null)
 const marker_1 = ref(null)
 const marker_2 = ref(null)
 const marker_3 = ref(null)
+
+var socket = null
+const socket_connection = ref(false)
 
 const robots = ref([{}])
 
@@ -66,22 +69,7 @@ const handleRobotSelected = (robotId) => {
 // 이미지 좌표 (수정 필요)
 const imageCoords = { x: 600, y: 600 }
 
-const connect_socket = (id, marker, socket_url) => {
-  // const socket = io(socket_url, { secure: true })
-  const socket = io(socket_url, {
-    // note changed URL here
-    path: '/socket.io',
-    transports: ['websocket'],
-    namespace: `/camloc` // namespace를 수정해가며 설정하기
-  })
-
-  // const socket = io('http://localhost:12002')
-  // 연결이 수립되었을 때의 처리
-  socket.on('connect', () => {
-    console.log(id, '번 로봇의 웹소켓 연결이 열렸습니다.')
-    // 데이터를 수신 받았을 때의 처리
-  })
-
+const connect_socket = (id, marker) => {
   // 데이터를 수신하여 마커 위치를 조정
   socket.on(`sendToFrontLoc${id}`, (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
@@ -101,13 +89,6 @@ const connect_socket = (id, marker, socket_url) => {
   })
 }
 
-onMounted(async () => {
-  robots.value = await Service.getOrderTutle()
-  connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io')
-  connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
-  connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
-})
-
 // 마커 위치 조정 함수
 
 function adjustMarkerPosition(marker, x, y) {
@@ -126,6 +107,29 @@ function adjustMarkerPosition(marker, x, y) {
   marker.style.top = `${imageCoords.y - markerY - 10}px`
   // console.log(marker.style.left, marker.style.top)
 }
+
+onMounted(async () => {
+  robots.value = await Service.getOrderTutle()
+  // socket = io(socket_url, {
+  //   // note changed URL here
+  //   path: '/socket.io',
+  //   transports: ['websocket'],
+  //   namespace: `/camloc` // namespace를 수정해가며 설정하기
+  // })
+
+  socket = io('http://localhost:12002')
+  // 연결이 수립되었을 때의 처리
+  socket.on('connect', () => {
+    console.log('웹소켓 연결이 열렸습니다.')
+    console.log(socket_connection.value)
+    socket_connection.value = true
+    // 데이터를 수신 받았을 때의 처리
+  })
+
+  connect_socket(1, marker_1.value)
+  connect_socket(2, marker_2.value)
+  connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
+})
 </script>
 
 <style>

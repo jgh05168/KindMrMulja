@@ -1,89 +1,75 @@
 <template>
-  <v-card>
-    <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
-      <v-tab class="tab-item" :value="1">1번 로봇</v-tab>
-      <v-tab class="tab-item" :value="2">2번 로봇</v-tab>
-      <v-tab class="tab-item" :value="3">3번 로봇</v-tab>
-    </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item v-for="n in 3" :key="n" :value="n">
-        <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
-        <v-img
-          v-if="tab === n"
-          :src="imageSources[n - 1]"
-          aspect-ratio="1"
-          :ref="`image${n}`"
-        ></v-img>
-      </v-window-item>
-    </v-window>
-  </v-card>
+  <v-container>
+    <h2>카메라 모니터링</h2>
+    <v-row>
+      <v-col v-for="n in 3" :key="n" :value="n" cols="4">
+        <v-card>
+          <div>
+            <v-card-title>{{ n }} 번 로봇 카메라</v-card-title>
+            <v-divider></v-divider>
+            <!-- 이미지 요소의 참조를 업데이트하여 이미지가 표시되도록 함 -->
+            <v-img
+              width="200px"
+              :src="imageSources[n - 1]"
+              aspect-ratio="1"
+              :ref="`image${n}`"
+              style="scale: 2"
+            ></v-img>
+          </div>
+        </v-card> </v-col
+    ></v-row>
+  </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
-
-const tab = ref(1) // 초기 탭 값 설정
 
 // 이미지 소스를 저장할 배열
 const imageSources = ref(['', '', ''])
 
+var socket = null
+
 // 이미지 요소에 대한 참조를 저장할 배열
 const imageRefs = [ref(null), ref(null), ref(null)]
 
-let socket = null
-
 onMounted(() => {
-  switchSocket(1, 'https://j10c109.p.ssafy.io')
-  switchSocket(2, 'https://j10c109.p.ssafy.io')
-  switchSocket(3, 'https://j10c109.p.ssafy.io')
+  socket = io('http://localhost:12002/')
+
+  // const socket = io(socket_url, {
+  //   // note changed URL here
+  //   path: '/socket.io',
+  //   transports: ['websocket'],
+  //   namespace: `/camloc` // namespace를 수정해가며 설정하기
+  // })
+
+  switchSocket(1)
+  switchSocket(2)
+  switchSocket(3)
 })
 
-watch(tab, (newValue) => {
-  // console.log('Tab value changed to:', newValue)
-  if (newValue !== 1) {
-    socket.close() // 탭 값이 1이 아닌 경우 소켓 닫기
-  } else if (newValue === 1) {
-    switchSocket() // 탭 값이 1인 경우 소켓 열기
-  }
-})
-
-function switchSocket(id, socket_url) {
+function switchSocket(id) {
   // 탭 값이 1인 경우에만 소켓 열기
-  if (tab.value === 1) {
-    // socket = io('http://localhost:12002/')
-    // socket = io('https://j10c109.p.ssafy.io:12003/')
 
-    const socket = io(socket_url, {
-      // note changed URL here
-      path: '/socket.io',
-      transports: ['websocket'],
-      namespace: `/camloc` // namespace를 수정해가며 설정하기
-    })
+  socket.on('error', (error) => {
+    console.error('웹소켓 에러:', error)
+  })
+  // 데이터를 수신하여 이미지 표시
+  socket.on(`sendToFrontImage${id}`, (data) => {
+    // 이미지 데이터를 Base64로 인코딩
+    const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
 
-    socket.on('connect', () => {
-      console.log('웹소켓 연결이 열렸습니다.')
-    })
-    socket.on('error', (error) => {
-      console.error('웹소켓 에러:', error)
-    })
-    // 데이터를 수신하여 이미지 표시
-    socket.on(`sendToFrontImage${id}`, (data) => {
-      // 이미지 데이터를 Base64로 인코딩
-      const imageData = btoa(String.fromCharCode.apply(null, new Uint8Array(data)))
+    // 이미지 소스를 업데이트
+    imageSources.value[id - 1] = 'data:image/webp;base64,' + imageData
 
-      // 이미지 소스를 업데이트
-      imageSources.value[id - 1] = 'data:image/webp;base64,' + imageData
+    // 이미지 요소의 참조를 업데이트
+    const imgElement = imageRefs[id - 1].value
 
-      // 이미지 요소의 참조를 업데이트
-      const imgElement = imageRefs[id - 1].value
-
-      // 이미지 데이터를 img 요소의 src 속성에 할당하여 표시
-      if (imgElement) {
-        imgElement.src = imageSources.value[id - 1]
-      }
-    })
-  }
+    // 이미지 데이터를 img 요소의 src 속성에 할당하여 표시
+    if (imgElement) {
+      imgElement.src = imageSources.value[id - 1]
+    }
+  })
 }
 </script>
 <style scoped>
