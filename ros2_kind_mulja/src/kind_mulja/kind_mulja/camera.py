@@ -43,7 +43,7 @@ class CameraSubscriber(Node):
             - localhost에서 지정해줘야 하므로 무조건 크로스체크 하기(실제 시연하는 로컬에서 설정할 것)
             - camera.py 함수와 같은 number를 사용해야 한다(로봇의 id와 같은 역할)
             '''
-            self.sio.emit('sendImage1', image_data)
+            self.sio.emit('sendImage3', image_data)
             # print(image_data)
             print('Image data sent to server')
         except Exception as e:
