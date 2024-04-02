@@ -11,14 +11,6 @@ export const useProductStore = defineStore('product', () => {
     {id:'sofa',title:'소파', icon:'mdi-sofa-single-outline'},
   ])
 
-  const category_items = ref({
-    popular: [],
-    desk: [],
-    drawer: [],
-    mattress: [],
-    closet: [],
-    sofa: []
-  })
   
   const now_category = ref('popular')
 
@@ -31,5 +23,5 @@ export const useProductStore = defineStore('product', () => {
 
 
   return {product_list, category, now_category, item,
-  now_product_id,category_items }
+  now_product_id}
 }, { persist: true })
