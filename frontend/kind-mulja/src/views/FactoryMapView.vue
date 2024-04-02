@@ -41,14 +41,14 @@ const imageCoords = { x: 600, y: 600 }
 
 const connect_socket = (id, marker, socket_url) => {
   // const socket = io(socket_url, { secure: true })
-  const socket = io(socket_url, {
-    // note changed URL here
-    path: '/socket.io',
-    transports: ['websocket'],
-    namespace: `/socket/loc`
-  })
+  // const socket = io(socket_url, {
+  //   // note changed URL here
+  //   path: '/socket.io',
+  //   transports: ['websocket'],
+  //   namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+  // })
 
-  // const socket = io('http://localhost:12002')
+  const socket = io('http://localhost:12002')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
     console.log(id, '번 로봇의 웹소켓 연결이 열렸습니다.')
@@ -56,7 +56,7 @@ const connect_socket = (id, marker, socket_url) => {
   })
 
   // 데이터를 수신하여 마커 위치를 조정
-  socket.on('sendToFront', (data) => {
+  socket.on('sendToFrontLoc', (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
     // console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
@@ -66,7 +66,7 @@ const connect_socket = (id, marker, socket_url) => {
       const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
       adjustMarkerPosition(marker, adjustedX, adjustedY)
     }
-  })
+  })` `
 
   // 에러가 발생했을 때의 처리
   socket.on('error', (error) => {
