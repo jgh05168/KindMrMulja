@@ -83,7 +83,7 @@ const connect_socket = (id, marker, socket_url) => {
   })
 
   // 데이터를 수신하여 마커 위치를 조정
-  socket.on('sendToFrontLoc', (data) => {
+  socket.on(`sendToFrontLoc${id}`, (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
     // console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
@@ -104,8 +104,8 @@ const connect_socket = (id, marker, socket_url) => {
 onMounted(async () => {
   robots.value = await Service.getOrderTutle()
   connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io')
-  // connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
-  // connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
+  connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
+  connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
 })
 
 // 마커 위치 조정 함수
