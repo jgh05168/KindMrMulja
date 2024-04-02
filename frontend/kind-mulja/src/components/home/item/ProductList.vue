@@ -2,15 +2,21 @@
   <v-container>
     <v-infinite-scroll height="900" side="end">
       <v-row style="margin: 0 0">
-        <v-col v-for="(item, idx) in props.items" :key="idx" cols="6">
+        <v-col style="position: relative" v-for="(item, idx) in productStore.category_items[props.categoryId]" :key="idx" cols="6">
+          <v-badge
+            v-if="item.product_stock == 0"
+            style="position: absolute; top: 58%; left: 20%; z-index: 2"
+            color="red-accent-4"
+            content="품절"
+          ></v-badge>
           <ProductItem>
             <template #item-img>
-              <div @click="GoDetail(item.product_id)">
+              <div @click="GoDetail(item?.product_id)">
                 <v-img
                   :aspect-ratio="1 / 1"
                   width="cover"
                   style="border-radius: 3%"
-                  :src="`/product/${item.product_id}.jpg`"
+                  :src="`/product/${item?.product_id}.jpg`"
                 >
                 </v-img>
               </div>
@@ -18,7 +24,7 @@
 
             <template #item-title>
               <v-card-subtitle
-                @click="GoDetail(item.product_id)"
+                @click="GoDetail(item?.product_id)"
                 style="font-size: 16px; font-weight: bold"
               >
                 {{ item.product_name }}
@@ -29,7 +35,7 @@
               <v-card-title style="display: flex; justify-content: space-between">
                 <p style="font-size: 20px">
                   <v-icon class="me-1" size="15">mdi-currency-krw</v-icon
-                  >{{ Utils.numberWithCommas(item.product_price) }}
+                  >{{ Utils.numberWithCommas(item?.product_price) }}
                 </p>
                 <v-btn
                   class="zzim-btn"
@@ -61,7 +67,7 @@ import { useAuthStore } from '@/stores/auth'
 import Utils from '@/utils/utils'
 
 const props = defineProps({
-  items: Array
+  categoryId: String
 })
 
 const authStore = useAuthStore()

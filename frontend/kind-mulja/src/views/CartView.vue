@@ -43,7 +43,21 @@
           :item-quentity="item.product_quentity"
         >
           <template #item-check>
-            <v-checkbox hide-details v-model="selected_items" :value="item"></v-checkbox>
+            <div>
+              <v-badge
+                v-if="item.product_stock == 0"
+                style="position: absolute; top: 10%; left: 15%; z-index: 2"
+                color="#E53935"
+                content="품절"
+              ></v-badge>
+              <v-checkbox
+                :disabled="item.product_stock == 0"
+                hide-details
+                v-model="selected_items"
+                :value="item"
+              >
+              </v-checkbox>
+            </div>
           </template>
 
           <template #item-image>
@@ -120,6 +134,9 @@
         <template #button-text>결제하기</template>
       </BlackButton>
     </div>
+    <v-snackbar v-model="checkbar" :timeout="timeout" color="#B71C1C">
+      {{ check_message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -151,12 +168,28 @@ const change_expand = () => {
   expand.value = !expand.value
 }
 
+const checkbar = ref(false)
+const check_message = ref('')
+const timeout = 3000 // Snackbar가 표시될 시간
+
+const check_stock = () => {
+  let res = false
+  selected_items.value.forEach(async (item) => {
+    const detail = await Service.getProduct(item.product_id)
+    if (item.product_quentity > detail.product_stock) {
+      check_message.value = '품절 상품이거나 재고 수량보다 많이 주문하였습니다.'
+      res = true
+    }
+  })
+  return res
+}
+
 const cart_items = ref([])
 const selected_items = ref([])
 
 const all_select = () => {
   if (selected_items.value.length == 0 || selected_items.value.length < cart_items.value.length) {
-    selected_items.value = cart_items.value
+    selected_items.value = cart_items.value.filter((item) => item.product_stock > 0)
   } else {
     selected_items.value = []
   }
@@ -207,17 +240,24 @@ const save_data = () => {
 }
 
 const goToOrder = async () => {
-  // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
-  await save_data()
-  console.log(orderStore.selected_item)
-  orderStore.address_list = await Service.getAddress(authStore.user_id)
-  // 결제하기 버튼 클릭 시 결제 페이지로 이동
-  await router.push({ name: 'pay' })
+  if (!check_stock()) {
+    // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
+    await save_data()
+    console.log(orderStore.selected_item)
+    orderStore.address_list = await Service.getAddress(authStore.user_id)
+    // 결제하기 버튼 클릭 시 결제 페이지로 이동
+    await router.push({ name: 'pay' })
+  } else {
+    checkbar.value = true
+  }
 }
 
 onMounted(async () => {
   const cart_list_res = await Service.cartList(authStore.user_id)
   cart_items.value = cart_list_res
+
+  // 페이지 로드 시 화면 상단으로 스크롤
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 </script>
 
