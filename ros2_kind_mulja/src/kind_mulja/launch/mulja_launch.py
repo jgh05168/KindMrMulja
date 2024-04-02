@@ -85,9 +85,9 @@ def generate_launch_description():
             node_executable='send_turtlebot_loc',
             node_name='send_turtlebot_loc'
         ),
-        Node(
-            package='kind_mulja',
-            node_executable='camera',
-            node_name='camera'
-        ),
+        # Node(
+        #     package='kind_mulja',
+        #     node_executable='camera',
+        #     node_name='camera'
+        # ),
     ])

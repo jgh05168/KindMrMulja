@@ -144,7 +144,7 @@ class followTheCarrot(Node):
 
            
             else :
-                if len(self.path_msg.poses) > 1:
+                if len(self.path_msg.poses) > 2:
                     self.cmd_msg.linear.x=0.3
                     self.cmd_msg.angular.z=0.0
                 
