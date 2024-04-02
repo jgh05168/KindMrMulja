@@ -71,7 +71,7 @@ const connect_socket = (id, marker, socket_url) => {
   const socket = io(socket_url, {
     // note changed URL here
     path: '/socket.io',
-    // transports: ['websocket'],
+    transports: ['polling', 'websocket'],
     namespace: `/camloc/` // namespace를 수정해가며 설정하기
   })
 
