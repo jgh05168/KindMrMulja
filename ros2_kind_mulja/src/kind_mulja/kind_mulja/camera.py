@@ -37,7 +37,7 @@ class CameraSubscriber(Node):
 
     def send_image_to_server(self, image_data):
         try:
-            self.sio.emit('sendImage', image_data)
+            self.sio.emit('sendImage1', image_data)
             # print(image_data)
             print('Image data sent to server')
         except Exception as e:
@@ -52,7 +52,7 @@ class CameraSubscriber(Node):
         '''
         # self.sio.connect('https://j10c109.p.ssafy.io/socket1')
         # self.sio.connect('http://localhost:12002')
-        self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/camloc/socket.io')
+        self.sio.connect('https://j10c109.p.ssafy.io')
         self.sio.wait()
 
 def main():

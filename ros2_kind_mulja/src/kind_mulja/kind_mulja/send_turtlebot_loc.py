@@ -33,7 +33,7 @@ class TrutlebotLoc(Node):
             
     def send_location_to_server(self, location_data):
         try:
-            self.sio.emit('sendLocation', location_data)
+            self.sio.emit('sendLocation1', location_data)
             print('Location data sent to server:', location_data)
         except Exception as e:
             print('Failed to send location data to server:', str(e))
