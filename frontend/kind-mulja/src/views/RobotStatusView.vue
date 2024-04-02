@@ -54,9 +54,9 @@ function switchSocket() {
 
     const socket = io('https://j10c109.p.ssafy.io', {
       // note changed URL here
-      path: '/camloc/socket.io',
-      transports: ['websocket']
-      // namespace: `/socket/loc` // namespace를 수정해가며 설정하기
+      path: '/socket.io',
+      transports: ['websocket'],
+      namespace: `/camloc` // namespace를 수정해가며 설정하기
     })
 
     socket.on('connect', () => {
