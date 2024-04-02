@@ -14,6 +14,7 @@ const initializeSocket = (server) => {
     // ros에서 받은 메세지
     socket.on("turtleStatus", async (data) => {
       const parsedData = JSON.parse(data);
+      console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
@@ -129,9 +130,7 @@ const initializeSocket = (server) => {
         //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
         //   [turtle[0][0].turtle_id]
         // );
-      } catch (error) {
-        console.error("데이터베이스 쿼리 오류:", error);
-      }
+      } catch (error) {}
     };
 
     // 5초마다 데이터 조회 및 전송
