@@ -13,10 +13,6 @@
 <script setup>
 import { defineProps } from 'vue'
 
-const editAddress = (address_id) => {
-  // 주소지 수정하는 페이지로 이동
-  console.log(address_id, '번 주소지 수정 페이지로 이동')
-}
 
 const props = defineProps({
   width: String

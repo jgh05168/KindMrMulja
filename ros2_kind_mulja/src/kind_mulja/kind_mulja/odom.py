@@ -57,9 +57,7 @@ class odom(Node):
                 
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
-
-        self.imu_offset= -0.5 * pi *0.95
-
+        self.imu_offset= -0.5 * pi
         self.prev_time=0
 
         
@@ -168,7 +166,7 @@ class odom(Node):
 
 
                 # print(check_robot_pose_x, check_robot_pose_y)
-                print(self.x,self.y)
+                print(check_robot_pose_x,check_robot_pose_y)
 
         
 def main(args=None):

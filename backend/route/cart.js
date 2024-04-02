@@ -13,7 +13,6 @@ cart.get("/:user_id", async (req, res) => {
             WHERE sc.user_id = ?;
           `;
     const results = await pool.query(query, user_id);
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.error("Error recieving shopping-cart:", error);
@@ -29,7 +28,6 @@ cart.patch("/cart-update", async (req, res) => {
   try {
     const query = `UPDATE shopping_cart SET product_quentity = ? WHERE cart_id = ?`;
     const result = await pool.query(query, [product_quentity, cart_id]);
-    console.log(result[0]);
     if (result[0].affectedRows > 0) {
       return res.json({ result: true });
     } else {

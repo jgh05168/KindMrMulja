@@ -110,7 +110,7 @@ const rules = ref({
 
 // 배송지 생성 요청이 성공했을 때 해당 함수를 호출하여 이벤트를 발생시킵니다
 const handleAddressSubmit = async () => {
-  console.log("상위 컴포넌트로 배송지 생성 했다고 보내기")
+  // console.log("상위 컴포넌트로 배송지 생성 했다고 보내기")
   // 성공했다고 가정하고:
   emit('address-created')
 }
@@ -128,9 +128,8 @@ const createAddress = async () => {
         is_default: is_default.value
       }
       // console.log(info)
-      const results = await Service.addDelivery(info)
+      await Service.addDelivery(info)
       await addressStore.getAddress()
-      console.log(results)
       handleAddressSubmit()
       if (props.nowView == 'from-addressview') {
         // 이전 페이지로 이동

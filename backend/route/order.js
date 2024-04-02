@@ -32,12 +32,10 @@ order.post("", async (req, res) => {
 
     let total_price = 0;
     let total_quentity = 0;
-    console.log(selected_cart_id);
 
     for (let i = 0; i < selected_cart_id.length; i++) {
       const query2 = `SELECT product_id, product_quentity FROM shopping_cart WHERE cart_id = ?`;
       const results = await pool.query(query2, selected_cart_id[i]);
-      console.log(results);
       const query3 = `INSERT INTO order_detail_list (order_id, product_id, order_quentity, order_progress, moving_zone, is_progress) VALUES (?,?,?,?,?,?)`;
       const query6 = `UPDATE product_list SET product_stock = product_stock - 1 WHERE product_id = ?`;
       await pool.query(query3, [
@@ -52,15 +50,11 @@ order.post("", async (req, res) => {
 
       const query4 = `SELECT product_price FROM product_list WHERE product_id = ?`;
       const price_result = await pool.query(query4, [results[0][0].product_id]);
-      console.log(price_result[0]);
       total_quentity += results[0][0].product_quentity;
       total_price +=
         results[0][0].product_quentity * price_result[0][0].product_price;
 
-      console.log(total_price);
-      console.log(total_quentity);
     }
-    console.log(order_id);
     const query5 = `UPDATE order_list SET total_price = ?, total_quentity = ? WHERE order_id = ?`;
     await pool.query(query5, [
       total_price,
@@ -88,7 +82,6 @@ order.get("/order-list/:user_id", async (req, res) => {
   try {
     const query = `SELECT * FROM order_list WHERE user_id = ?`;
     const results = await pool.query(query, [user_id]);
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.error("에러 발생:", error);
@@ -106,7 +99,6 @@ order.get("/order-list-detail/:order_id", async (req, res) => {
           FROM order_detail_list
           WHERE order_id = ? `;
     const results = await pool.query(query, [order_id]);
-    console.log(results);
     for (let i = 0; i < results[0].length; i++) {
       const product_id = results[0][i].product_id;
       const query2 = `SELECT product_name, product_price FROM product_list WHERE product_id = ?`;
@@ -116,7 +108,6 @@ order.get("/order-list-detail/:order_id", async (req, res) => {
       results[0][i].product_name = results2[0][0].product_name;
       results[0][i].product_price = results2[0][0].product_price;
     }
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.log(error);
@@ -129,7 +120,6 @@ order.get("/order-list-all", async (req, res) => {
   try {
     const query = `SELECT * FROM order_detail_list WHERE order_quentity > is_progress`;
     const results = await pool.query(query);
-    console.log(results);
     return res.json(results[0]);
   } catch (error) {
     console.error("에러 발생:", error);
@@ -143,7 +133,6 @@ order.get("/turtle", async (req, res) => {
   try {
     const query = `SELECT turtle_id, turtlebot_status, progress_detail_id FROM turtlebot`;
     const results = await pool.query(query);
-    console.log(results[0]);
     return res.json(results[0]);
   } catch (error) {
     console.error("에러 발생:", error);
