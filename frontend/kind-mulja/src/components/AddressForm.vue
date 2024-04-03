@@ -31,7 +31,7 @@
 
       <v-text-field
         clearable
-        label="이름"
+        label="받는사람"
         variant="outlined"
         v-model="name"
         :rules="[rules.required]"

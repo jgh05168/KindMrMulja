@@ -59,8 +59,8 @@ class LocalGridMap(Node):
                             continue
                         self.local_grid_map[map_y, map_x] = 100 if range_data < 4.0 else 0
                         # 주변 좌표도 장애물로 표시
-                        for dx in range(-2, 3):
-                            for dy in range(-2, 3):
+                        for dx in range(-6, 7):
+                            for dy in range(-6, 7):
                                 nx, ny = map_x + dx, map_y + dy
                                 if 0 <= nx < self.map_size_x and 0 <= ny < self.map_size_y:
                                     self.local_grid_map[ny, nx] = 100

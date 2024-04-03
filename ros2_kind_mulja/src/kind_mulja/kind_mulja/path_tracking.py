@@ -451,7 +451,7 @@ class followTheCarrot(Node):
             for waypoint in self.path_msg.poses:
                 for lidar_point in pcd_msg.points:
                     distance = sqrt(pow(waypoint.pose.position.x-lidar_point.x,2)+pow(waypoint.pose.position.y-lidar_point.y,2))
-                    if distance < 0.04: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
+                    if distance < 0.06: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
                         ### 아마 여기에 주로 코드를 작성하게 될 듯 ###
                         self.collision = True
 
