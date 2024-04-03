@@ -172,15 +172,17 @@ const checkbar = ref(false)
 const check_message = ref('')
 const timeout = 3000 // Snackbar가 표시될 시간
 
-const check_stock = () => {
+const check_stock = async () => {
   let res = false
-  selected_items.value.forEach(async (item) => {
+  for (const item of selected_items.value) {
     const detail = await Service.getProduct(item.product_id)
-    if (item.product_quentity > detail.product_stock) {
+    if (detail.product_stock === 0 || item.product_quentity > detail.product_stock) {
       check_message.value = '품절 상품이거나 재고 수량보다 많이 주문하였습니다.'
       res = true
+      return res
     }
-  })
+  }
+  console.log(res)
   return res
 }
 
@@ -240,7 +242,9 @@ const save_data = () => {
 }
 
 const goToOrder = async () => {
-  if (!check_stock()) {
+  const res = await check_stock()
+  console.log('재고 확인 결과', res)
+  if (res == false) {
     // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
     await save_data()
     // console.log(orderStore.selected_item)
