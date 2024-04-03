@@ -125,7 +125,7 @@ class loadMap(Node):
 
         for i in range(28,79):
             for j in range(205,234):
-                if (i >= 50 and i <= 56) and j >= 224 and j != 233:
+                if (i >= 50 and i <= 56) and j >= 222 and j != 233:
                     grid[j][i]=0
                 elif j == 233 and i == 53:
                     grid[233][53]=0
@@ -134,7 +134,7 @@ class loadMap(Node):
         
         for i in range(132,182):
             for j in range(205,234):
-                if (i >= 154 and i <= 160) and j >= 224 and j != 233:
+                if (i >= 154 and i <= 160) and j >= 222 and j != 233:
                     grid[j][i]=0
                 elif j == 233 and i == 157:
                     grid[233][157]=0
@@ -143,7 +143,7 @@ class loadMap(Node):
 
         for i in range(192,242):
             for j in range(205,234):
-                if (i >= 213 and i <= 219) and j >= 223 and j != 233:
+                if (i >= 213 and i <= 219) and j >= 222 and j != 233:
                     grid[j][i]=0
                 elif j == 233 and i == 216:
                     grid[233][216]=0
@@ -172,15 +172,15 @@ class loadMap(Node):
         for i in range(114, 123):
             grid[i][113]=127
 
-        for i in range(6):
+        for i in range(10):
             for w in range(-2,3):
-                if i==4 and w!=0:
+                if i==8 and w!=0:
                     continue
                 else:
-                    grid[194-i][177+w]=0
-                    grid[194-i][190+w]=0
-                    grid[194-i][203+w]=0
-                    grid[194-i][215+w]=0
+                    grid[198-i][177+w]=0
+                    grid[198-i][190+w]=0
+                    grid[198-i][203+w]=0
+                    grid[198-i][215+w]=0
             
         arr=[[113,127], [158,127], [158, 122], [174,64], [158,64], [113,64], [219,15]]
         for i in range(7):

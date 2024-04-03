@@ -61,9 +61,10 @@ class followTheCarrot(Node):
     def timer_callback(self):
 
         if self.is_status and self.is_odom and self.is_path:
-            print(len(self.path_msg.poses))
+            #print(len(self.path_msg.poses))
             #print(self.robot_yaw)
             #print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
+            print(self.status_msg.twist.linear.x)
         
             if len(self.path_msg.poses) > 6:
                 self.is_look_forward_point= False
@@ -195,7 +196,8 @@ class followTheCarrot(Node):
                 if len(self.path_msg.poses) > 3 and len(self.path_msg.poses) <=6:
                     print("slow")
                     self.cmd_msg.linear.x=0.1
-                    out_rad_vel=theta*0.2
+                    #self.cmd_msg.angular.z=0.00000001
+                    out_rad_vel=theta*0.1
                     self.cmd_msg.angular.z=out_rad_vel
                 
                 # print("no found forward point")
@@ -209,10 +211,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -223,10 +225,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > 0.05 and self.robot_yaw < 3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -237,10 +239,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > 0.05 and self.robot_yaw < 3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -251,10 +253,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > 1.55 and self.robot_yaw < 3.3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 1.45 and self.robot_yaw > -3.3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -265,10 +267,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > 0.05 and self.robot_yaw < 3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -279,10 +281,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -293,10 +295,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -307,10 +309,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -321,10 +323,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -335,10 +337,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -3.1 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -349,10 +351,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -1.5 and self.robot_yaw < 3.3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -1.6 and self.robot_yaw > -3.3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -363,10 +365,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -1.5 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -377,10 +379,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -1.5 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
@@ -391,10 +393,10 @@ class followTheCarrot(Node):
                         
                         if self.robot_yaw > -1.5 and self.robot_yaw < 0:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=0.2
+                            self.cmd_msg.angular.z=0.4
                         elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
                             self.cmd_msg.linear.x=0.0001
-                            self.cmd_msg.angular.z=-0.2
+                            self.cmd_msg.angular.z=-0.4
                         else:
                             self.cmd_msg.linear.x=0.0
                             self.cmd_msg.angular.z=0.0
