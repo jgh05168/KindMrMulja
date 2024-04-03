@@ -116,7 +116,7 @@ class RequestMsgHandControl(Node):
         
         # 5. 물건을 든다. 
         # 터틀봇의 위치가 사물의 위치랑 가까워 졌을 때 
-        if abs(turtle_x-self.product_x) <=1 and abs(turtle_y-self.product_y)<=1:
+        if abs(turtle_x-self.product_x) <=0.3 and abs(turtle_y-self.product_y)<=0.3:
             
             # 터틀봇 상태가 ture이고 can_lift가 ture인경우
             if self.is_turtlebot_status and self.turtlebot_status_msg.can_lift:
@@ -141,7 +141,7 @@ class RequestMsgHandControl(Node):
     #     y=self.odom_msg.pose.pose.position.y
     #   터틀봇의 위치가 트럭의 위치랑 가까워졌을 때
             
-        if self.truct_is_done==False and abs(turtle_x-self.moving_x)<=1 and abs(turtle_y-self.moving_y)<=1:
+        if self.truct_is_done==False and abs(turtle_x-self.moving_x)<=0.5 and abs(turtle_y-self.moving_y)<=0.5:
     #     if abs(self.moving_x-x)<=1 and abs(self.moving_y-y)<=1:
             
             # 8. 물건 preview
