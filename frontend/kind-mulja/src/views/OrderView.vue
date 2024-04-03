@@ -9,7 +9,7 @@
         <v-tab class="state-tab" :value="1">배송 상태</v-tab>
         <v-tab class="state-tab" :value="2">취소된 상품</v-tab>
       </v-tabs>
-      <v-window style="padding-bottom: 8%" v-model="tab">
+      <v-window style="padding-bottom: 15%" v-model="tab">
         <v-window-item v-for="(state, idx) in states" :key="idx" :value="idx">
           <OrderState :state="state" :order-list="state_list[state]" />
         </v-window-item>

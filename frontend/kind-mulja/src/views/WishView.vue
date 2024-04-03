@@ -80,6 +80,7 @@ onMounted(async () => {
 </script>
 <style scoped>
 .wish-frame {
+  padding-bottom: 15%;
 }
 
 @keyframes bounce {
