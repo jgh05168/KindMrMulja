@@ -182,7 +182,7 @@ const check_stock = async () => {
       return res
     }
   }
-  console.log(res)
+  // console.log(res)
   return res
 }
 

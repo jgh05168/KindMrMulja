@@ -25,7 +25,7 @@
 import BlackButton from '@/components/BlackButton.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { confirmPayment } from '@/confirmPayments'
-import { ref} from 'vue'
+import { ref } from 'vue'
 import Service from '@/api/api'
 import { useOrderStore } from '@/stores/order'
 import { onBeforeMount } from 'vue'
@@ -33,7 +33,7 @@ import { onBeforeMount } from 'vue'
 const router = useRouter()
 const route = useRoute()
 const orderStore = useOrderStore()
-
+const res_json = ref(null)
 const confirmed = ref(false)
 
 onBeforeMount(async () => {
@@ -46,7 +46,8 @@ onBeforeMount(async () => {
   const confirm = async () => {
     try {
       const { response, json } = await confirmPayment(requestData)
-      console.log(json)
+      // console.log(json)]
+      res_json.value = json
       if (!response.ok) {
         alert('결제 오류가 발생하였습니다.')
         router.push(`/pay`)

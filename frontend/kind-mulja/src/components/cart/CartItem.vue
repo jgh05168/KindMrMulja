@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { defineProps, watch } from 'vue'
+import { defineProps, watch, ref } from 'vue'
 import Service from '@/api/api'
 
 const props = defineProps({
@@ -37,11 +37,14 @@ const props = defineProps({
   itemQuentity: Number
 })
 
+const oldVal = ref(null)
+
 watch(
   () => props.itemQuentity,
   (newValue, oldValue) => {
     // props.productQuentity 값이 변경될 때 실행되는 로직
-    console.log('productQuentity 변경:', oldValue, '->', newValue)
+    // console.log('productQuentity 변경:', oldValue, '->', newValue)
+    oldVal.value = oldValue
     // 업데이트 함수 실행
     Service.cartUpdate(props.cartId, newValue)
   }
