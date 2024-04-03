@@ -4,6 +4,7 @@ const { json } = require("express");
 
 const initializeSocket = (server) => {
   const io = socketIO(server);
+  let isEmitting = true; // Emit 상태를 제어하는 변수
 
   io.on("connection", (socket) => {
     console.log("새로운 사용자가 연결되었습니다.");
@@ -11,8 +12,9 @@ const initializeSocket = (server) => {
     socket.on("sendTime", async (data) => {
       console.log(data);
     });
-    // ros에서 받은 메세지
+
     socket.on("turtleStatus", async (data) => {
+      isEmitting = false; // Emit을 중지
       const parsedData = JSON.parse(data);
       console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
@@ -21,12 +23,12 @@ const initializeSocket = (server) => {
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ?, progress_detail_id = ? WHERE turtle_id = ?`;
       const query3 = `UPDATE order_list
-      SET order_state = order_state + 1
-      WHERE order_id IN (
-          SELECT order_id
-          FROM order_detail_list
-          WHERE order_detail_id = ?
-      );`;
+        SET order_state = order_state + 1
+        WHERE order_id IN (
+            SELECT order_id
+            FROM order_detail_list
+            WHERE order_detail_id = ?
+        );`;
       const query4 = `UPDATE order_detail_list SET is_progress = is_progress + 1 WHERE order_detail_id = ? `;
       if (work_status === "start") {
         await Promise.all([
@@ -34,13 +36,13 @@ const initializeSocket = (server) => {
           pool.query(query2, [1, order_detail_id, turtle_id]),
         ]);
       } else if (work_status === "done") {
-        // await pool.query(query1, [order_detail_id]);
         await Promise.all([
           pool.query(query2, [0, 0, turtle_id]),
           pool.query(query3, [order_detail_id]),
           pool.query(query4, [order_detail_id]),
         ]);
       }
+      isEmitting = true; // Emit을 다시 시작
     });
 
     const getRegion = (address) => {
@@ -103,37 +105,38 @@ const initializeSocket = (server) => {
 
     const getDataAndEmit = async () => {
       try {
-        const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, odl.product_id, ol.address 
-        FROM order_detail_list odl 
-        JOIN order_list ol ON odl.order_id = ol.order_id 
-        WHERE odl.order_quentity > odl.order_progress
-        ORDER BY ol.order_type DESC , odl.order_detail_id ASC
-        LIMIT 1;`;
-        const results = await pool.query(query1);
-        const turtlequery = `SELECT turtle_id, turtlebot_status FROM turtlebot WHERE turtlebot_status = ? LIMIT 1`;
-        const query2 = `SELECT pos_x, pos_y FROM product_list WHERE product_id = ? `;
-        const turtle = await pool.query(turtlequery, 0);
-        const position = await pool.query(query2, [results[0][0].product_id]);
-        const region = getRegion(results[0][0].address);
-        const jsonData = {
-          turtle_id: turtle[0][0].turtle_id,
-          // turtle_id: 2,
-          order_detail_id: results[0][0].order_detail_id,
-          product_x: position[0][0].pos_x,
-          product_y: position[0][0].pos_y,
-          moving_zone: region,
-        };
-        io.emit("order", JSON.stringify(jsonData));
-        //console.log(jsonData);
-        // await pool.query(
-        //   `UPDATE turtlebot SET turtlebot_status = 1 WHERE turtle_id = ?`,
-        //   [turtle[0][0].turtle_id]
-        // );
+        if (isEmitting) {
+          // Emit을 제어하는 변수를 확인하여 Emit을 수행
+          const query1 = `SELECT odl.order_detail_id, odl.order_quentity, odl.order_progress, odl.product_id, ol.address 
+          FROM order_detail_list odl 
+          JOIN order_list ol ON odl.order_id = ol.order_id 
+          WHERE odl.order_quentity > odl.order_progress
+          ORDER BY ol.order_type DESC , odl.order_detail_id ASC
+          LIMIT 1;`;
+          const results = await pool.query(query1);
+          const turtlequery = `SELECT turtle_id, turtlebot_status FROM turtlebot WHERE turtlebot_status = ? LIMIT 1`;
+          const query2 = `SELECT pos_x, pos_y FROM product_list WHERE product_id = ? `;
+          const turtle = await pool.query(turtlequery, 0);
+          const position = await pool.query(query2, [results[0][0].product_id]);
+          const region = getRegion(results[0][0].address);
+          const jsonData = {
+            turtle_id: turtle[0][0].turtle_id,
+            // turtle_id: 2,
+            order_detail_id: results[0][0].order_detail_id,
+            product_x: position[0][0].pos_x,
+            product_y: position[0][0].pos_y,
+            moving_zone: region,
+          };
+          console.log(jsonData);
+          io.emit("order", JSON.stringify(jsonData));
+        }
       } catch (error) {}
+
+      // 다음 호출 예약
+      setTimeout(getDataAndEmit, 8000);
     };
 
-    // 5초마다 데이터 조회 및 전송
-    setInterval(getDataAndEmit, 10000);
+    getDataAndEmit(); // 처음 호출
   });
 };
 

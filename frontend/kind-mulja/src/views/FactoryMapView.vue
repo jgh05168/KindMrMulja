@@ -2,23 +2,20 @@
   <!-- <h2>Factory Map 페이지</h2>
   <p>이 곳은 Factory Map 페이지입니다.</p> -->
   <div class="monitoring-layout">
-    <div ref="mapContainer" class="container">
-      <img
-        ref="image"
-        src="/map/map.png"
-        alt="Map Image"
-        style="width: 100%; height: 100%; transform: scaleY(-1) scaleX(-1)"
-      />
-      <div ref="marker_1" class="marker_1"></div>
-      <div ref="marker_2" class="marker_2"></div>
-      <div ref="marker_3" class="marker_3"></div>
+    <div class="robot-monitor">
+      <div class="robots-status">
+        <RobotsStatus @robotSelected="handleRobotSelected" :robots="robots" />
+      </div>
+      <div ref="mapContainer" class="container">
+        <img ref="image" src="/map/map.png" alt="Map Image" style="width: 100%; height: 100%" />
+        <div ref="marker_1" class="marker_1"><v-img src="/public/mulja.png"></v-img></div>
+        <div ref="marker_2" class="marker_2"><v-img src="/public/mulja.png"></v-img></div>
+        <div ref="marker_3" class="marker_3"><v-img src="/public/mulja.png"></v-img></div>
+      </div>
     </div>
     <div class="live-board">
       <div class="live-order-list">
         <LiveOrder :robots="robots" />
-      </div>
-      <div class="robots-status">
-        <RobotsStatus @robotSelected="handleRobotSelected" :robots="robots" />
       </div>
     </div>
   </div>
@@ -36,6 +33,9 @@ const image = ref(null)
 const marker_1 = ref(null)
 const marker_2 = ref(null)
 const marker_3 = ref(null)
+
+var socket = null
+const socket_connection = ref(false)
 
 const robots = ref([{}])
 
@@ -64,24 +64,9 @@ const handleRobotSelected = (robotId) => {
 }
 
 // 이미지 좌표 (수정 필요)
-const imageCoords = { x: 600, y: 600 }
+const imageCoords = { x: 700, y: 700 }
 
-const connect_socket = (id, marker, socket_url) => {
-  // const socket = io(socket_url, { secure: true })
-  const socket = io(socket_url, {
-    // note changed URL here
-    path: '/socket.io',
-    transports: ['websocket'],
-    namespace: `/camloc` // namespace를 수정해가며 설정하기
-  })
-
-  // const socket = io('http://localhost:12002')
-  // 연결이 수립되었을 때의 처리
-  socket.on('connect', () => {
-    console.log(id, '번 로봇의 웹소켓 연결이 열렸습니다.')
-    // 데이터를 수신 받았을 때의 처리
-  })
-
+const connect_socket = (id, marker) => {
   // 데이터를 수신하여 마커 위치를 조정
   socket.on(`sendToFrontLoc${id}`, (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
@@ -89,8 +74,8 @@ const connect_socket = (id, marker, socket_url) => {
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
     // 전달받은 데이터가 null이 아닐 경우 실행
     if (parsedData !== null) {
-      const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
-      const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
+      const adjustedX = Math.abs(-parsedData.x - 50) * 28 - 2.5
+      const adjustedY = Math.abs(-parsedData.y - 50) * 28 - 2.5
       adjustMarkerPosition(marker, adjustedX, adjustedY)
     }
   })
@@ -100,13 +85,6 @@ const connect_socket = (id, marker, socket_url) => {
     console.error('웹소켓 에러:', error)
   })
 }
-
-onMounted(async () => {
-  robots.value = await Service.getOrderTutle()
-  connect_socket(1, marker_1.value, 'https://j10c109.p.ssafy.io')
-  connect_socket(2, marker_2.value, 'https://j10c109.p.ssafy.io')
-  connect_socket(3, marker_3.value, 'https://j10c109.p.ssafy.io')
-})
 
 // 마커 위치 조정 함수
 
@@ -126,6 +104,29 @@ function adjustMarkerPosition(marker, x, y) {
   marker.style.top = `${imageCoords.y - markerY - 10}px`
   // console.log(marker.style.left, marker.style.top)
 }
+
+onMounted(async () => {
+  robots.value = await Service.getOrderTutle()
+  socket = io('https://j10c109.p.ssafy.io', {
+    // note changed URL here
+    path: '/socket.io',
+    transports: ['websocket'],
+    namespace: `/camloc` // namespace를 수정해가며 설정하기
+  })
+
+  // socket = io('http://localhost:12002')
+  // 연결이 수립되었을 때의 처리
+  socket.on('connect', () => {
+    console.log('웹소켓 연결이 열렸습니다.')
+    console.log(socket_connection.value)
+    socket_connection.value = true
+    // 데이터를 수신 받았을 때의 처리
+  })
+
+  connect_socket(1, marker_1.value)
+  connect_socket(2, marker_2.value)
+  connect_socket(3, marker_3.value)
+})
 </script>
 
 <style>
@@ -134,40 +135,43 @@ function adjustMarkerPosition(marker, x, y) {
   display: flex;
 }
 
+.robot-monitor {
+  margin: 1% 3%;
+}
+
 .container {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
   border: 1px solid black;
-  margin: 7% 3%;
 }
 
 .marker_1 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #ff1744;
 }
 
 .marker_2 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #ffff00;
 }
 
 .marker_3 {
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   position: absolute;
   background-color: #1de9b6;
 }
 
 .live-order-list {
-  margin-top: 5%;
+  margin-top: 8%;
 }
 
 .robots-status {
@@ -177,11 +181,8 @@ function adjustMarkerPosition(marker, x, y) {
   0% {
     opacity: 1; /* 0% 지점에서는 표시 */
   }
-  50% {
-    opacity: 0.7; /* 100% 지점에서는 숨김 */
-  }
   100% {
-    opacity: 0.4; /* 100% 지점에서는 숨김 */
+    opacity: 0.7; /* 100% 지점에서는 숨김 */
   }
 }
 
@@ -194,8 +195,7 @@ function adjustMarkerPosition(marker, x, y) {
 }
 
 .selected-turtle-marker {
-  scale: 2;
-  transform: scale(2); /* 선택된 마커를 2배로 확대 */
+  transform: scale(1.6); /* 선택된 마커를 2배로 확대 */
   animation: blink-animation 1s infinite alternate;
 }
 </style>

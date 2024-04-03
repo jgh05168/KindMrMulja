@@ -32,11 +32,11 @@ def generate_launch_description():
             node_executable='odom',
             node_name='odom'
         ),
-        Node(
-            package='kind_mulja',
-            node_executable='path_tracking',
-            node_name='path_tracking'
-        ),
+        # Node(
+        #     package='kind_mulja',
+        #     node_executable='path_tracking',
+        #     node_name='path_tracking'
+        # ),
         Node(
             package='kind_mulja',
             node_executable='lidar_trans',
