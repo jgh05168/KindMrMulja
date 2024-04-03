@@ -56,7 +56,7 @@ const initializeSocketLoc = (server) => {
       }
     };
 
-    setInterval(sendDataToClient, 200);
+    setInterval(sendDataToClient, 100);
   });
 };
 
