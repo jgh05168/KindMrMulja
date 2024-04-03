@@ -22,6 +22,7 @@ import { defineProps } from 'vue'
 import BlackButton from '@/components/BlackButton.vue'
 import { onMounted } from 'vue'
 import { useOrderStore } from '@/stores/order'
+import router from '@/router'
 
 const orderStore = useOrderStore()
 
@@ -37,7 +38,13 @@ const amount = props.totalPrice
 
 const requestPayment = async () => {
   try {
-    orderStore.orderInfo = await props.orderCreate() // 주문지 생성
+    const res = await props.orderCreate() // 주문지 생성
+    if (res.result == true) {
+      orderStore.orderInfo = res.orderInfo
+    } else {
+      router.push({ name: 'pay' })
+      return
+    }
     // console.log(orderStore.orderInfo)
     if (paymentWidget) {
       await paymentWidget.requestPayment({

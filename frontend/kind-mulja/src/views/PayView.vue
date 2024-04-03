@@ -115,13 +115,24 @@ const orderCreate = async () => {
     selected_cart_id: selected_cart_id.value
   }
   if (orderStore.order_type == 0) {
-    order_info.address_content = JSON.stringify(
-      selected_address.value.address_normal + selected_address.value.address_detail
-    )
+    if (selected_address.value !== null) {
+      order_info.address_content = JSON.stringify(
+        selected_address.value.address_normal + selected_address.value.address_detail
+      )
+      return {result:true,order_info:order_info}
+    } else {
+      alert('선택된 배송 장소가 없습니다. 배송지를 선택해주세요')
+      return {result:false,order_info:order_info}
+    }
   } else {
-    order_info.address_content = JSON.stringify(selected_area.value)
+    if (selected_area.value !== null) {
+      order_info.address_content = JSON.stringify(selected_area.value)
+      return {result:true,order_info:order_info}
+    } else {
+      alert('선택된 픽업 장소가 없습니다. 픽업 장소를 선택해주세요.')
+      return {result:false,order_info:order_info}
+    }
   }
-  return order_info
 }
 
 onMounted(() => {
