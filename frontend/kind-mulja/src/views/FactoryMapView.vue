@@ -74,8 +74,8 @@ const connect_socket = (id, marker) => {
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
     // 전달받은 데이터가 null이 아닐 경우 실행
     if (parsedData !== null) {
-      const adjustedX = Math.abs(-parsedData.x - 50) * 24 - 2.5
-      const adjustedY = Math.abs(-parsedData.y - 50) * 24 - 2.5
+      const adjustedX = Math.abs(-parsedData.x - 50) * 28 - 2.5
+      const adjustedY = Math.abs(-parsedData.y - 50) * 28 - 2.5
       adjustMarkerPosition(marker, adjustedX, adjustedY)
     }
   })
