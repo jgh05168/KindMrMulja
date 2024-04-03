@@ -117,8 +117,8 @@ onMounted(async () => {
   // socket = io('http://localhost:12002')
   // 연결이 수립되었을 때의 처리
   socket.on('connect', () => {
-    console.log('웹소켓 연결이 열렸습니다.')
-    console.log(socket_connection.value)
+    // console.log('웹소켓 연결이 열렸습니다.')
+    // console.log(socket_connection.value)
     socket_connection.value = true
     // 데이터를 수신 받았을 때의 처리
   })

@@ -161,7 +161,7 @@ const email_icon = computed(() => {
 const duplicate_check = async () => {
   if (email.value !== null) {
     const res = await Service.email_duplicate_check(email.value)
-    console.log('이메일 중복검사', res)
+    // console.log('이메일 중복검사', res)
     // 만약 이메일이 중복이라면 결과 값 false 로 반환됨
     if (res.result == false) {
       email_duplicate.value = true
