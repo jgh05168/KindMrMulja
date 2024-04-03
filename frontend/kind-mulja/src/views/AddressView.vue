@@ -12,7 +12,7 @@
         :value="address.id"
         :key="n"
       >
-        <template v-slot:address-title="slotProps">
+        <template #address-title>
           <div
             style="
               display: flex;
@@ -27,17 +27,16 @@
                 >기본배송지</v-chip
               >
             </div>
-            <!-- 지금 배송지의 id 를 인자로 수정 페이지로 이동 -->
-            <v-btn
-              @click="slotProps.editAddress(address.id)"
-              icon="mdi-home-edit-outline"
-              variant="plain"
-            ></v-btn>
           </div>
         </template>
         <template #address-detail>
           <div>{{ address.detail }}</div>
-          <div style="text-align: end" v-if="default_address !== address.id && n == click_id">
+          <div>받는 사람 : {{ address.user_name }}</div>
+          <div
+            class="mt-2"
+            style="text-align: end"
+            v-if="default_address !== address.id && n == click_id"
+          >
             <v-btn
               @click="setDefault(address.id)"
               class="set-default"
