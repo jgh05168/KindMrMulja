@@ -68,7 +68,7 @@ const imageCoords = { x: 700, y: 700 }
 
 const connect_socket = (id, marker) => {
   // 데이터를 수신하여 마커 위치를 조정
-  socket.on(`sendToFrontLoc${id}`, (data) => {
+  socket.on(`sendToFrontLoc${id}`, async (data) => {
     const parsedData = JSON.parse(data) // 문자열을 JSON 객체로 변환
     // console.log(parsedData)
     // 서버에서 받은 데이터를 기반으로 마커 위치 조정
@@ -76,7 +76,7 @@ const connect_socket = (id, marker) => {
     if (parsedData !== null) {
       const adjustedX = Math.abs(-parsedData.x - 50) * 28 - 2.5
       const adjustedY = Math.abs(-parsedData.y - 50) * 28 - 2.5
-      adjustMarkerPosition(marker, adjustedX, adjustedY)
+      await adjustMarkerPosition(marker, adjustedX, adjustedY)
     }
   })
 

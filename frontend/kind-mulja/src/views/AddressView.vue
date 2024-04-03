@@ -3,7 +3,7 @@
     <AppHeader>
       <template #header-bar> 배송지 목록 </template>
     </AppHeader>
-    <div>
+    <div style="padding-bottom: 20%">
       <AddressItem
         :width="'90%'"
         @click="clickAddress(n)"
