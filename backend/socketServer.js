@@ -5,6 +5,7 @@ const { json } = require("express");
 const initializeSocket = (server) => {
   const io = socketIO(server);
   let isEmitting = true; // Emit 상태를 제어하는 변수
+  let processedMessages = {};
 
   io.on("connection", (socket) => {
     console.log("새로운 사용자가 연결되었습니다.");
@@ -20,6 +21,16 @@ const initializeSocket = (server) => {
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
+      const messageKey = `${turtle_id}_${order_detail_id}`;
+      if (
+        processedMessages[messageKey] &&
+        processedMessages[messageKey] === work_status
+      ) {
+        console.log("이미 처리된 메시지입니다.");
+        return;
+      }
+      processedMessages[messageKey] = work_status;
+
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ?, progress_detail_id = ? WHERE turtle_id = ?`;
       const query3 = `UPDATE order_list
