@@ -43,7 +43,7 @@ const modalClose = () => {
 
 .modal-card {
   width: 100%;
-  height: 250px;
+  height: 130%;
   border-top-left-radius: 10%;
   border-top-right-radius: 10%;
   background-color: aliceblue;
