@@ -160,10 +160,9 @@ class RequestMsgHandControl(Node):
                 self.work_status_msg.order_detail_id=self.order_detail_id
                 self.work_status_publisher.publish(self.work_status_msg)
                 
-                time.sleep(5)
-                
                 self.truct_is_done=True
  
+                time.sleep(5)
             
     #         # 목적지 주소를 전달한다.
         if self.turtlebot_status_msg.can_use_hand==False and self.work_status_msg.is_start==False:

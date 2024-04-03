@@ -160,7 +160,7 @@ npm-debug.log
 yarn-error.log
 
 # front serviceworker
-frontend/kind-mulja/dev-dist/
+# frontend/kind-mulja/dev-dist/
 
 ros2_kind_mulja/src/kind_mulja/launch/__pycache__/mulja_launch.cpython-37.pyc
 # End of https://www.toptal.com/developers/gitignore/api/node,vue,vuejs
