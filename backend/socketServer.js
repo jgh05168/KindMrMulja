@@ -22,14 +22,19 @@ const initializeSocket = (server) => {
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
       const messageKey = `${turtle_id}_${order_detail_id}`;
+      const currentTime = new Date().getTime();
       if (
         processedMessages[messageKey] &&
-        processedMessages[messageKey] === work_status
+        processedMessages[messageKey] === work_status &&
+        currentTime - processedMessages[messageKey].timestamp < 5
       ) {
         console.log("이미 처리된 메시지입니다.");
         return;
       }
-      processedMessages[messageKey] = work_status;
+      processedMessages[messageKey] = {
+        status: work_status,
+        timestamp: currentTime,
+      };
 
       const query1 = `UPDATE order_detail_list SET order_progress = order_progress + 1 WHERE order_detail_id = ? `;
       const query2 = `UPDATE turtlebot SET turtlebot_status = ?, progress_detail_id = ? WHERE turtle_id = ?`;
