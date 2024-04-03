@@ -276,12 +276,15 @@ onMounted(async () => {
   height: 120%;
   margin: 0 auto;
   position: relative;
+  padding-bottom: 15%;
 }
 
 .cart-main-frame {
   width: 100%;
   height: fit-content;
   margin: 0 auto;
+  padding-bottom: 20%;
+  position: relative;
 }
 
 .pay-button {
