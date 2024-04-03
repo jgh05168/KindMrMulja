@@ -80,11 +80,11 @@ def generate_launch_description():
             node_executable='local_grid_map',
             node_name='local_grid_map'
         ),
-        # Node(
-        #     package='kind_mulja',
-        #     node_executable='send_turtlebot_loc',
-        #     node_name='send_turtlebot_loc'
-        # ),
+        Node(
+            package='kind_mulja',
+            node_executable='send_turtlebot_loc',
+            node_name='send_turtlebot_loc'
+        ),
         # Node(
         #     package='kind_mulja',
         #     node_executable='camera',
