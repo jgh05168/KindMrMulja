@@ -70,7 +70,6 @@ const props = defineProps({
   items: Array
 })
 
-console.log(props.items)
 
 const authStore = useAuthStore()
 const productStore = useProductStore()

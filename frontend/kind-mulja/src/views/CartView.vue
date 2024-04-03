@@ -170,7 +170,7 @@ const change_expand = () => {
 
 const checkbar = ref(false)
 const check_message = ref('')
-const timeout = 3000 // Snackbar가 표시될 시간
+const timeout = 1500 // Snackbar가 표시될 시간
 
 const check_stock = async () => {
   let res = false
@@ -243,14 +243,19 @@ const save_data = () => {
 
 const goToOrder = async () => {
   const res = await check_stock()
-  console.log('재고 확인 결과', res)
+  // console.log('재고 확인 결과', res)
   if (res == false) {
     // 결제하기 버튼 클릭 시 사전 정보 orderstore 에 저장
     await save_data()
     // console.log(orderStore.selected_item)
     orderStore.address_list = await Service.getAddress(authStore.user_id)
     // 결제하기 버튼 클릭 시 결제 페이지로 이동
-    await router.push({ name: 'pay' })
+    if (orderStore.selected_item.length < 1) {
+      check_message.value = '선택된 상품이 없습니다.'
+      checkbar.value = true
+    } else {
+      await router.push({ name: 'pay' })
+    }
   } else {
     checkbar.value = true
   }
