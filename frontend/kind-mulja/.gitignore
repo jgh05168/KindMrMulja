@@ -28,6 +28,3 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-
-#
-dev-dist/sw.js

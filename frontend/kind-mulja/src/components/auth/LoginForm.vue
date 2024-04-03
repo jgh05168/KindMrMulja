@@ -63,14 +63,14 @@ const password = ref(null)
 const check_zzim = () => {
   productStore.product_list.forEach(async (product) => {
     const check_res = await Service.checkProductWish(authStore.user_id, product.product_id)
-    console.log('상품 찜 여부 : ', check_res.result)
+    // console.log('상품 찜 여부 : ', check_res.result)
     product.is_zzim = check_res.result
   })
 }
 
 const Login = async () => {
   // 로그인 요청 보내기 전에 form 유효성 검사
-  console.log('로그인 유효성 검사', form.value)
+  // console.log('로그인 유효성 검사', form.value)
   if (form.value) {
     // 로그인 하면 로그인 요청을 서버에 보내고
     const login_res = await Service.SignIn(email.value, password.value)

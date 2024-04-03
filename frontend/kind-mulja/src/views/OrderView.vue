@@ -4,16 +4,16 @@
   </AppHeader>
   <div class="oreder-frame">
     <div class="state">
-        <v-tabs v-model="tab" align-tabs="center" density="comfortable" color="#424242">
-          <v-tab class="state-tab" :value="0">상품 준비</v-tab>
-          <v-tab class="state-tab" :value="1">배송 상태</v-tab>
-          <v-tab class="state-tab" :value="2">취소된 상품</v-tab>
-        </v-tabs>
-        <v-window v-model="tab">
-          <v-window-item v-for="(state, idx) in states" :key="idx" :value="idx">
-            <OrderState :state="state" :order-list="state_list[state]" />
-          </v-window-item>
-        </v-window>
+      <v-tabs v-model="tab" align-tabs="center" density="comfortable" color="#424242">
+        <v-tab class="state-tab" :value="0">상품 준비</v-tab>
+        <v-tab class="state-tab" :value="1">배송 상태</v-tab>
+        <v-tab class="state-tab" :value="2">취소된 상품</v-tab>
+      </v-tabs>
+      <v-window style="padding-bottom: 8%" v-model="tab">
+        <v-window-item v-for="(state, idx) in states" :key="idx" :value="idx">
+          <OrderState :state="state" :order-list="state_list[state]" />
+        </v-window-item>
+      </v-window>
     </div>
   </div>
 </template>
@@ -76,5 +76,8 @@ const tab = ref('')
 .state-tab {
   font-size: 18px;
   font-weight: bold;
+}
+
+.order-frame {
 }
 </style>
