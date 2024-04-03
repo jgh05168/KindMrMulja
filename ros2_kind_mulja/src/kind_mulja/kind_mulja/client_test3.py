@@ -103,7 +103,7 @@ class Client(Node):
         
     
     def start_socketio(self):
-        # self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/lift/socket.io')
+        #self.sio.connect('https://j10c109.p.ssafy.io',socketio_path='/lift/socket.io')
         self.sio.connect('http://localhost:12001')
         self.sio.wait()
 

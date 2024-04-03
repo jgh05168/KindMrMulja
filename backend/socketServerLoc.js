@@ -26,7 +26,7 @@ const initializeSocketLoc = (server) => {
       // console.log(raw_data["x"]);
     });
 
-    // ros에서 받은 카메라 정보 1
+    // // ros에서 받은 카메라 정보 1
     // socket.on("sendImage1", (data) => {
     //   // console.log("수신한 메시지:", data);
     //   camera_data1 = data;
@@ -89,13 +89,13 @@ const initializeSocketLoc = (server) => {
       if (location_data3 !== null) {
         io.emit("sendToFrontLoc3", location_data3);
       }
-      // cam data
+      // // cam data
       // if (camera_data3 !== null) {
       //   io.emit("sendToFrontImage3", camera_data3);
       // }
     };
 
-    setInterval(sendDataToClient, 500);
+    setInterval(sendDataToClient, 200);
   });
 };
 
