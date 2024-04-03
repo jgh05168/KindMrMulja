@@ -61,7 +61,7 @@ class followTheCarrot(Node):
     def timer_callback(self):
 
         if self.is_status and self.is_odom and self.is_path:
-            #print(len(self.path_msg.poses))
+            print(len(self.path_msg.poses))
             #print(self.robot_yaw)
             #print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
         
@@ -192,7 +192,7 @@ class followTheCarrot(Node):
                     theta = -atan2(local_forward_point[1], local_forward_point[0])
 
 
-                if len(self.path_msg.poses) > 3:
+                if len(self.path_msg.poses) > 3 and len(self.path_msg.poses) <=6:
                     print("slow")
                     self.cmd_msg.linear.x=0.1
                     out_rad_vel=theta*0.2
