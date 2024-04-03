@@ -17,7 +17,6 @@ const initializeSocket = (server) => {
     socket.on("turtleStatus", async (data) => {
       isEmitting = false; // Emit을 중지
       const parsedData = JSON.parse(data);
-      console.log(parsedData);
       const turtle_id = parsedData.turtle_id;
       const order_detail_id = parsedData.order_detail_id;
       const work_status = parsedData.work_status;
@@ -26,9 +25,8 @@ const initializeSocket = (server) => {
       if (
         processedMessages[messageKey] &&
         processedMessages[messageKey] === work_status &&
-        currentTime - processedMessages[messageKey].timestamp < 5
+        currentTime - processedMessages[messageKey].timestamp < 20
       ) {
-        console.log("이미 처리된 메시지입니다.");
         return;
       }
       processedMessages[messageKey] = {
@@ -143,7 +141,6 @@ const initializeSocket = (server) => {
             product_y: position[0][0].pos_y,
             moving_zone: region,
           };
-          console.log(jsonData);
           io.emit("order", JSON.stringify(jsonData));
         }
       } catch (error) {}
