@@ -61,7 +61,10 @@ class followTheCarrot(Node):
     def timer_callback(self):
 
         if self.is_status and self.is_odom and self.is_path:
-            print(len(self.path_msg.poses))
+            #print(len(self.path_msg.poses))
+            #print(self.robot_yaw)
+            #print(self.odom_msg.pose.pose.position.x, self.odom_msg.pose.pose.position.y)
+        
             if len(self.path_msg.poses) > 6:
                 self.is_look_forward_point= False
                 
@@ -73,7 +76,7 @@ class followTheCarrot(Node):
                 # print(robot_pose_x,robot_pose_y,lateral_error)
                 
                 # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
-                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.8
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.75
 
                 if self.lfd < self.min_lfd :
                     self.lfd=self.min_lfd
@@ -120,11 +123,11 @@ class followTheCarrot(Node):
                     
                     # 로직 7. 선속도, 각속도 정하기
                     if theta > abs(0.5):
-                        out_vel=1.0
-                        out_rad_vel=theta*1.25
+                        out_vel=0.5
+                        out_rad_vel=theta*1.0
                     else:
                         out_vel=1.0
-                        out_rad_vel=theta*2.0
+                        out_rad_vel=theta*1.9
 
                     #print(theta)
 
@@ -144,14 +147,258 @@ class followTheCarrot(Node):
 
            
             else :
-                if len(self.path_msg.poses) > 2:
-                    self.cmd_msg.linear.x=0.3
-                    self.cmd_msg.angular.z=0.0
+                self.is_look_forward_point= False
+                
+                # 로봇의 현재 위치를 나타내는 변수
+                robot_pose_x=self.odom_msg.pose.pose.position.x
+                robot_pose_y=self.odom_msg.pose.pose.position.y
+
+                lateral_error= sqrt(pow(self.path_msg.poses[0].pose.position.x-robot_pose_x,2)+pow(self.path_msg.poses[0].pose.position.y-robot_pose_y,2))
+                # print(robot_pose_x,robot_pose_y,lateral_error)
+                
+                # 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
+                self.lfd=(self.status_msg.twist.linear.x + lateral_error) * 0.75
+
+                if self.lfd < self.min_lfd :
+                    self.lfd=self.min_lfd
+                if self.lfd > self.max_lfd:
+                    self.lfd=self.max_lfd
+
+                min_dis=float('inf')
+                
+                # 로직 5. 전방 주시 포인트 설정
+                for num ,waypoint in enumerate(self.path_msg.poses) :
+
+                    self.current_point=waypoint.pose.position
+                    dis=sqrt(pow(self.path_msg.poses[0].pose.position.x - self.current_point.x, 2) + pow(self.path_msg.poses[0].pose.position.y - self.current_point.y, 2))
+                    if abs(dis-self.lfd) < min_dis :
+                        min_dis=abs(dis-self.lfd)
+                        self.forward_point=self.current_point
+                        self.is_look_forward_point=True
+
+
+                    
+                if self.is_look_forward_point and self.collision == False:
+
+                    global_forward_point=[self.forward_point.x ,self.forward_point.y,1]
+
+                    trans_matrix =np.array([
+                        [cos(self.robot_yaw), -sin(self.robot_yaw), robot_pose_x],
+                        [sin(self.robot_yaw), cos(self.robot_yaw), robot_pose_y],
+                        [0,0,1]
+                    ])
+                    det_trans_matrix=np.linalg.inv(trans_matrix)
+                    local_forward_point = det_trans_matrix.dot(global_forward_point)
+                    theta = -atan2(local_forward_point[1], local_forward_point[0])
+
+
+                if len(self.path_msg.poses) > 3:
+                    print("slow")
+                    self.cmd_msg.linear.x=0.1
+                    out_rad_vel=theta*0.2
+                    self.cmd_msg.angular.z=out_rad_vel
                 
                 # print("no found forward point")
                 else:
+                    print("end")
                     self.cmd_msg.linear.x=0.0
                     self.cmd_msg.angular.z=0.0
+                    #A
+                    if (self.odom_msg.pose.pose.position.x < -58 and self.odom_msg.pose.pose.position.x > -61 and 
+                        self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #B
+                    elif (self.odom_msg.pose.pose.position.x < -61 and self.odom_msg.pose.pose.position.x > -64 and 
+                        self.odom_msg.pose.pose.position.y < -56 and self.odom_msg.pose.pose.position.y > -59):
+                        
+                        if self.robot_yaw > 0.05 and self.robot_yaw < 3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
+                    #C
+                    elif (self.odom_msg.pose.pose.position.x < -55 and self.odom_msg.pose.pose.position.x > -58 and 
+                        self.odom_msg.pose.pose.position.y < -59 and self.odom_msg.pose.pose.position.y > -62):
+                        
+                        if self.robot_yaw > 0.05 and self.robot_yaw < 3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #D
+                    elif (self.odom_msg.pose.pose.position.x < -54 and self.odom_msg.pose.pose.position.x > -57 and 
+                        self.odom_msg.pose.pose.position.y < -71 and self.odom_msg.pose.pose.position.y > -74):
+                        
+                        if self.robot_yaw > 1.55 and self.robot_yaw < 3.3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 1.45 and self.robot_yaw > -3.3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
+                    #E
+                    elif (self.odom_msg.pose.pose.position.x < -55 and self.odom_msg.pose.pose.position.x > -58 and 
+                        self.odom_msg.pose.pose.position.y < -64 and self.odom_msg.pose.pose.position.y > -67):
+                        
+                        if self.robot_yaw > 0.05 and self.robot_yaw < 3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -0.05 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #부울경
+                    if (self.odom_msg.pose.pose.position.x < -65 and self.odom_msg.pose.pose.position.x > -68 and 
+                        self.odom_msg.pose.pose.position.y < -71 and self.odom_msg.pose.pose.position.y > -74):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #구미
+                    elif (self.odom_msg.pose.pose.position.x < -65 and self.odom_msg.pose.pose.position.x > -68 and  
+                        self.odom_msg.pose.pose.position.y < -67 and self.odom_msg.pose.pose.position.y > -70):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
+                    #광주
+                    elif (self.odom_msg.pose.pose.position.x < -65 and self.odom_msg.pose.pose.position.x > -68 and  
+                        self.odom_msg.pose.pose.position.y < -63 and self.odom_msg.pose.pose.position.y > -66):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #대전
+                    elif (self.odom_msg.pose.pose.position.x < -65 and self.odom_msg.pose.pose.position.x > -68 and 
+                        self.odom_msg.pose.pose.position.y < -59 and self.odom_msg.pose.pose.position.y > -62):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
+                    #서울
+                    elif (self.odom_msg.pose.pose.position.x < -65 and self.odom_msg.pose.pose.position.x > -68 and  
+                        self.odom_msg.pose.pose.position.y < -55 and self.odom_msg.pose.pose.position.y > -58):
+                        
+                        if self.robot_yaw > -3.1 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < 3.1 and self.robot_yaw > 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #대기
+                    elif (self.odom_msg.pose.pose.position.x < -52 and self.odom_msg.pose.pose.position.x > -59 and  
+                        self.odom_msg.pose.pose.position.y < -54 and self.odom_msg.pose.pose.position.y > -57):
+                        
+                        if self.robot_yaw > -1.5 and self.robot_yaw < 3.3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -1.6 and self.robot_yaw > -3.3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #픽업 1
+                    elif (self.odom_msg.pose.pose.position.x < -52 and self.odom_msg.pose.pose.position.x > -55 and  
+                        self.odom_msg.pose.pose.position.y < -51 and self.odom_msg.pose.pose.position.y > -54):
+                        
+                        if self.robot_yaw > -1.5 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #픽업 2
+                    elif (self.odom_msg.pose.pose.position.x < -58 and self.odom_msg.pose.pose.position.x > -61 and  
+                        self.odom_msg.pose.pose.position.y < -51 and self.odom_msg.pose.pose.position.y > -54):
+                        
+                        if self.robot_yaw > -1.5 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+
+                    #픽업 3
+                    elif (self.odom_msg.pose.pose.position.x < -68 and self.odom_msg.pose.pose.position.x > -71 and  
+                        self.odom_msg.pose.pose.position.y < -51 and self.odom_msg.pose.pose.position.y > -54):
+                        
+                        if self.robot_yaw > -1.5 and self.robot_yaw < 0:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=0.2
+                        elif self.robot_yaw < -1.6 and self.robot_yaw > -3:
+                            self.cmd_msg.linear.x=0.0001
+                            self.cmd_msg.angular.z=-0.2
+                        else:
+                            self.cmd_msg.linear.x=0.0
+                            self.cmd_msg.angular.z=0.0
+                    
 
             
             self.cmd_pub.publish(self.cmd_msg)
@@ -204,7 +451,7 @@ class followTheCarrot(Node):
             for waypoint in self.path_msg.poses:
                 for lidar_point in pcd_msg.points:
                     distance = sqrt(pow(waypoint.pose.position.x-lidar_point.x,2)+pow(waypoint.pose.position.y-lidar_point.y,2))
-                    if distance < 0.04: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
+                    if distance < 0.06: # 0.1 m 보다 작으면 충돌이 일어난다고 가정
                         ### 아마 여기에 주로 코드를 작성하게 될 듯 ###
                         self.collision = True
 
