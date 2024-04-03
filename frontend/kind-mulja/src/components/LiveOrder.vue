@@ -52,7 +52,7 @@ import { defineProps } from 'vue'
 const props = defineProps({
   robots: Array
 })
-const itemsPerPage = ref(5)
+const itemsPerPage = ref(10)
 const page = ref(1)
 const search = ref('')
 const headers = [
@@ -78,6 +78,10 @@ const pageCount = computed(() => {
 onMounted(async () => {
   orderItems.value = await Service.getOrderProcessingList()
 })
+
+setInterval(async () => {
+  orderItems.value = await Service.getOrderProcessingList()
+}, 2000)
 
 const sortedOrderItems = computed(() => {
   // robots 배열에서 progress_detail_id를 키로 하는 객체 생성
