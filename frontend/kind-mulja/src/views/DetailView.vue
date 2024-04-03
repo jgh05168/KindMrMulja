@@ -266,7 +266,7 @@ onMounted(async () => {
 }
 
 .first-modal {
-  height: 120%;
+
   display: flex;
   flex-direction: column;
   background-color: white;
