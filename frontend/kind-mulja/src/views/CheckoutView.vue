@@ -40,7 +40,7 @@ const requestPayment = async () => {
   try {
     const res = await props.orderCreate() // 주문지 생성
     if (res.result == true) {
-      orderStore.orderInfo = res.orderInfo
+      orderStore.orderInfo = res.order_info
     } else {
       router.push({ name: 'pay' })
       return
