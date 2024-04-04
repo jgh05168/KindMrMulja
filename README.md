@@ -13,7 +13,9 @@
 
 ## 팀원 소개 및 담당
 
-### 기획배경
+![Alt text](image.png)
+
+## 기획배경
 
 쿠팡, CJ 대항통운 등 많은 기업들이 물류 자동화를 통해 효율성 향상 및 빠른 물류 분류 및 처리 속도로 사용자들에게 매우 편리한 서비스를 제공하고 있습니다.
 
@@ -42,18 +44,18 @@
 <div  style="display:flex; flex:row;align-items:center;">
 <div style="width:200px;">
 
-<img src="./resource/requests_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
+<img style="width:200px;" src="./resource/requests_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
 
 </div>
 
 <div style="width:200px;margin-left:10px;">
 
-<img src="./resource/functional_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
+<img style="width:200px;" src="./resource/functional_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
 
 </div>
 <div style="width:200px;margin-left:10px;">
 
-<img src="./resource/image-2.png" href="https://www.notion.so/2d5bec4dab0443b6be3fa2434a1e0e13?v=b0d05a6677bd4a8da071b2a9f525fef0&pvs=4"></img>
+<img style="width:200px;" src="./resource/image-2.png" href="https://www.notion.so/2d5bec4dab0443b6be3fa2434a1e0e13?v=b0d05a6677bd4a8da071b2a9f525fef0&pvs=4"></img>
 
 </div>
 
@@ -128,17 +130,20 @@
 
 </div>
 
-<div>
-
-![8](/resource/service/8.png)
-
-</div>
 
 <div style="width:300px;">
+
+# ROS 및 자율주행 기능
+
+## 맵
+
+- 유니티 제작
 
 ![맵](/resource/map.png)
 
 </div>
+
+## 구현 기능
 
 ![충전소.gif](/uploads/88aa106689ffc19e6b6da8b62274b04c/%EC%B6%A9%EC%A0%84%EC%86%8C.gif)
 
