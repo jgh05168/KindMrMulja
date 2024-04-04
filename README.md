@@ -1,3 +1,6 @@
+<html>
+<body>
+
 # 팀 C109(백구)
 
 <div style="width:200px;">
@@ -24,7 +27,7 @@
 
 <div style="width:400px;">
 
-![Alt text](/resource/image.png)
+<img src="./resource/image.png"></img>
 
 </div>
 
@@ -39,18 +42,18 @@
 <div  style="display:flex; flex:row;align-items:center;">
 <div style="width:200px;">
 
-[![요정:요구사항 정의서](/resource/requests_specification.png)](https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4)
+<img src="./resource/requests_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
 
 </div>
 
 <div style="width:200px;margin-left:10px;">
 
-[![기능 명세서 요약본](/resource/functional_specification.png)](https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4)
+<img src="./resource/functional_specification.png" href="https://www.notion.so/0fcf43739d9749318d12091bf0009cc1?pvs=4"></img>
 
 </div>
 <div style="width:200px;margin-left:10px;">
 
-[![API 명세서 요약본](/resource/image-2.png)](https://www.notion.so/2d5bec4dab0443b6be3fa2434a1e0e13?v=b0d05a6677bd4a8da071b2a9f525fef0&pvs=4)
+<img src="./resource/image-2.png" href="https://www.notion.so/2d5bec4dab0443b6be3fa2434a1e0e13?v=b0d05a6677bd4a8da071b2a9f525fef0&pvs=4"></img>
 
 </div>
 
@@ -60,19 +63,19 @@
 
 #### 백엔드
 
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712196743485?alt=media&token=40f277fb-9e51-4cd5-936b-87f6e0fb04dc)](https://github.com/msdio/stackticon)
+<img src="https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712196743485?alt=media&token=40f277fb-9e51-4cd5-936b-87f6e0fb04dc" href="https://github.com/msdio/stackticon"></img>
 
 #### 프론트엔드
 
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712196874601?alt=media&token=d1ac1837-3bba-4f16-b961-4346c27a0e43)](https://github.com/msdio/stackticon)
+<img src="https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712196874601?alt=media&token=d1ac1837-3bba-4f16-b961-4346c27a0e43" href="https://github.com/msdio/stackticon"></img>
 
 #### ROS
 
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712197008764?alt=media&token=f91c9382-8070-4527-a454-ba6303dc9028)](https://github.com/msdio/stackticon)
+<img src="https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1712197008764?alt=media&token=f91c9382-8070-4527-a454-ba6303dc9028" href="https://github.com/msdio/stackticon"></img>
 
 ## 시스템 아키텍쳐
 
-![시스템 아키텍처](/resource/MulJa_Architecture.png)
+<img src="./resource/MulJa_Architecture.png"></img>
 
 ## 주요 기능 및 서비스
 
@@ -144,3 +147,8 @@
 ![광주에놓기.gif](/uploads/a2460cffa6cdbf7f5852d2bf31111c5e/%EA%B4%91%EC%A3%BC%EC%97%90%EB%86%93%EA%B8%B0.gif)
 
 </div>
+</body>
+</html>
+<style>
+
+</style>
