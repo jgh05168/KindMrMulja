@@ -145,10 +145,13 @@
 
 ## 구현 기능
 
+### 자율 주행
 ![충전소.gif](/uploads/88aa106689ffc19e6b6da8b62274b04c/%EC%B6%A9%EC%A0%84%EC%86%8C.gif)
 
+### 동적 장애물 회피
 ![동장피.gif](/uploads/1b65b123ea91cddd710b8b7093645b9f/%EB%8F%99%EC%9E%A5%ED%94%BC.gif)
 
+### 상품 이동 
 ![광주에놓기.gif](/uploads/a2460cffa6cdbf7f5852d2bf31111c5e/%EA%B4%91%EC%A3%BC%EC%97%90%EB%86%93%EA%B8%B0.gif)
 
 </div>
