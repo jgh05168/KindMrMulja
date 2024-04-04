@@ -1,0 +1,3 @@
+bool is_done
+bool is_start
+uint16 order_detail_id
