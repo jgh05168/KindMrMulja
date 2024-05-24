@@ -6,7 +6,7 @@
 <div style="width:200px;">
 
 <!-- <img src="./resource/image-1.png"> </img> -->
-<img src="./resource/title.png"> </img>
+<img src="./resource/title.jpg"> </img>
 
 </div>
 
